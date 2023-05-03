@@ -21,3 +21,5 @@
 
 # Ignore any local development configuration files
 /config/local.php
+
+*.db
