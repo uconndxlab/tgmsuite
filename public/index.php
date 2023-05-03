@@ -127,21 +127,52 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     return $view->render($response, 'single-field.html', $params);
 });
 
-// add report to field
-$app->get('/fields/{id}/report', function (Request $request, Response $response, $args) use ($db, $twig) {
+// route to conduct a turf rating
+$app->get('/fields/{id}/turf-rating', function (Request $request, Response $response, $args) use ($db, $twig) {
 
-    // Query the "fields" table to get all the rows
-    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    $params = array(
+        'field_id' => $args['id'],
+        'form-type' => 'turf-rating'
+    );
+
     $view = Twig::fromRequest($request);
 
-    // select the single row
-    $rows = [];
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
-        $rows[] = $row;
-    }
-  
+
+    
+
     // Render the "fields" template with the rows array
-    $params = ['field' => $rows[0], 'edit' => true];
+
+    return $view->render($response, 'report.html', $params);
+
+});
+
+// save a turf rating
+$app->post('/fields/{id}/turf-rating', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $percent_turf_covered = $data['percent_turf_covered'];
+    $percent_weeds = $data['percent_weeds'];
+    $stones_at_surface = $data['stones_at_surface'];
+    $depressions = $data['depressions'];
+    $turf_rating = $data['turf_rating'];
+    $surface_rating = $data['surface_rating'];
+    $date = $data['date'];
+    $evaluator_id = $data['evaluator_id'];
+
+    $q = "INSERT INTO evaluations (field_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating, date, evaluator_id) VALUES ($field_id, $percent_turf_covered, $percent_weeds, $stones_at_surface, $depressions, $turf_rating, $surface_rating, '$date', $evaluator_id)";
+    $stmnt = $db->exec($q);
+    $msg = "Turf Rating Saved";
+    $params = array(
+        'field_id' => $args['id'],
+        'form-type' => 'turf-rating',
+        'message' => $msg
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
     return $view->render($response, 'report.html', $params);
 
 });

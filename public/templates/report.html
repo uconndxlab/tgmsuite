@@ -1,7 +1,11 @@
-<!-- Filing a new Report -->
-<!-- buttons for which type of report?-->
+{% include 'parts/header.html' %}
+    <!-- Filing a new Report -->
+    <!-- buttons for which type of report?-->
 
-<div class="btn-group" role="group" >
-    <a class="btn btn-secondary {% if report_type == 'fertilization' %} active {% endif %}"  href="/fields/{{ field.id }}/report/fertilization">Fertilization</a>
-     <a class="btn btn-secondary {% if report_type == 'turfgrass' %} active {% endif %}" href="/fields/{{ field.id }}/report/turfgrass">Turfgrass Evaluation</a>
-</div>
+    <div class="btn-group" role="group" >
+        <a class="btn btn-secondary {% if report_type == 'fertilization' %} active {% endif %}"  href="/fields/{{ field.id }}/report/fertilization">Fertilization</a>
+        <a class="btn btn-secondary {% if report_type == 'turfgrass' %} active {% endif %}" href="/fields/{{ field.id }}/report/turfgrass">Turfgrass Evaluation</a>
+    </div>
+
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}
