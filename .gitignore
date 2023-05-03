@@ -1,0 +1,23 @@
+# Ignore vendor folder and its contents
+/vendor
+
+# Ignore any log files generated
+/logs/*.log
+
+# Ignore any cache files generated
+/cache/*
+
+# Ignore any session files generated
+/sessions/*
+
+# Ignore any temporary files generated
+/temp/*
+
+# Ignore any uploaded files
+/public/uploads/*
+
+# Ignore any configuration files that contain sensitive information
+/config/*.env
+
+# Ignore any local development configuration files
+/config/local.php

@@ -1,0 +1,76 @@
+/** Slabo Font **/
+@import url(http://fonts.googleapis.com/css?family=Slabo+27px);
+
+/** import open sans font **/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800);
+
+/** import material design icons **/
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+
+
+/** set up color classes **/
+html {
+  overflow-y: scroll;
+}
+/* Primary color */
+.text-primary {
+    color: #00703C!important;
+  }
+  .background-primary {
+    background-color: #00703C!important;
+  }
+  
+  /* Secondary color */
+  .text-secondary {
+    color: #9FD356!important;
+  }
+  .background-secondary {
+    background-color: #9FD356!important;
+  }
+  
+  /* Accent color */
+  .text-accent {
+    color: #FDB813!important;
+  }
+  .background-accent {
+    background-color: #FDB813!important;
+  }
+  
+  /* Neutral color */
+  .text-neutral {
+    color: #F5F5F5!important;
+  }
+  .background-neutral {
+    background-color: #F5F5F5!important;
+  }
+  
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Slabo 27px', serif;
+    font-weight: 800;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+
+    background:url(../turf2.webp);
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+main#app {
+    background-color:#fff;
+    padding:25px;
+    /** material design box-shadow **/
+    box-shadow:0 1px 3px rgba(0,0,0,.38), 0 1px 2px rgba(0,0,0,.24);
+    -webkit-box-shadow:0 1px 3px rgba(0,0,0,.38), 0 1px 2px rgba(0,0,0,.24);
+}
+
+.field-lede {
+  position: sticky;
+  top:55px;
+}
+
+
+

@@ -1,0 +1,17 @@
+<!-- Include parts/head.html -->
+{% include 'parts/header.html' %}
+
+
+<div class="container">
+    <div class="row">
+        {% for row in rows %}
+            <div class="col-4 mb-2">
+                <!-- render components/field.html with the row data -->
+                {% include 'components/field.html' with row %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Includ parts/footer.html -->
+{% include 'parts/footer.html' %}
