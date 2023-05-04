@@ -80,7 +80,8 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
     // Query the "fields" table to get all the rows
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     $view = Twig::fromRequest($request);
-
+    
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
     $rows = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
@@ -130,9 +131,18 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 // route to conduct a turf rating
 $app->get('/fields/{id}/turf-rating', function (Request $request, Response $response, $args) use ($db, $twig) {
 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
     $params = array(
+        'field' => $rows[0],
         'field_id' => $args['id'],
-        'form-type' => 'turf-rating'
+        'form_type' => 'Turf Rating'
     );
 
     $view = Twig::fromRequest($request);
@@ -165,7 +175,7 @@ $app->post('/fields/{id}/turf-rating', function (Request $request, Response $res
     $msg = "Turf Rating Saved";
     $params = array(
         'field_id' => $args['id'],
-        'form-type' => 'turf-rating',
+        'form_type' => 'turf-rating',
         'message' => $msg
     );
 

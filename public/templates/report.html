@@ -1,11 +1,153 @@
 {% include 'parts/header.html' %}
-    <!-- Filing a new Report -->
-    <!-- buttons for which type of report?-->
+<div class="row">
+    <div class="col-3">
+        <!-- material design edit icon -->
 
-    <div class="btn-group" role="group" >
-        <a class="btn btn-secondary {% if report_type == 'fertilization' %} active {% endif %}"  href="/fields/{{ field.id }}/report/fertilization">Fertilization</a>
-        <a class="btn btn-secondary {% if report_type == 'turfgrass' %} active {% endif %}" href="/fields/{{ field.id }}/report/turfgrass">Turfgrass Evaluation</a>
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+            <h2> {{ field.name }}</h2>
+            <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
+            <!-- button group for view or edit-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a class="btn btn-secondary {% if edit == true %} active {% endif %}"
+                    href="/fields/{{ field.id }}/edit">Edit</a>
+                <a class="btn btn-secondary {% if edit == false %} active {% endif %}"
+                    href="/fields/{{ field.id }}">History</a>
+            </div>
+        </div>
     </div>
 
-<!-- Include parts/footer.html -->
-{% include 'parts/footer.html' %}
+
+
+    <div class="col-9">
+        <div class="row">
+            <div class="col-12">
+                <h3>Report</h3>
+                <h2>{{form_type}}</h2>
+            </div>
+
+            <!-- new turf rating form  -->
+
+            <!-- bootstrap accordion -->
+            <div class="accordion" id="report">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Turf Rating
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#report">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="turfDensity" class="form-label">% Turf Density</label>
+                                        <select id="turfDensity" class="form-select">
+                                            <option value="1">1 = 0-10</option>
+                                            <option value="2">2 = 11-20</option>
+                                            <option value="3">7 = 21-30</option>
+                                            <option value="4">6 = 31-40</option>
+                                            <option value="5">5 = 41-50</option>
+                                            <option value="6">6 = 51-60</option>
+                                            <option value="7">7 = 61-70</option>
+                                            <option value="8">8 = 71-80</option>
+                                            <option value="9">9 = 81-90</option>
+                                            <option value="10">10 = 91-100</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="smoothness" class="form-label">Smoothness</label>
+                                        <select id="smoothness" class="form-select">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Surface Ratings
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#report">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="stonesAtSurface">Stones at the Surface</label>
+                                    <select class="form-control" id="stonesAtSurface">
+                                        <option value="0">0 = None</option>
+                                        <option value="1">1 = Few</option>
+                                        <option value="2">2 = Many</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="weedsPercentage">Percent of Weeds</label>
+                                    <select class="form-control" id="weedsPercentage">
+                                        <option value="0">0 = 0-10%</option>
+                                        <option value="1">1 = 11-20%</option>
+                                        <option value="2">2 = 21-30%</option>
+                                        <option value="3">3 = 31-40%</option>
+                                        <option value="4">4 = 41-100%</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="depressions">Depressions</label>
+                                    <select class="form-control" id="depressions">
+                                        <option value="0">0 = None</option>
+                                        <option value="1">1 = Few</option>
+                                        <option value="2">2 = Moderate</option>
+                                        <option value="3">3 = Many</option>
+                                        <option value="4">4 = Extreme</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="surfaceRating">Surface Rating (Stones+Weeds+Depression)</label>
+                                    <input type="text" class="form-control" id="surfaceRating">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="alert alert-success">
+                    <p>Overall Rating = Turf Rating + Surface Rating</p>
+                    <h2>[RATING CODE]</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- saving -->
+            <div class="col-12">
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <!-- Include parts/footer.html -->
+    {% include 'parts/footer.html' %}
