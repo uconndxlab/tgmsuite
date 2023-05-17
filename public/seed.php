@@ -72,10 +72,20 @@ $db->exec('CREATE TABLE IF NOT EXISTS field_users (
     FOREIGN KEY (user_id) REFERENCES users(id)
 )');
 
+
 /** Seed the fields table with some sample data */
 $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 1", "123 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 1")');
 $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 2", "456 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 2")');
 $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 3", "789 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 3")');
+
+/** Create Sample Fertilization Events */
+
+$db->exec('INSERT INTO fertilization_events (field_id, date, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (1, "2020-01-01", "Urea", 1, "This is a description of the fertilizer event")');
+
+
+
+/** Create Sample Evaluations */
+$db->exec('INSERT INTO evaluations (evaluation_date, evaluator_id, field_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES ("2020-01-01", 1, 1, 100, 0, 0, 0, 0, 0)');
 
 // Close the database connection
 $db->close();

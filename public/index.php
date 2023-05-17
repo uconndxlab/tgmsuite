@@ -67,9 +67,25 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
     }
+
+    // get the evaluations for this field
+    $evaluations_query = $db->query('SELECT * FROM evaluations WHERE field_id = ' . $args['id']);
+    $evaluations = [];
+    while ($evaluation = $evaluations_query->fetchArray(SQLITE3_ASSOC)) {
+        $evaluations[] = $evaluation;
+    }
+
+    // get the fertilization events for this field
+    $fertilization_events_query = $db->query('SELECT * FROM fertilization_events WHERE field_id = ' . $args['id']);
+    $fertilization_events = [];
+    while ($fertilization_event = $fertilization_events_query->fetchArray(SQLITE3_ASSOC)) {
+        $fertilization_events[] = $fertilization_event;
+    }
+
+
   
     // Render the "fields" template with the rows array
-    $params = ['field' => $rows[0], 'edit' => false];
+    $params = ['field' => $rows[0], 'edit' => false, 'evaluations' => $evaluations, 'fertilization_events' => $fertilization_events];
     return $view->render($response, 'single-field.html', $params);
 
 });
