@@ -8,7 +8,7 @@ while($table = $tables->fetchArray(SQLITE3_ASSOC)) {
     $db->exec('DELETE FROM ' . $table['name']);
     echo "Table " . $table['name'] . " has been emptied.<br>";
 }
-die();
+
 // Step 3: Generate a SQL script to drop all the tables
 while ($table = $tables->fetchArray()) {
     $db->exec('DROP TABLE IF EXISTS ' . $table['name']);

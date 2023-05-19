@@ -23,8 +23,11 @@ $app->add(TwigMiddleware::create($app, $twig));
 
 
 $app->get('/', function (Request $request, Response $response, $args) {
-    $view = Twig::fromRequest($request);
-    return $view->render($response, 'home.html');
+    // $view = Twig::fromRequest($request);
+    // return $view->render($response, 'home.html');
+
+    // redirect to fields
+    return $response->withHeader('Location', '/fields')->withStatus(302);
 });
 
 function dd(...$vars) {

@@ -12,6 +12,7 @@
                 <div class="btn-group" role="group">
                     <a class="btn btn-secondary {% if edit == true %} active {% endif %}"  href="/fields/{{ field.id }}/edit">Edit</a>
                     <a class="btn btn-secondary {% if edit == false %} active {% endif %}" href="/fields/{{ field.id }}/history">History</a>
+                    <!-- color report -->
                 </div>
             </div>
         </div>
@@ -34,8 +35,12 @@
                         <span class="visually-hidden">Add Report</span>
                     </button>
                     <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Fertilization Event</a></li>
-                    <li><a class="dropdown-item" href="/fields/{{ field.id }}/turf-rating">Turf Rating</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/turf-rating">Quality Checklist</a></li>
+
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-image"></i> Add a Photo</a></li>
+                        <!-- color report -->
+                        <li><a class="dropdown-item" href="#">Color Report</a></li>
+                        <li><a class="dropdown-item" href="#">Pest Management</a></li>
                     </ul>
                 </div>
                 
