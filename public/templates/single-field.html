@@ -35,7 +35,7 @@
                         <span class="visually-hidden">Add Report</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/turf-rating">Quality Checklist</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Quality Checklist</a></li>
                         <li><a class="dropdown-item" href="#">Pest Management</a></li>
                         <li><a class="dropdown-item" href="#">Color Report</a></li>
                         <li><a class="dropdown-item" href="#">Add a Photo</a></li>
@@ -51,6 +51,7 @@
                             <th scope="col">Date</th>
                             <th scope="col">Type</th>
                             <th scope="col">Evaluator</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,9 @@
                             <td>{{ report.evaluation_date }}</td>
                             <td>{{ report.type }}</td>
                             <td>{{ report.email }}</td>
+                            <td>
+                                <a href="/reports/{{ report.id }}" class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
                         </tr>
                         {% endfor %}
 
