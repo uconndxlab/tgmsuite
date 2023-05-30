@@ -27,7 +27,7 @@
             {% endif %}
 
             {% if edit == false %}
-                <h3>Field History</h3>
+                <h3>Field Reports</h3>
                 <!-- dropdown button for "Add Report" with options of "Turf Assessment" and "Fertilization Event"-->
                 <div class="btn-group float-end">
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,49 +36,50 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/turf-rating">Quality Checklist</a></li>
-
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-image"></i> Add a Photo</a></li>
-                        <!-- color report -->
-                        <li><a class="dropdown-item" href="#">Color Report</a></li>
                         <li><a class="dropdown-item" href="#">Pest Management</a></li>
+                        <li><a class="dropdown-item" href="#">Color Report</a></li>
+                        <li><a class="dropdown-item" href="#">Add a Photo</a></li>
                     </ul>
                 </div>
                 
 
 
-                <!-- table looping through evaluations (evaluation_date, evaluator_id, field_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) -->
+                <!-- combined table of evaluations, pest management reports, color reports and photo reports  (just date, type, and evaluator name)-->
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
-                            <th scope="col">Turf Rating</th>
-                            <th scope="col">Surface Rating</th>
-                            <th scope="col">Percent Turf Covered</th>
-                            <th scope="col">Percent Weeds</th>
-                            <th scope="col">Stones at Surface</th>
-                            <th scope="col">Depressions</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Evaluator</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for evaluation in evaluations %}
+                        {% for report in reports %}
                         <tr>
-                            <td>{{ evaluation.evaluation_date }}</td>
-                            <td>{{ evaluation.turf_rating }}</td>
-                            <td>{{ evaluation.surface_rating }}</td>
-                            <td>{{ evaluation.percent_turf_covered }}</td>
-                            <td>{{ evaluation.percent_weeds }}</td>
-                            <td>{{ evaluation.stones_at_surface }}</td>
-                            <td>{{ evaluation.depressions }}</td>
-                            <td>
-                                <a href="/fields/{{ field.id }}/evaluations/{{ evaluation.id }}/edit" class="btn btn-outline-secondary btn-sm">Edit</a>
-                                <a href="/fields/{{ field.id }}/evaluations/{{ evaluation.id }}/delete" class="btn btn-outline-secondary btn-sm">Delete</a>
-                            </td>
+                            <td>{{ report.evaluation_date }}</td>
+                            <td>{{ report.type }}</td>
+                            <td>{{ report.email }}</td>
                         </tr>
                         {% endfor %}
+
+                        <!-- sample data for now -->
+                        <!-- <tr>
+                            <td>23 May 2023</td>
+                            <td>Quality Checklist</td>
+                            <td>John Doe</td>
+                        </tr>
+                        <tr>
+                            <td>20 May 2023</td>
+                            <td>Color Report</td>
+                            <td>John Doe</td>
+                        </tr>
+
+                        <tr>
+                            <td>18 May 2023</td>
+                            <td>Pest Management Report</td>
+                            <td>Joel Salisbury</td>
+                        </tr> -->
                     </tbody>
-                </table>
-                
                 
                 {% endif %}
             </div>

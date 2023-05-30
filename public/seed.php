@@ -26,32 +26,60 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
 
 //** Create the evaluation table with turf rating and surface rating */
 
-$db->exec('CREATE TABLE IF NOT EXISTS evaluations (
+// Create a table for reports with id, evaluation_date, evaluator_id, field_id, and type (evaluation, photo, color, fertilization)
+
+$db->exec('CREATE TABLE IF NOT EXISTS reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     evaluation_date DATE,
     evaluator_id INTEGER,
     field_id INTEGER,
+    type TEXT,
+    FOREIGN KEY (field_id) REFERENCES fields(id)
+    FOREIGN KEY (evaluator_id) REFERENCES users(id)
+)');
+
+$db->exec('CREATE TABLE IF NOT EXISTS evaluations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
     percent_turf_covered INTEGER,
     percent_weeds INTEGER,
     stones_at_surface INTEGER,
     depressions INTEGER,
     turf_rating INTEGER,
     surface_rating INTEGER,
-    FOREIGN KEY (field_id) REFERENCES fields(id)
-    FOREIGN KEY (evaluator_id) REFERENCES users(id)
+    FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
 /** Create Fertilization Event Table */
 
 $db->exec('CREATE TABLE IF NOT EXISTS fertilization_events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    field_id INTEGER,
-    date DATE,
+    report_id INTEGER,
     fertilizer_type TEXT,
     fertilizer_rate INTEGER,
     fertilizer_description TEXT,
-    FOREIGN KEY (field_id) REFERENCES fields(id)
+    FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
+
+/** Create Photo Table (evaluation_date, evaluator_id, field_id, photo_url) */
+$db->exec('CREATE TABLE IF NOT EXISTS photos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    photo_url TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
+
+/** Create a Color table with date, evaluator_id, field_id, and color option (Dark Green 5, Med Green 4, Med/Light Green 3, Light Green 2, Yellow Green 1, Turf Dormant TD)
+  */
+
+$db->exec('CREATE TABLE IF NOT EXISTS color_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    color_option TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
 
 //** Create the users table with name, email, and password */
 
@@ -78,14 +106,31 @@ $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_u
 $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 2", "456 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 2")');
 $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 3", "789 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 3")');
 
-/** Create Sample Fertilization Events */
+/** Seed the users table with some sample data */
+$db->exec('INSERT INTO users (name, email, password) VALUES ("John Doe", "john@doefamily.org", "password")');
 
-$db->exec('INSERT INTO fertilization_events (field_id, date, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (1, "2020-01-01", "Urea", 1, "This is a description of the fertilizer event")');
+/** Seed the field_users table with some sample data */
+$db->exec('INSERT INTO field_users (field_id, user_id) VALUES (1, 1)');
+
+/** Seed the reports table with some sample data */
+$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-01", 1, 1, "evaluation")');
+$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-02", 1, 1, "photo")');
+$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-03", 1, 1, "color")');
+$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-04", 1, 1, "fertilization")');
+
+/** Seed the evaluations table with some sample data */
+$db->exec('INSERT INTO evaluations (report_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES (1, 100, 0, 0, 0, 5, 5)');
+
+/** Seed the photos table with some sample data */
+$db->exec('INSERT INTO photos (report_id, photo_url) VALUES (2, "https://via.placeholder.com/150")');
+
+/** Seed the color_reports table with some sample data */
+$db->exec('INSERT INTO color_reports (report_id, color_option) VALUES (3, "Dark Green 5")');
+
+/** Seed the fertilization_events table with some sample data */
+$db->exec('INSERT INTO fertilization_events (report_id, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (4, "Nitrogen", 1, "This is a description of the fertilization event")');
 
 
-
-/** Create Sample Evaluations */
-$db->exec('INSERT INTO evaluations (evaluation_date, evaluator_id, field_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES ("2020-01-01", 1, 1, 100, 0, 0, 0, 0, 0)');
 
 // Close the database connection
 $db->close();
