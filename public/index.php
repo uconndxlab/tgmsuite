@@ -161,7 +161,7 @@ $app->get('/fields/{id}/quality-checklist', function (Request $request, Response
     $params = array(
         'field' => $rows[0],
         'field_id' => $args['id'],
-        'form_type' => 'Turf Rating'
+        'form_type' => 'Quality Checklist'
     );
 
     $view = Twig::fromRequest($request);
@@ -180,13 +180,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $percent_turf_covered = $data['percent_turf_covered'];
-    $percent_weeds = $data['percent_weeds'];
-    $stones_at_surface = $data['stones_at_surface'];
-    $depressions = $data['depressions'];
-    $turf_rating = $data['turf_rating'];
-    $surface_rating = $data['surface_rating'];
-    $date = $data['date'];
+    $date = date('Y-m-d');
     $evaluator_id = 1;
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
@@ -194,23 +188,47 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $report_id = $db->lastInsertRowID();
 
-    $q = "INSERT INTO evaluations (report_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES ($report_id, $percent_turf_covered, $percent_weeds, $stones_at_surface, $depressions, $turf_rating, $surface_rating)";
-    $db->exec($q);
+    // report_id INTEGER,
+    // turf_density INTEGER,
+    // smoothness_rating INTEGER,
+    // weeds_rating INTEGER,
+    // stones_at_surface INTEGER,
+    // depressions INTEGER,
+    // turf_rating INTEGER,
+    // surface_rating INTEGER
+
+    $turf_density = $data['turfDensity'];
+    $smoothness_rating = $data['smoothness'];
+    $weeds_rating = $data['weedsPercentage'];
+    $stones_at_surface = $data['stonesAtSurface'];
+    $depressions = $data['depressions'];
+    $turf_rating = $data['turfRating'];
+    $surface_rating = $data['surfaceRating'];
+    $overall_rating = $turf_rating - $surface_rating;
+
+    $db->exec("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES ($report_id, $turf_density, $smoothness_rating, $weeds_rating, $stones_at_surface, $depressions, $turf_rating, $surface_rating, $overall_rating)");
+
+    
 
     $msg = "Turf Rating Saved";
 
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
     $params = array(
+        'field' => $rows[0],
         'field_id' => $args['id'],
-        'form_type' => 'turf-rating',
+        'form_type' => 'Quality Checklist',
         'message' => $msg
     );
 
-    $view = Twig::fromRequest($request);
 
-    // Render the "fields" template with the rows array
-
-    return $view->render($response, 'report.html', $params);
-
+    // redirect to /fields/{id}
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
 

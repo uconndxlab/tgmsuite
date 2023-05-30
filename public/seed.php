@@ -41,12 +41,14 @@ $db->exec('CREATE TABLE IF NOT EXISTS reports (
 $db->exec('CREATE TABLE IF NOT EXISTS evaluations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
-    percent_turf_covered INTEGER,
-    percent_weeds INTEGER,
+    turf_density INTEGER,
+    smoothness_rating INTEGER,
+    weeds_rating INTEGER,
     stones_at_surface INTEGER,
     depressions INTEGER,
     turf_rating INTEGER,
     surface_rating INTEGER,
+    overall_rating INTEGER,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -119,8 +121,7 @@ $db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) V
 $db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-04", 1, 1, "fertilization")');
 
 /** Seed the evaluations table with some sample data */
-$db->exec('INSERT INTO evaluations (report_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES (1, 100, 0, 0, 0, 5, 5)');
-
+$db->exec('INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1)');
 /** Seed the photos table with some sample data */
 $db->exec('INSERT INTO photos (report_id, photo_url) VALUES (2, "https://via.placeholder.com/150")');
 
