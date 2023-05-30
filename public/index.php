@@ -187,11 +187,18 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     $turf_rating = $data['turf_rating'];
     $surface_rating = $data['surface_rating'];
     $date = $data['date'];
-    $evaluator_id = $data['evaluator_id'];
+    $evaluator_id = 1;
 
-    $q = "INSERT INTO evaluations (field_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating, date, evaluator_id) VALUES ($field_id, $percent_turf_covered, $percent_weeds, $stones_at_surface, $depressions, $turf_rating, $surface_rating, '$date', $evaluator_id)";
-    $stmnt = $db->exec($q);
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
+    $db->exec($q);
+
+    $report_id = $db->lastInsertRowID();
+
+    $q = "INSERT INTO evaluations (report_id, percent_turf_covered, percent_weeds, stones_at_surface, depressions, turf_rating, surface_rating) VALUES ($report_id, $percent_turf_covered, $percent_weeds, $stones_at_surface, $depressions, $turf_rating, $surface_rating)";
+    $db->exec($q);
+
     $msg = "Turf Rating Saved";
+
     $params = array(
         'field_id' => $args['id'],
         'form_type' => 'turf-rating',

@@ -9,7 +9,7 @@
             <h2> {{ field.name }}</h2>
             <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
             <!-- button group for view or edit-->
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group" role="group">
                 <a class="btn btn-secondary {% if edit == true %} active {% endif %}"
                     href="/fields/{{ field.id }}/edit">Edit</a>
                 <a class="btn btn-secondary {% if edit == false %} active {% endif %}"
@@ -18,9 +18,8 @@
         </div>
     </div>
 
-
-
     <div class="col-9">
+        <form method="post" action="">
         <div class="row">
             <div class="col-12">
                 <h3>Report</h3>
@@ -31,6 +30,7 @@
 
             <!-- bootstrap accordion -->
             <div class="accordion" id="report">
+                
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -45,7 +45,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="turfDensity" class="form-label">% Turf Density</label>
-                                        <select id="turfDensity" class="form-select">
+                                        <select id="turfDensity" name="turfDensity" class="form-select">
                                             <option value="1">1 = 0-10</option>
                                             <option value="2">2 = 11-20</option>
                                             <option value="3">7 = 21-30</option>
@@ -62,7 +62,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="smoothness" class="form-label">Smoothness</label>
-                                        <select id="smoothness" class="form-select">
+                                        <select id="smoothness" name="smoothness" class="form-select">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -72,7 +72,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="surfaceRating">Turf Rating # (Turf Cover Rating + Smoothness)</label>
+                                        <input type="text" class="form-control" id="turfRating">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +96,7 @@
                             <div class="row">
                                 <div class="form-group">
                                     <label for="stonesAtSurface">Stones at the Surface</label>
-                                    <select class="form-control" id="stonesAtSurface">
+                                    <select class="form-control" name="stonesAtSurface" id="stonesAtSurface">
                                         <option value="0">0 = None</option>
                                         <option value="1">1 = Few</option>
                                         <option value="2">2 = Many</option>
@@ -98,7 +105,7 @@
 
                                 <div class="form-group">
                                     <label for="weedsPercentage">Percent of Weeds</label>
-                                    <select class="form-control" id="weedsPercentage">
+                                    <select class="form-control" name="weedsPercentage" id="weedsPercentage">
                                         <option value="0">0 = 0-10%</option>
                                         <option value="1">1 = 11-20%</option>
                                         <option value="2">2 = 21-30%</option>
@@ -109,7 +116,7 @@
 
                                 <div class="form-group">
                                     <label for="depressions">Depressions</label>
-                                    <select class="form-control" id="depressions">
+                                    <select class="form-control" name="depressions" id="depressions">
                                         <option value="0">0 = None</option>
                                         <option value="1">1 = Few</option>
                                         <option value="2">2 = Moderate</option>
@@ -131,22 +138,86 @@
             </div>
             <div class="col-12">
                 <div class="alert alert-success">
-                    <p>Overall Rating = Turf Rating + Surface Rating</p>
-                    <h2>[RATING CODE]</h2>
+                    <p>Overall Rating = Turf Rating - Surface Rating</p>
+                    <h2 id="overallRating">[RATING CODE]</h2>
                 </div>
             </div>
         </div>
 
+
         <div class="row">
             <!-- saving -->
             <div class="col-12">
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
 
-
-
+    </form>
     </div>
+
+    <script>
+        // auto populate the turf rating by adding the turf density and smoothness, on change of either
+        // get the value of the turf density and smoothness
+        // add them together
+        // set the value of the turf rating to the sum
+
+        var turfDensity = document.getElementById('turfDensity');
+        var smoothness = document.getElementById('smoothness');
+        var turfRating = document.getElementById('turfRating');
+
+        turfDensity.addEventListener('change', function () {
+            turfRating.value = parseInt(turfDensity.value) + parseInt(smoothness.value);
+            turfRating.dispatchEvent(new Event('change'));
+        });
+
+        smoothness.addEventListener('change', function () {
+            turfRating.value = parseInt(turfDensity.value) + parseInt(smoothness.value);
+            turfRating.dispatchEvent(new Event('change'));
+        });
+
+        // auto populate the surface rating by adding the stones at surface, weeds percentage, and depressions, on change of either
+        // get the value of the stones at surface, weeds percentage, and depressions
+        // add them together
+        // set the value of the surface rating to the sum
+
+        var stonesAtSurface = document.getElementById('stonesAtSurface');
+        var weedsPercentage = document.getElementById('weedsPercentage');
+        var depressions = document.getElementById('depressions');
+        var surfaceRating = document.getElementById('surfaceRating');
+
+        stonesAtSurface.addEventListener('change', function () {
+            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
+            surfaceRating.dispatchEvent(new Event('change'));
+        });
+
+        weedsPercentage.addEventListener('change', function () {
+            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
+            surfaceRating.dispatchEvent(new Event('change'));
+        });
+
+        depressions.addEventListener('change', function () {
+            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
+            surfaceRating.dispatchEvent(new Event('change'));
+        });
+
+        // set the overall rating to the turf rating minus the surface rating on change of either
+        // get the value of the turf rating and surface rating
+        // subtract the surface rating from the turf rating
+
+        var turfRating = document.getElementById('turfRating');
+        var surfaceRating = document.getElementById('surfaceRating');
+        var overallRating = document.getElementById('overallRating');
+
+        turfRating.addEventListener('change', function () {
+            overallRating.value = parseInt(turfRating.value) - parseInt(surfaceRating.value);
+        });
+
+        surfaceRating.addEventListener('change', function () {
+            overallRating.innerHTML = parseInt(turfRating.value) - parseInt(surfaceRating.value);
+        });
+        
+
+    </script>
 
 
     <!-- Include parts/footer.html -->
