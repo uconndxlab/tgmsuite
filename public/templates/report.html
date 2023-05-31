@@ -4,5 +4,79 @@
     <h1>Viewing a Report</h1>  
     {{report.id}}
     ({{report.type}} type report)
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- if it's an evaluation, show the following: 
+            
+                turf_density INTEGER,
+                smoothness_rating INTEGER,
+                weeds_rating INTEGER,
+                stones_at_surface INTEGER,
+                depressions INTEGER,
+                turf_rating INTEGER,
+                surface_rating INTEGER,
+                overall_rating INTEGER,
+            
+            -->
+            {% if report.type == 'evaluation' %}
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Turf Density</th>
+                        <th scope="col">Smoothness Rating</th>
+                        <th scope="col">Weeds Rating</th>
+                        <th scope="col">Stones at Surface</th>
+                        <th scope="col">Depressions</th>
+                        <th scope="col">Turf Rating</th>
+                        <th scope="col">Surface Rating</th>
+                        <th scope="col">Overall Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.field_id }}</td>
+                        <td>{{ content.evaluation_date }}</td>
+                        <td>{{ content.turf_density }}</td>
+                        <td>{{ content.smoothness_rating }}</td>
+                        <td>{{ content.weeds_rating }}</td>
+                        <td>{{ content.stones_at_surface }}</td>
+                        <td>{{ content.depressions }}</td>
+                        <td>{{ content.turf_rating }}</td>
+                        <td>{{ content.surface_rating }}</td>
+                        <td>{{ content.overall_rating }}</td>
+                    </tr>
+                </tbody>
+            </table>
+                
+                {% endif %}
+
+            <!-- if it's a photo show the following:     photo_url TEXT, -->
+            {% if report.type == 'photo' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Photo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.field_id }}</td>
+                        <td>{{ content.evaluation_date }}</td>
+                        <td><img src="{{ content.photo_url }}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+
+
     <!-- Include parts/footer.html -->
     {% include 'parts/footer.html' %}
