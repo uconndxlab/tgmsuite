@@ -231,6 +231,78 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
+// route for /report/{id}/view
+$app->get('/report/{id}/view', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $results = $db->query('SELECT * FROM reports WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $report = $rows[0];
+
+    // switch on the type of report (evaluation, color_report, photo, or fertilization_event)
+    switch ($report['type']) {
+        case 'evaluation':
+            $results = $db->query('SELECT * FROM evaluations WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $evaluation = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
+        case 'color':
+            $results = $db->query('SELECT * FROM color_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $color_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
+        case 'photo':
+            $results = $db->query('SELECT * FROM photos WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $photo = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
+        case 'fertilization':
+            $results = $db->query('SELECT * FROM fertilization_events WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $fertilization_event = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
+    }
+
+    $content = $rows[0];
+    
+
+    $params = array(
+        'report' => $report,
+        'field' => $field,
+        'content' => $content
+    );
+
+    $view = Twig::fromRequest($request);
+
+    return $view->render($response, 'report.html', $params);
+
+});
+
+
 
 
 $app->run();
