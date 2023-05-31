@@ -7,6 +7,31 @@
 
     <div class="row">
         <div class="col-md-12">
+
+            <!-- if it's a color, show the following:
+            color_option TEXT
+            
+            -->
+
+            {% if report.type == 'color' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                     
+                        <th scope="col">Date</th>
+                        <th scope="col">Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.color_option }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+
             <!-- if it's an evaluation, show the following: 
             
                 turf_density INTEGER,
@@ -68,7 +93,7 @@
                     <tr>
                         <td>{{ report.field_id }}</td>
                         <td>{{ content.evaluation_date }}</td>
-                        <td><img src="{{ content.photo_url }}"></td>
+                        <td><img style="max-width:200px;" src="/{{ content.photo_url }}"></td>
                     </tr>
                 </tbody>
             </table>

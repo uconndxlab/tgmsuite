@@ -1,0 +1,57 @@
+{% include 'parts/header.html' %}
+<div class="row">
+    <div class="col-3">
+        <!-- material design edit icon -->
+
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+            <h2> {{ field.name }}</h2>
+            <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
+            <!-- button group for view or edit-->
+            <div class="btn-group" role="group">
+                <a class="btn btn-secondary {% if edit == true %} active {% endif %}"
+                    href="/fields/{{ field.id }}/edit">Edit</a>
+                <a class="btn btn-secondary {% if edit == false %} active {% endif %}"
+                    href="/fields/{{ field.id }}">History</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-9">
+        <form method="post" action="" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-12">
+                <h3>Submit Color Report</h3>
+            </div>
+
+            <!-- new color assessment form  -->
+
+            <div class="col-12">
+                <!-- field for color option (Dark Green 5, Med Green 4, Med/Light Green 3, Light Green 2, Yellow Green 1, Turf Dormant TD) -->
+
+                <div class="mb-3">
+                    <label for="color" class="form-label">Color</label>
+                    <select class="form-select" id="color" name="color">
+                        <option value="5">Dark Green 5</option>
+                        <option value="4">Med Green 4</option>
+                        <option value="3">Med/Light Green 3</option>
+                        <option value="2">Light Green 2</option>
+                        <option value="1">Yellow Green 1</option>
+                        <option value="TD">Turf Dormant TD</option>
+                    </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- submit button -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+    <!-- Include parts/footer.html -->
+    {% include 'parts/footer.html' %}

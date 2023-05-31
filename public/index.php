@@ -136,7 +136,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     // this is a comma delimited in the database, but should be an array in the form
     $turfgrass_species_present = implode(',',$data['turfgrass_species_present']);
 
-    $description = $data['description'];
+    $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
     $q = "UPDATE fields SET name = '$name', address = '$address', city = '$city', state = '$state', 
     zip = '$zip', multiple_sport_usage = '$multiple_sport_usage', shade_or_sun = '$shade_or_sun', sports_played = '$sports_played', turfgrass_species_present = '$turfgrass_species_present', description = '$description' WHERE id = $id"; 
@@ -144,7 +144,8 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    return $view->render($response, 'single-field.html', $params);
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+
 });
 
 // route to conduct a turf rating
@@ -174,6 +175,137 @@ $app->get('/fields/{id}/quality-checklist', function (Request $request, Response
     return $view->render($response, 'quality-checklist.html', $params);
 
 });
+
+// route to submit a photo for a field
+$app->get('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) { 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Submit Photo'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-photo.html', $params);
+
+});
+
+// route to submit a color report for a field
+
+$app->get('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) { 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Color Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-color.html', $params);
+
+});
+
+
+// route to save a color report for a field
+
+$app->post('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d');
+    $evaluator_id = 1;
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'color')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO color_reports (report_id, color_option) VALUES (?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['color']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Color Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
+
+
+// route to save a photo for a field
+
+$app->post('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) { 
+    $data = $request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
+    $field_id = $args['id'];
+    $date = date('Y-m-d');
+    $evaluator_id = 1;
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    // Handle the uploaded photo file
+    $uploadedFile = $uploadedFiles['photo'];
+    if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+        $filename = $uploadedFile->getClientFilename();
+        $targetPath = "uploads/" . $filename;
+        $uploadedFile->moveTo($targetPath);
+
+        // Save the photo URL to the database
+        $photo = "uploads/" . $filename;
+        $q = "INSERT INTO photos (report_id, photo_url) VALUES (?, ?)";
+        $stmt = $db->prepare($q);
+        $stmt->bindValue(1, $report_id);
+        $stmt->bindValue(2, $photo);
+        $result = $stmt->execute();
+
+        $msg = "Photo Saved";
+    } else {
+
+        
+        $errorCode = $uploadedFile->getError();
+        $msg = "Failed to upload photo";
+        // get the error code
+        
+
+        $msg .= " Error code: $errorCode";
+    }
+    
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
+
+
+
 
 // save a turf rating
 $app->post('/fields/{id}/quality-checklist', function (Request $request, Response $response, $args) use ($db, $twig) {
