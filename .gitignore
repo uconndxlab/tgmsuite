@@ -23,3 +23,6 @@
 /config/local.php
 
 *.db
+
+# Ignore any folders named uploads
+**/uploads

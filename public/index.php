@@ -434,6 +434,20 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
 
 });
 
+// route for /field/create
+$app->get('/field/create', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $view = Twig::fromRequest($request);
+
+    $params = array(
+        'edit' => true,
+        'message' => 'You are creating a new field.'
+    );
+
+    return $view->render($response, 'single-field.html', $params);
+
+});
+
 
 
 

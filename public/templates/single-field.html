@@ -3,9 +3,13 @@
         <div class="col-3">
             <!-- material design edit icon -->
             
+
+
             <div class="field-lede">
                 <!-- Back to Fields -->
                 <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+                            <!-- if the field id is set -->
+                {% if field.id is defined %}
                 <h2> {{ field.name }}</h2>
                 <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
                 <!-- button group for view or edit-->
@@ -14,7 +18,10 @@
                     <a class="btn btn-secondary {% if edit == false %} active {% endif %}" href="/fields/{{ field.id }}/history">History</a>
                     <!-- color report -->
                 </div>
+                {% endif %}
             </div>
+
+           
         </div>
         
 
