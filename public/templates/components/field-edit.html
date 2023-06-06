@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-12">
       <!-- accordion #fieldInfo -->
-      <div class="accordion" id="fieldInfo">
+      <div class="accordion-borderless" id="fieldInfo">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fieldInfo-meta"
@@ -25,19 +25,21 @@
                   <input required type="text" class="form-control" name="address" value="{{ row.address }}">
                 </div>
 
-                <div class="mb-3">
-                  <label for="city" class="form-label">City:</label>
-                  <input require type="text" class="form-control" name="city" value="{{ row.city }}">
-                </div>
+                <div class="row">
+                  <div class="mb-3 col">
+                    <label for="city" class="form-label">City:</label>
+                    <input require type="text" class="form-control" name="city" value="{{ row.city }}">
+                  </div>
 
-                <div class="mb-3">
-                  <label for="state" class="form-label">State:</label>
-                  <input require type="text" class="form-control" name="state" value="{{ row.state }}">
-                </div>
+                  <div class="mb-3 col">
+                    <label for="state" class="form-label">State:</label>
+                    <input require type="text" class="form-control" name="state" value="{{ row.state }}">
+                  </div>
 
-                <div class="mb-3">
-                  <label for="zip" class="form-label">Zip:</label>
-                  <input required type="text" class="form-control" name="zip" value="{{ row.zip }}">
+                  <div class="mb-3 col">
+                    <label for="zip" class="form-label">Zip:</label>
+                    <input required type="text" class="form-control" name="zip" value="{{ row.zip }}">
+                  </div>
                 </div>
               </div>
             </div>
@@ -121,26 +123,28 @@
                     </option>
                   </select>
 
-                  <div class="mb-3">
-                    <label for="establishment_method" class="form-label">Establishment Method:</label>
-                    <input type="text" class="form-control" name="establishment_method"
-                      value="{{ row.establishment_method }}">
-                  </div>
+                  <div class="row mt-3">
+                    <div class="mb-3 col">
+                      <label for="establishment_method" class="form-label">Establishment Method:</label>
+                      <input type="text" class="form-control" name="establishment_method"
+                        value="{{ row.establishment_method }}">
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="establishment_age" class="form-label">Establishment Age:</label>
-                    <input type="text" class="form-control" name="establishment_age"
-                      value="{{ row.establishment_age }}">
-                  </div>
+                    <div class="mb-3 col">
+                      <label for="establishment_age" class="form-label">Establishment Age:</label>
+                      <input type="text" class="form-control" name="establishment_age"
+                        value="{{ row.establishment_age }}">
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
-                    <input type="text" class="form-control" name="shade_or_sun" value="{{ row.shade_or_sun }}">
-                  </div>
+                    <div class="mb-3 col">
+                      <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
+                      <input type="text" class="form-control" name="shade_or_sun" value="{{ row.shade_or_sun }}">
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="percent_shade" class="form-label">Percent Shade:</label>
-                    <input type="text" class="form-control" name="percent_shade" value="{{ row.percent_shade }}">
+                    <div class="mb-3 col">
+                      <label for="percent_shade" class="form-label">Percent Shade:</label>
+                      <input type="text" class="form-control" name="percent_shade" value="{{ row.percent_shade }}">
+                    </div>
                   </div>
                 </div>
               </div>

@@ -12,6 +12,8 @@
 /** set up color classes **/
 html {
   overflow-y: scroll;
+  font-family: 'Open Sans', sans-serif;
+ 
 }
 /* Primary color */
 .text-primary {
@@ -45,10 +47,10 @@ html {
     background-color: #F5F5F5!important;
   }
   
-h1,h2,h3,h4,h5,h6 {
-    font-family: 'Slabo 27px', serif;
-    font-weight: 800;
+h1,h2,h3,h4,h5,h6, .accordion-button {
+    font-weight: 600;
 }
+
 
 body {
     font-family: 'Open Sans', sans-serif;
