@@ -87,6 +87,19 @@
                     <option value="rugby" {% if 'rugby' in row.sports_played %}selected{% endif %}>Rugby</option>
                     <option value="field hockey" {% if 'field hockey' in row.sports_played %}selected{% endif %}>Field
                       Hockey</option>
+                      <!-- class: in-school use -->
+                    <option value="class" {% if 'class' in row.sports_played %}selected{% endif %}>Class: In-School Use</option>
+
+                  </select>
+                </div>
+
+                <!-- traffic events per week -->
+                <div class="mb-3">
+                  <label for="traffic_events_per_week" class="form-label">Traffic Events Per Week:</label>
+                  <select>
+                    <option>0-2 per week</option>
+                    <option>3-5 per week</option>
+                    <option>6+ per week</option>
                   </select>
                 </div>
               </div>
@@ -298,6 +311,7 @@
     </div>
   </div>
 </div>
+
 
 
   <div class="row my-5">

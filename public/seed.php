@@ -24,6 +24,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
 )');
 
 
+
 //** Create the evaluation table with turf rating and surface rating */
 
 // Create a table for reports with id, evaluation_date, evaluator_id, field_id, and type (evaluation, photo, color, fertilization)
