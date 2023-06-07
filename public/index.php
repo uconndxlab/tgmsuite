@@ -231,7 +231,7 @@ $app->get('/fields/{id}/submit-color', function (Request $request, Response $res
 $app->post('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d-H-ia');
+    $date = date('Y-m-d H:ia');
     $evaluator_id = 1;
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'color')";

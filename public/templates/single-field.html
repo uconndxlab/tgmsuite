@@ -76,7 +76,12 @@
                             <td>{{ report.type }}</td>
                             <td>{{ report.email }}</td>
                             <td>
-                                <a href="/report/{{ report.id }}/view" class="btn btn-sm btn-outline-secondary">View</a>
+                                <a href="/report/{{ report.id }}/view" class="btn btn-sm btn-outline-primary">View</a>
+                                <!-- delete -->
+                                <form class="d-inline" action="/report/{{ report.id }}/delete" method="post">
+                                    <input type="hidden" name="id" value="{{ report.id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}
