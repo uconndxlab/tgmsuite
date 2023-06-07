@@ -16,7 +16,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
     sports_played TEXT,
     turfgrass_species_present TEXT,
     establishment_method TEXT,
-    establishment_age TEXT,
+    establishment_date TEXT,
     shade_or_sun TEXT,
     percent_shade TEXT,
 
@@ -104,9 +104,9 @@ $db->exec('CREATE TABLE IF NOT EXISTS field_users (
 
 
 /** Seed the fields table with some sample data */
-$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 1", "123 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 1")');
-$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 2", "456 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 2")');
-$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_age, shade_or_sun, percent_shade, description) VALUES ("Field 3", "789 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "1 year", "Sun", "0", "This is a description of field 3")');
+$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_date, shade_or_sun, percent_shade, description) VALUES ("Field 1", "123 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "2021-09-27", "Sun", "0", "This is a description of field 1")');
+$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_date, shade_or_sun, percent_shade, description) VALUES ("Field 2", "456 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "2021-09-27", "Sun", "0", "This is a description of field 2")');
+$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_date, shade_or_sun, percent_shade, description) VALUES ("Field 3", "789 Main St", "Anytown", "NY", "12345", "Yes", "Football, Soccer", "Bermuda", "Sod", "2021-09-27", "Sun", "0", "This is a description of field 3")');
 
 /** Seed the users table with some sample data */
 $db->exec('INSERT INTO users (name, email, password) VALUES ("John Doe", "john@doefamily.org", "password")');

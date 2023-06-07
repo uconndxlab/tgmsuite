@@ -17,28 +17,28 @@
               <div class="row">
                 <div class="mb-3">
                   <label for="name" class="form-label">Name:</label>
-                  <input required type="text" class="form-control" name="name" value="{{ row.name }}">
+                  <input required type="text" id="name" class="form-control" name="name" value="{{ row.name }}">
                 </div>
 
                 <div class="mb-3">
                   <label for="address" class="form-label">Address:</label>
-                  <input required type="text" class="form-control" name="address" value="{{ row.address }}">
+                  <input required type="text" id="address" class="form-control" name="address" value="{{ row.address }}">
                 </div>
 
                 <div class="row">
                   <div class="mb-3 col">
                     <label for="city" class="form-label">City:</label>
-                    <input require type="text" class="form-control" name="city" value="{{ row.city }}">
+                    <input require type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
                   </div>
 
                   <div class="mb-3 col">
                     <label for="state" class="form-label">State:</label>
-                    <input require type="text" class="form-control" name="state" value="{{ row.state }}">
+                    <input require type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
                   </div>
 
                   <div class="mb-3 col">
                     <label for="zip" class="form-label">Zip:</label>
-                    <input required type="text" class="form-control" name="zip" value="{{ row.zip }}">
+                    <input required type="text" id="zip" class="form-control" name="zip" value="{{ row.zip }}">
                   </div>
                 </div>
               </div>
@@ -131,9 +131,9 @@
                     </div>
 
                     <div class="mb-3 col">
-                      <label for="establishment_age" class="form-label">Establishment Age:</label>
-                      <input type="text" class="form-control" name="establishment_age"
-                        value="{{ row.establishment_age }}">
+                      <label for="establishment_date" class="form-label">Establishment Date:</label>
+                      <input type="date" id="establishment_date" class="form-control" name="establishment_date"
+                        value="{{ row.establishment_date }}">
                     </div>
 
                     <div class="mb-3 col">
