@@ -41,6 +41,17 @@
                     <input required type="text" id="zip" class="form-control" name="zip" value="{{ row.zip }}">
                   </div>
                 </div>
+                <!-- color rating -->
+                <div class="mb-3">
+                  <label for="color_rating" class="form-label">Color Rating:</label>
+                  <select required class="form-select" name="color_rating">
+                    <option value="1" {% if row.color_rating == 1 %}selected{% endif %}>1</option>
+                    <option value="2" {% if row.color_rating == 2 %}selected{% endif %}>2</option>
+                    <option value="3" {% if row.color_rating == 3 %}selected{% endif %}>3</option>
+                    <option value="4" {% if row.color_rating == 4 %}selected{% endif %}>4</option>
+                    <option value="5" {% if row.color_rating == 5 %}selected{% endif %}>5</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
