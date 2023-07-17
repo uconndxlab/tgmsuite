@@ -45,11 +45,13 @@
                 <div class="mb-3">
                   <label for="color_rating" class="form-label">Color Rating:</label>
                   <select required class="form-select" name="color_rating">
-                    <option value="1" {% if row.color_rating == 1 %}selected{% endif %}>1</option>
-                    <option value="2" {% if row.color_rating == 2 %}selected{% endif %}>2</option>
-                    <option value="3" {% if row.color_rating == 3 %}selected{% endif %}>3</option>
-                    <option value="4" {% if row.color_rating == 4 %}selected{% endif %}>4</option>
-                    <option value="5" {% if row.color_rating == 5 %}selected{% endif %}>5</option>
+                    <option {% if row.color_rating == 5 %}selected{% endif %} value="5">Dark Green 5</option>
+                    <option {% if row.color_rating == 4 %}selected{% endif %} value="4">Med Green 4</option>
+                    <option {% if row.color_rating == 3 %}selected{% endif %} value="3">Med/Light Green 3</option>
+                    <option {% if row.color_rating == 2 %}selected{% endif %} value="2">Light Green 2</option>
+                    <option {% if row.color_rating == 1 %}selected{% endif %} value="1">Yellow Green 1</option>
+                    <option {% if row.color_rating == 0 %}selected{% endif %} value="0">Turf Dormant TD</option>
+
                   </select>
                 </div>
               </div>

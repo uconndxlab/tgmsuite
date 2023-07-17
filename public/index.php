@@ -127,6 +127,8 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $city = $data['city'];
     $state = $data['state'];
     $zip = $data['zip'];
+    $color_rating = $data['color_rating'];
+    $percent_shade = $data['percent_shade'];
 
     $multiple_sport_usage = $data['multiple_sport_usage'];
 
@@ -139,7 +141,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
     $q = "UPDATE fields SET name = '$name', address = '$address', city = '$city', state = '$state', 
-    zip = '$zip', multiple_sport_usage = '$multiple_sport_usage', shade_or_sun = '$shade_or_sun', sports_played = '$sports_played', turfgrass_species_present = '$turfgrass_species_present', description = '$description' WHERE id = $id"; 
+    zip = '$zip', multiple_sport_usage = '$multiple_sport_usage', shade_or_sun = '$shade_or_sun', sports_played = '$sports_played', turfgrass_species_present = '$turfgrass_species_present', color_rating = '$color_rating' , percent_shade = '$percent_shade', description = '$description' WHERE id = $id"; 
     $stmnt = $db->exec($q);
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
