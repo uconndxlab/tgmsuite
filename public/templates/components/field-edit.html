@@ -134,17 +134,15 @@
                 <div class="form-group mb-3">
                   <label for="turfgrass_species_present">Turfgrass Species Present:</label>
                   <select required class="form-select" name="turfgrass_species_present[0]" multiple>
-                    <option value="bermuda" {% if 'bermuda' in row.turfgrass_species_present %}selected{% endif %}>
-                      Bermuda
+                    <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif %}>
+                      Tall Fescue
                     </option>
-                    <option value="zoysia" {% if 'zoysia' in row.turfgrass_species_present %}selected{% endif %}>Zoysia
+                    <option value="fine leaf fescue" {% if 'fine leaf fescue' in row.turfgrass_species_present %}selected{% endif %}>Fine Leaf Fescue
                     </option>
-                    <option value="fescue" {% if 'fescue' in row.turfgrass_species_present %}selected{% endif %}>Fescue
+                    <option value="perennial rye" {% if 'perennial ryegrass' in row.turfgrass_species_present %}selected{% endif %}>Perennial Ryegrass
                     </option>
-                    <option value="bluegrass" {% if 'bluegrass' in row.turfgrass_species_present %}selected{% endif %}>
-                      Bluegrass</option>
-                    <option value="ryegrass" {% if 'ryegrass' in row.turfgrass_species_present %}selected{% endif %}>
-                      Ryegrass</option>
+                    <option value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present %}selected{% endif %}>
+                      Kentucky Bluegrass</option>
                     <option value="other" {% if 'other' in row.turfgrass_species_present %}selected{% endif %}>Other
                     </option>
                   </select>
