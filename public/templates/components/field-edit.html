@@ -22,7 +22,8 @@
 
                 <div class="mb-3">
                   <label for="address" class="form-label">Address:</label>
-                  <input required type="text" id="address" class="form-control" name="address" value="{{ row.address }}">
+                  <input required type="text" id="address" class="form-control" name="address"
+                    value="{{ row.address }}">
                 </div>
 
                 <div class="row">
@@ -45,12 +46,12 @@
                 <div class="mb-3">
                   <label for="color_rating" class="form-label">Color Rating:</label>
                   <select required class="form-select" name="color_rating">
-                    <option {% if row.color_rating == 5 %}selected{% endif %} value="5">Dark Green 5</option>
-                    <option {% if row.color_rating == 4 %}selected{% endif %} value="4">Med Green 4</option>
-                    <option {% if row.color_rating == 3 %}selected{% endif %} value="3">Med/Light Green 3</option>
-                    <option {% if row.color_rating == 2 %}selected{% endif %} value="2">Light Green 2</option>
-                    <option {% if row.color_rating == 1 %}selected{% endif %} value="1">Yellow Green 1</option>
-                    <option {% if row.color_rating == 0 %}selected{% endif %} value="0">Turf Dormant TD</option>
+                    <option {% if row.color_rating==5 %}selected{% endif %} value="5">Dark Green 5</option>
+                    <option {% if row.color_rating==4 %}selected{% endif %} value="4">Med Green 4</option>
+                    <option {% if row.color_rating==3 %}selected{% endif %} value="3">Med/Light Green 3</option>
+                    <option {% if row.color_rating==2 %}selected{% endif %} value="2">Light Green 2</option>
+                    <option {% if row.color_rating==1 %}selected{% endif %} value="1">Yellow Green 1</option>
+                    <option {% if row.color_rating==0 %}selected{% endif %} value="0">Turf Dormant TD</option>
 
                   </select>
                 </div>
@@ -100,8 +101,9 @@
                     <option value="rugby" {% if 'rugby' in row.sports_played %}selected{% endif %}>Rugby</option>
                     <option value="field hockey" {% if 'field hockey' in row.sports_played %}selected{% endif %}>Field
                       Hockey</option>
-                      <!-- class: in-school use -->
-                    <option value="class" {% if 'class' in row.sports_played %}selected{% endif %}>Class: In-School Use</option>
+                    <!-- class: in-school use -->
+                    <option value="class" {% if 'class' in row.sports_played %}selected{% endif %}>Class: In-School Use
+                    </option>
 
                   </select>
                 </div>
@@ -134,14 +136,18 @@
                 <div class="form-group mb-3">
                   <label for="turfgrass_species_present">Turfgrass Species Present:</label>
                   <select required class="form-select" name="turfgrass_species_present[0]" multiple>
-                    <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif %}>
+                    <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif
+                      %}>
                       Tall Fescue
                     </option>
-                    <option value="fine leaf fescue" {% if 'fine leaf fescue' in row.turfgrass_species_present %}selected{% endif %}>Fine Leaf Fescue
+                    <option value="fine leaf fescue" {% if 'fine leaf fescue' in row.turfgrass_species_present
+                      %}selected{% endif %}>Fine Leaf Fescue
                     </option>
-                    <option value="perennial rye" {% if 'perennial ryegrass' in row.turfgrass_species_present %}selected{% endif %}>Perennial Ryegrass
+                    <option value="perennial rye" {% if 'perennial ryegrass' in row.turfgrass_species_present
+                      %}selected{% endif %}>Perennial Ryegrass
                     </option>
-                    <option value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present %}selected{% endif %}>
+                    <option value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present
+                      %}selected{% endif %}>
                       Kentucky Bluegrass</option>
                     <option value="other" {% if 'other' in row.turfgrass_species_present %}selected{% endif %}>Other
                     </option>
@@ -240,44 +246,68 @@
 
             <div class="accordion-body">
               <div class="row">
+
+                <!--
+    Irrigation System Yes/No. 
+      If Yes: Water Source (Well, Town Water, Greywater System)
+      If Yes: Frequency of Use (5+x/week, 2-4x/week, 1x/week)
+      If No: irrigation system: Portable System Used Yes/No
+    Are wetting agents used? Yes/No
+-->
+
                 <div class="form-group mb-3">
-
                   <div class="mb-3">
-                    <label for="irrigation_frequency" class="form-label">Water Source</label>
-                    <input type="text" class="form-control" name="irrigation_frequency"
-                      value="{{ row.irrigation_frequency }}">
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="irrigation_amount" class="form-label">Irrigation Amount:</label>
-                    <input type="text" class="form-control" name="irrigation_amount"
-                      value="{{ row.irrigation_amount }}">
-                  </div>
-
-                  <!-- irrigation method -->
-
-                  <div class="mb-3">
-                    <label for="irrigation_method" class="form-label">Irrigation Method:</label>
-                    <select required class="form-select" name="irrigation_method">
-                      <option value="drip" {% if 'drip' in row.irrigation_method %}selected{% endif %}>Drip</option>
-                      <option value="sprinkler" {% if 'sprinkler' in row.irrigation_method %}selected{% endif %}>
-                        Sprinkler</option>
-                      <option value="flood" {% if 'flood' in row.irrigation_method %}selected{% endif %}>Flood</option>
+                    <label for="irrigation_system" class="form-label">Irrigation System:</label>
+                    <select required class="form-select" name="irrigation_system">
+                      <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
+                      <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
                     </select>
                   </div>
 
-                  <!-- irrigation timing -->
                   <div class="mb-3">
-                    <label for="irrigation_timing" class="form-label">Irrigation Timing:</label>
-                    <select required class="form-select" name="irrigation_timing">
-                      <option value="morning" {% if 'morning' in row.irrigation_timing %}selected{% endif %}>Morning
+                    <label for="water_source" class="form-label">Water Source:</label>
+                    <select required class="form-select" name="water_source">
+                      <option value="well" {% if 'well' in row.water_source %}selected{% endif %}>Well</option>
+                      <option value="town water" {% if 'town water' in row.water_source %}selected{% endif %}>Town Water
                       </option>
-                      <option value="evening" {% if 'evening' in row.irrigation_timing %}selected{% endif %}>Evening
-                      </option>
-                      <option value="night" {% if 'night' in row.irrigation_timing %}selected{% endif %}>Night</option>
+                      <option value="greywater system" {% if 'greywater system' in row.water_source %}selected{% endif
+                        %}>Greywater
+                        System</option>
                     </select>
                   </div>
+
+                  <div class="mb-3">
+                    <label for="irrigation_frequency" class="form-label">Irrigation Frequency:</label>
+                    <select required class="form-select" name="irrigation_frequency">
+                      <option value="5+x/week" {% if '5+x/week' in row.irrigation_frequency %}selected{% endif %}>
+                        5+x/week</option>
+                      <option value="2-4x/week" {% if '2-4x/week' in row.irrigation_frequency %}selected{% endif %}>
+                        2-4x/week</option>
+                      <option value="1x/week" {% if '1x/week' in row.irrigation_frequency %}selected{% endif %}>1x/week
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="portable_system" class="form-label">Portable System Used:</label>
+                    <select required class="form-select" name="portable_system">
+                      <option value="yes" {% if 'yes' in row.portable_system %}selected{% endif %}>Yes</option>
+                      <option value="no" {% if 'no' in row.portable_system %}selected{% endif %}>No</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="wetting_agents" class="form-label">Wetting Agents Used:</label>
+                    <select required class="form-select" name="wetting_agents">
+                      <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
+                      <option value="no" {% if 'no' in row.wetting_agents %}selected{% endif %}>No</option>
+                    </select>
+                  </div>
+
                 </div>
+
+
+
               </div>
             </div>
           </div>
@@ -286,42 +316,8 @@
     </div> <!-- end col-12 -->
   </div> <!-- end row -->
 
-<!--cultivation practices -->
+  <!--cultivation practices -->
 
-<div class="accordion-item">
-  <h2 class="accordion-header">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-      data-bs-target="#cultivation-meta" aria-expanded="false">
-      Cultivation Practices
-    </button>
-  </h2>
-  <div id="cultivation-meta" class="accordion-collapse collapse">
-
-    <div class="accordion-body">
-      <div class="row">
-        <div class="form-group mb-3">
-         
-          <div class="mb-3">
-            <label for="cultivation_type" class="form-label">Cultivation Type:</label>
-            <select required class="form-select" name="cultivation_type">
-              <option value="aeration" {% if 'aeration' in row.cultivation_type %}selected{% endif %}>Aeration</option>
-              <option value="dethatching" {% if 'dethatching' in row.cultivation_type %}selected{% endif %}>Dethatching</option>
-              <option value="scarification" {% if 'scarification' in row.cultivation_type %}selected{% endif %}>Scarification</option>
-              <option value="topdressing" {% if 'topdressing' in row.cultivation_type %}selected{% endif %}>Topdressing</option>
-              <option value="none" {% if 'none' in row.cultivation_type %}selected{% endif %}>None</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="cultivation_frequency" class="form-label">Cultivation Frequency:</label>
-            <input type="text" class="form-control" name="cultivation_frequency" value="{{ row.cultivation_frequency }}">
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
