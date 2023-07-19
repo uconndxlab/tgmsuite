@@ -78,5 +78,9 @@ main#app {
   top:55px;
 }
 
+.accordion-item.invalid button{
+  color: #d9534f!important;
+}
+
 
 

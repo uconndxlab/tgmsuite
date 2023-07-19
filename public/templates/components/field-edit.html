@@ -14,7 +14,7 @@
           </h2>
           <div id="fieldInfo-meta" class="accordion-collapse collapse show" data-bs-parent="#fieldInfo">
             <div class="accordion-body">
-              <div class="row">
+              <div class="row form-group">
                 <div class="mb-3">
                   <label for="name" class="form-label">Name:</label>
                   <input required type="text" id="name" class="form-control" name="name" value="{{ row.name }}">
@@ -29,12 +29,12 @@
                 <div class="row">
                   <div class="mb-3 col">
                     <label for="city" class="form-label">City:</label>
-                    <input require type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
+                    <input required type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
                   </div>
 
                   <div class="mb-3 col">
                     <label for="state" class="form-label">State:</label>
-                    <input require type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
+                    <input required type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
                   </div>
 
                   <div class="mb-3 col">
@@ -45,7 +45,7 @@
                 <!-- color rating -->
                 <div class="mb-3">
                   <label for="color_rating" class="form-label">Color Rating:</label>
-                  <select required class="form-select" name="color_rating">
+                  <select required class="form-select form-control" name="color_rating">
                     <option {% if row.color_rating==5 %}selected{% endif %} value="5">Dark Green 5</option>
                     <option {% if row.color_rating==4 %}selected{% endif %} value="4">Med Green 4</option>
                     <option {% if row.color_rating==3 %}selected{% endif %} value="3">Med/Light Green 3</option>
@@ -73,14 +73,14 @@
                 <div class="form-group mb-3">
                   <label for="multiple_sport_usage">Multiple Sport Usage:</label>
                   <div class="form-check">
-                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
+                    <input required class="form-check-input form-control" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_yes" value="yes" {{ row.multiple_sport_usage=='yes' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_yes">
                       Yes
                     </label>
                   </div>
                   <div class="form-check">
-                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
+                    <input required class="form-check-input form-control" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_no" value="no" {{ row.multiple_sport_usage=='no' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_no">
                       No
@@ -90,7 +90,7 @@
 
                 <div class="mb-3">
                   <label for="sports_played" class="form-label">Sports Played:</label>
-                  <select required class="form-select" name="sports_played[]" multiple>
+                  <select required class="form-select form-control" name="sports_played[]" multiple>
                     <option value="baseball" {% if 'baseball' in row.sports_played %}selected{% endif %}>Baseball
                     </option>
                     <option value="soccer" {% if 'soccer' in row.sports_played %}selected{% endif %}>Soccer</option>
@@ -111,7 +111,7 @@
                 <!-- traffic events per week -->
                 <div class="mb-3">
                   <label for="traffic_events_per_week" class="form-label">Traffic Events Per Week:</label>
-                  <select>
+                  <select id="traffic_events_per_week" name="traffic_events_per_week">
                     <option>0-2 per week</option>
                     <option>3-5 per week</option>
                     <option>6+ per week</option>
@@ -135,7 +135,7 @@
               <div class="row">
                 <div class="form-group mb-3">
                   <label for="turfgrass_species_present">Turfgrass Species Present:</label>
-                  <select required class="form-select" name="turfgrass_species_present[0]" multiple>
+                  <select required class="form-select form-control" name="turfgrass_species_present[0]" multiple>
                     <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif
                       %}>
                       Tall Fescue
@@ -156,24 +156,24 @@
                   <div class="row mt-3">
                     <div class="mb-3 col">
                       <label for="establishment_method" class="form-label">Establishment Method:</label>
-                      <input type="text" class="form-control" name="establishment_method"
+                      <input required type="text" class="form-control" name="establishment_method"
                         value="{{ row.establishment_method }}">
                     </div>
 
                     <div class="mb-3 col">
                       <label for="establishment_date" class="form-label">Establishment Date:</label>
-                      <input type="date" id="establishment_date" class="form-control" name="establishment_date"
+                      <input required type="date" id="establishment_date" class="form-control" name="establishment_date"
                         value="{{ row.establishment_date }}">
                     </div>
 
                     <div class="mb-3 col">
                       <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
-                      <input type="text" class="form-control" name="shade_or_sun" value="{{ row.shade_or_sun }}">
+                      <input required type="text" class="form-control" name="shade_or_sun" value="{{ row.shade_or_sun }}">
                     </div>
 
                     <div class="mb-3 col">
                       <label for="percent_shade" class="form-label">Percent Shade:</label>
-                      <input type="text" class="form-control" name="percent_shade" value="{{ row.percent_shade }}">
+                      <input required type="text" class="form-control" name="percent_shade" value="{{ row.percent_shade }}">
                     </div>
                   </div>
                 </div>
@@ -199,19 +199,19 @@
 
                   <div class="mb-3">
                     <label for="mowing_frequency" class="form-label">Mowing Frequency:</label>
-                    <input type="text" class="form-control" name="mowing_frequency" value="{{ row.mowing_frequency }}">
+                    <input required type="text" class="form-control" name="mowing_frequency" value="{{ row.mowing_frequency }}">
                   </div>
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
-                    <input type="text" class="form-control" name="mowing_height" value="{{ row.mowing_height }}">
+                    <input required type="text" class="form-control" name="mowing_height" value="{{ row.mowing_height }}">
                   </div>
 
                   <!-- mowing method -->
 
                   <div class="mb-3">
                     <label for="mowing_method" class="form-label">Mowing Method:</label>
-                    <select required class="form-select" name="mowing_method">
+                    <select required class="form-select form-control" name="mowing_method">
                       <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
                       <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
                       <option value="both" {% if 'both' in row.mowing_method %}selected{% endif %}>Both</option>
@@ -221,7 +221,7 @@
                   <!-- are clippings collected? -->
                   <div class="mb-3">
                     <label for="clippings_collected" class="form-label">Clippings Collected:</label>
-                    <select required class="form-select" name="clippings_collected">
+                    <select required class="form-select form-control" name="clippings_collected">
                       <option value="yes" {% if 'yes' in row.clippings_collected %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.clippings_collected %}selected{% endif %}>No</option>
                     </select>
@@ -258,7 +258,7 @@
                 <div class="form-group mb-3">
                   <div class="mb-3">
                     <label for="irrigation_system" class="form-label">Irrigation System:</label>
-                    <select required class="form-select" name="irrigation_system">
+                    <select required class="form-select form-control" name="irrigation_system">
                       <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
                     </select>
@@ -266,7 +266,7 @@
 
                   <div class="mb-3">
                     <label for="water_source" class="form-label">Water Source:</label>
-                    <select required class="form-select" name="water_source">
+                    <select required class="form-select form-control" name="water_source">
                       <option value="well" {% if 'well' in row.water_source %}selected{% endif %}>Well</option>
                       <option value="town water" {% if 'town water' in row.water_source %}selected{% endif %}>Town Water
                       </option>
@@ -278,7 +278,7 @@
 
                   <div class="mb-3">
                     <label for="irrigation_frequency" class="form-label">Irrigation Frequency:</label>
-                    <select required class="form-select" name="irrigation_frequency">
+                    <select required class="form-select form-control" name="irrigation_frequency">
                       <option value="5+x/week" {% if '5+x/week' in row.irrigation_frequency %}selected{% endif %}>
                         5+x/week</option>
                       <option value="2-4x/week" {% if '2-4x/week' in row.irrigation_frequency %}selected{% endif %}>
@@ -290,7 +290,7 @@
 
                   <div class="mb-3">
                     <label for="portable_system" class="form-label">Portable System Used:</label>
-                    <select required class="form-select" name="portable_system">
+                    <select required class="form-select form-control" name="portable_system">
                       <option value="yes" {% if 'yes' in row.portable_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.portable_system %}selected{% endif %}>No</option>
                     </select>
@@ -298,7 +298,7 @@
 
                   <div class="mb-3">
                     <label for="wetting_agents" class="form-label">Wetting Agents Used:</label>
-                    <select required class="form-select" name="wetting_agents">
+                    <select required class="form-select form-control" name="wetting_agents">
                       <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.wetting_agents %}selected{% endif %}>No</option>
                     </select>
@@ -332,3 +332,72 @@
 <div class="form_response">
 
 </div>
+
+<script>
+  // if each field per form-group is filled out, then the form-group is valid
+  // if all form-groups are valid, then the form is valid
+  // if the form is valid, then the submit button is enabled
+  // if the form is invalid, then the submit button is disabled
+
+  // check all fields for validity and then add the valid class to their parent form-group
+  function checkValidity() {
+    // get all form-groups
+    var form_groups = document.querySelectorAll('.form-group');
+    var form_valid = true;
+
+    // loop through each form-group
+    form_groups.forEach(function (form_group) {
+      let form_group_valid = true;
+      form_group.classList.remove('invalid');
+
+      let parent_accordion = form_group.closest('.accordion-item');
+      parent_accordion.classList.remove('invalid');
+
+      // get all fields in the form-group
+      var fields = form_group.querySelectorAll('.form-control');
+
+      // loop through each field
+      fields.forEach(function (field) {
+        // if the field is valid, add the valid class to the form-group
+        if (field.value != '') {
+          console.log(field.name);
+          console.log ("valid!");
+        } else {
+          // if the field is invalid, remove the valid class from the form-group
+          form_group.classList.add('invalid');
+          form_group_valid = false;
+
+          parent_accordion.classList.add('invalid');
+          form_valid = false;
+
+          console.log(field.name);
+          console.log ("invalid!");
+
+        }
+      });
+    });
+
+    // get all valid form-groups
+    var valid_form_groups = document.querySelectorAll('.form-group.valid');
+
+    // if all form-groups are valid, enable the submit button
+    if (form_valid) {
+      document.querySelector('button[type="submit"]').disabled = false;
+    } else {
+      // if all form-groups are not valid, disable the submit button
+      document.querySelector('button[type="submit"]').disabled = true;
+    }
+  }
+
+  // check validity on input
+  document.addEventListener('input', function (event) {
+    checkValidity();
+  });
+
+  // check validity on load
+  window.addEventListener('load', function (event) {
+    checkValidity();
+  });
+  
+
+</script>
