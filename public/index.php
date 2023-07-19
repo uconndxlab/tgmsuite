@@ -192,6 +192,53 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 
 });
 
+// route to delete a field
+$app->post('/fields/{id}/delete', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    // sanitize the args
+    $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+    // delete the field
+    $db->exec("DELETE FROM fields WHERE id = $id");
+    // delete all the relationships to this field
+    $db->exec("DELETE FROM reports WHERE field_id = $id");
+    $db->exec("DELETE FROM evaluations WHERE field_id = $id");
+    $db->exec("DELETE FROM color_reports WHERE field_id = $id");
+    $db->exec("DELETE FROM photos WHERE field_id = $id");
+    $db->exec("DELETE FROM fertilization_events WHERE field_id = $id");
+
+
+    return $response->withHeader('Location', '/fields')->withStatus(302);
+
+});
+
+// route to delete a report
+$app->post('/report/{id}/delete', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    // sanitize the args
+    $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+    // get the field id associated with this report
+    $results = $db->query('SELECT * FROM reports WHERE id = ' . $id);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    // get the field id
+    $field_id = $rows[0]['field_id'];
+
+    // delete the report
+    $db->exec("DELETE FROM reports WHERE id = $id");
+    // delete all the relationships to this report
+    $db->exec("DELETE FROM evaluations WHERE report_id = $id");
+    $db->exec("DELETE FROM color_reports WHERE report_id = $id");
+    $db->exec("DELETE FROM photos WHERE report_id = $id");
+    $db->exec("DELETE FROM fertilization_events WHERE report_id = $id");
+    return $response->withHeader('Location', '/fields/'. $field_id)->withStatus(302);
+});
+
 // route to conduct a turf rating
 $app->get('/fields/{id}/quality-checklist', function (Request $request, Response $response, $args) use ($db, $twig) {
 

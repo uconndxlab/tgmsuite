@@ -18,6 +18,12 @@
                     <a class="btn btn-secondary {% if edit == false %} active {% endif %}" href="/fields/{{ field.id }}">History</a>
                     <!-- color report -->
                 </div>
+
+                <!-- delete button -->
+                <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
+                    <input type="hidden" name="id" value="{{ field.id }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
                 {% endif %}
             </div>
 
