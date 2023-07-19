@@ -201,14 +201,26 @@
 
                   <div class="mb-3">
                     <label for="mowing_frequency" class="form-label">Mowing Frequency:</label>
-                    <input required type="text" class="form-control" name="mowing_frequency"
-                      value="{{ row.mowing_frequency }}">
+                    <select required class="form-select form-control" name="mowing_frequency">
+                      <option value="5+x/week" {% if '2+x/week' in row.mowing_frequency %}selected{% endif %}>
+                        More than 2x/week</option>
+                      <option value="2-4x/week" {% if '2x/week' in row.mowing_frequency %}selected{% endif %}>
+                        2x/week</option>
+                      <option value="1x/week" {% if '1x/week' in row.mowing_frequency %}selected{% endif %}>1x/week
+                      </option>
+                    </select>
                   </div>
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
-                    <input required type="text" class="form-control" name="mowing_height"
-                      value="{{ row.mowing_height }}">
+                    <select required class="form-select form-control" name="mowing_height">
+                      <option value="0-1" {% if '0-1' in row.mowing_height %}selected{% endif %}>0-1</option>
+                      <option value="1-2" {% if '1-2' in row.mowing_height %}selected{% endif %}>1-2</option>
+                      <option value="2-3" {% if '2-3' in row.mowing_height %}selected{% endif %}>2-3</option>
+                      <option value="3-4" {% if '3-4' in row.mowing_height %}selected{% endif %}>3-4</option>
+                      <option value="4-5" {% if '4-5' in row.mowing_height %}selected{% endif %}>4-5</option>
+                      <option value="5+" {% if '5+' in row.mowing_height %}selected{% endif %}>5+</option>
+                    </select>
                   </div>
 
                   <!-- mowing method -->
