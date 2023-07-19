@@ -147,30 +147,47 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
 
-    $q = "UPDATE fields SET 
-    name = '$name', 
-    address = '$address', 
-    city = '$city', state = '$state', 
-    zip = '$zip', 
-    multiple_sport_usage = '$multiple_sport_usage', 
-    shade_or_sun = '$shade_or_sun', 
-    sports_played = '$sports_played', 
-    turfgrass_species_present = '$turfgrass_species_present', 
-    color_rating = '$color_rating' , 
-    percent_shade = '$percent_shade',
-    irrigation_system = '$irrigation_system',
-    water_source = '$water_source',
-    irrigation_frequency = '$irrigation_frequency',
-    portable_system = '$portable_system',
-    wetting_agents = '$wetting_agents',
-    description = '$description' 
-    WHERE id = $id"; 
+    if($id > 0) {
+        $q = "UPDATE fields SET 
+        name = '$name', 
+        address = '$address', 
+        city = '$city', state = '$state', 
+        zip = '$zip', 
+        multiple_sport_usage = '$multiple_sport_usage', 
+        shade_or_sun = '$shade_or_sun', 
+        sports_played = '$sports_played', 
+        turfgrass_species_present = '$turfgrass_species_present', 
+        color_rating = '$color_rating' , 
+        percent_shade = '$percent_shade',
+        irrigation_system = '$irrigation_system',
+        water_source = '$water_source',
+        irrigation_frequency = '$irrigation_frequency',
+        portable_system = '$portable_system',
+        wetting_agents = '$wetting_agents',
+        description = '$description' 
+        WHERE id = $id"; 
+    } else {
+        // insert query instead of update
+        $q = "INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, shade_or_sun, sports_played, turfgrass_species_present, color_rating, percent_shade, irrigation_system, water_source, irrigation_frequency, portable_system, wetting_agents, description) VALUES ('$name', '$address', '$city', '$state', '$zip', '$multiple_sport_usage', '$shade_or_sun', '$sports_played', '$turfgrass_species_present', '$color_rating', '$percent_shade', '$irrigation_system', '$water_source', '$irrigation_frequency', '$portable_system', '$wetting_agents', '$description')";
+        
+    }
+
+
 
 
     $stmnt = $db->exec($q);
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+
+    // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
+    if($id == 0) {
+        $id = $db->lastInsertRowID();
+        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
+    }
+
+
+
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 
 });
@@ -468,7 +485,8 @@ $app->get('/field/create', function (Request $request, Response $response, $args
 
     $params = array(
         'edit' => true,
-        'message' => 'You are creating a new field.'
+        'message' => 'You are creating a new field.',
+        'field' => array('id' => 0)
     );
 
     return $view->render($response, 'single-field.html', $params);
