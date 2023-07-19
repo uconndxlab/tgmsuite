@@ -73,14 +73,14 @@
                 <div class="form-group mb-3">
                   <label for="multiple_sport_usage">Multiple Sport Usage:</label>
                   <div class="form-check">
-                    <input required class="form-check-input form-control" type="radio" name="multiple_sport_usage"
+                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_yes" value="yes" {{ row.multiple_sport_usage=='yes' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_yes">
                       Yes
                     </label>
                   </div>
                   <div class="form-check">
-                    <input required class="form-check-input form-control" type="radio" name="multiple_sport_usage"
+                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_no" value="no" {{ row.multiple_sport_usage=='no' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_no">
                       No
@@ -90,7 +90,7 @@
 
                 <div class="mb-3">
                   <label for="sports_played" class="form-label">Sports Played:</label>
-                  <select required class="form-select form-control" name="sports_played[]" multiple>
+                  <select required class="form-select" name="sports_played[]" multiple>
                     <option value="baseball" {% if 'baseball' in row.sports_played %}selected{% endif %}>Baseball
                     </option>
                     <option value="soccer" {% if 'soccer' in row.sports_played %}selected{% endif %}>Soccer</option>
@@ -168,12 +168,14 @@
 
                     <div class="mb-3 col">
                       <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
-                      <input required type="text" class="form-control" name="shade_or_sun" value="{{ row.shade_or_sun }}">
+                      <input required type="text" class="form-control" name="shade_or_sun"
+                        value="{{ row.shade_or_sun }}">
                     </div>
 
                     <div class="mb-3 col">
                       <label for="percent_shade" class="form-label">Percent Shade:</label>
-                      <input required type="text" class="form-control" name="percent_shade" value="{{ row.percent_shade }}">
+                      <input required type="text" class="form-control" name="percent_shade"
+                        value="{{ row.percent_shade }}">
                     </div>
                   </div>
                 </div>
@@ -199,12 +201,14 @@
 
                   <div class="mb-3">
                     <label for="mowing_frequency" class="form-label">Mowing Frequency:</label>
-                    <input required type="text" class="form-control" name="mowing_frequency" value="{{ row.mowing_frequency }}">
+                    <input required type="text" class="form-control" name="mowing_frequency"
+                      value="{{ row.mowing_frequency }}">
                   </div>
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
-                    <input required type="text" class="form-control" name="mowing_height" value="{{ row.mowing_height }}">
+                    <input required type="text" class="form-control" name="mowing_height"
+                      value="{{ row.mowing_height }}">
                   </div>
 
                   <!-- mowing method -->
@@ -341,11 +345,9 @@
 
   // check all fields for validity and then add the valid class to their parent form-group
   function checkValidity() {
-    // get all form-groups
     var form_groups = document.querySelectorAll('.form-group');
     var form_valid = true;
 
-    // loop through each form-group
     form_groups.forEach(function (form_group) {
       let form_group_valid = true;
       form_group.classList.remove('invalid');
@@ -353,41 +355,60 @@
       let parent_accordion = form_group.closest('.accordion-item');
       parent_accordion.classList.remove('invalid');
 
-      // get all fields in the form-group
-      var fields = form_group.querySelectorAll('.form-control');
+      var fields = form_group.querySelectorAll('[required]');
 
-      // loop through each field
       fields.forEach(function (field) {
-        // if the field is valid, add the valid class to the form-group
-        if (field.value != '') {
-          console.log(field.name);
-          console.log ("valid!");
+        if (field.type === 'checkbox' || field.type === 'radio') {
+          // For checkboxes and radio buttons, check if any of them are checked
+          let isAnyChecked = false;
+          var fieldGroup = document.querySelectorAll('[name="' + field.name + '"]');
+          fieldGroup.forEach(function (option) {
+            if (option.checked) {
+              isAnyChecked = true;
+            }
+          });
+
+          if (isAnyChecked) {
+            console.log(field.name);
+            console.log("valid!");
+          } else {
+            form_group.classList.add('invalid');
+            form_group_valid = false;
+
+            parent_accordion.classList.add('invalid');
+            form_valid = false;
+
+            console.log(field.name);
+            console.log("invalid!");
+          }
         } else {
-          // if the field is invalid, remove the valid class from the form-group
-          form_group.classList.add('invalid');
-          form_group_valid = false;
+          // For other input fields, check if the value is not empty
+          if (field.value !== '') {
+            console.log(field.name);
+            console.log("valid!");
+          } else {
+            form_group.classList.add('invalid');
+            form_group_valid = false;
 
-          parent_accordion.classList.add('invalid');
-          form_valid = false;
+            parent_accordion.classList.add('invalid');
+            form_valid = false;
 
-          console.log(field.name);
-          console.log ("invalid!");
-
+            console.log(field.name);
+            console.log("invalid!");
+          }
         }
       });
     });
 
-    // get all valid form-groups
     var valid_form_groups = document.querySelectorAll('.form-group.valid');
 
-    // if all form-groups are valid, enable the submit button
     if (form_valid) {
       document.querySelector('button[type="submit"]').disabled = false;
     } else {
-      // if all form-groups are not valid, disable the submit button
       document.querySelector('button[type="submit"]').disabled = true;
     }
   }
+
 
   // check validity on input
   document.addEventListener('input', function (event) {
@@ -398,6 +419,6 @@
   window.addEventListener('load', function (event) {
     checkValidity();
   });
-  
+
 
 </script>
