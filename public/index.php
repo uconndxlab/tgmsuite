@@ -129,6 +129,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $zip = $data['zip'];
     $color_rating = $data['color_rating'];
     $percent_shade = $data['percent_shade'];
+    $establishment_method = $data['establishment_method'];
+    $establishment_date = $data['establishment_date'];
+    
 
     $irrigation_system = $data['irrigation_system'];
     $water_source = $data['water_source'];
@@ -144,10 +147,14 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     // this is a comma delimited in the database, but should be an array in the form
     $turfgrass_species_present = implode(',',$data['turfgrass_species_present']);
 
+    $mowing_frequency = $data['mowing_frequency'];
+    $mowing_height = $data['mowing_height'];
+    $mowing_method = $data['mowing_method'];
+
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
 
-    if($id > 0) {
+    if($id != 0) {
         $q = "UPDATE fields SET 
         name = '$name', 
         address = '$address', 
@@ -157,6 +164,8 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         shade_or_sun = '$shade_or_sun', 
         sports_played = '$sports_played', 
         turfgrass_species_present = '$turfgrass_species_present', 
+        establishment_method = '$establishment_method',
+        establishment_date = '$establishment_date',
         color_rating = '$color_rating' , 
         percent_shade = '$percent_shade',
         irrigation_system = '$irrigation_system',
@@ -164,18 +173,72 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         irrigation_frequency = '$irrigation_frequency',
         portable_system = '$portable_system',
         wetting_agents = '$wetting_agents',
+        mowing_frequency = '$mowing_frequency',
+        mowing_height = '$mowing_height',
+        mowing_method = '$mowing_method',
         description = '$description' 
         WHERE id = $id"; 
     } else {
         // insert query instead of update
-        $q = "INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, shade_or_sun, sports_played, turfgrass_species_present, color_rating, percent_shade, irrigation_system, water_source, irrigation_frequency, portable_system, wetting_agents, description) VALUES ('$name', '$address', '$city', '$state', '$zip', '$multiple_sport_usage', '$shade_or_sun', '$sports_played', '$turfgrass_species_present', '$color_rating', '$percent_shade', '$irrigation_system', '$water_source', '$irrigation_frequency', '$portable_system', '$wetting_agents', '$description')";
+        $q = "INSERT INTO fields (name, 
+        address, 
+        city, 
+        state, 
+        zip, 
+        multiple_sport_usage, 
+        shade_or_sun, 
+        sports_played, 
+        turfgrass_species_present, 
+        establishment_method,
+        establishment_date,
+        color_rating, 
+        percent_shade, 
+        irrigation_system, 
+        water_source, 
+        irrigation_frequency, 
+        portable_system, 
+        wetting_agents, 
+        mowing_frequency,
+        mowing_height,
+        mowing_method,
+        description) VALUES ('$name', 
+        '$address', 
+        '$city', 
+        '$state', 
+        '$zip', 
+        '$multiple_sport_usage', 
+        '$shade_or_sun', 
+        '$sports_played', 
+        '$turfgrass_species_present', 
+        '$establishment_method',
+        '$establishment_date',
+        '$color_rating', 
+        '$percent_shade', 
+        '$irrigation_system', 
+        '$water_source', 
+        '$irrigation_frequency', 
+        '$portable_system', 
+        '$wetting_agents', 
+        '$mowing_frequency',
+        '$mowing_height',
+        '$mowing_method',
+        '$description')";
         
     }
 
 
-
+    //dd($q);
 
     $stmnt = $db->exec($q);
+
+    // did the query work?
+    if(!$stmnt) {
+        $msg = "Error updating field";
+    } else {
+        $msg = "Field Updated";
+    }
+
+
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
@@ -184,11 +247,10 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     if($id == 0) {
         $id = $db->lastInsertRowID();
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
+    } else {
+        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     }
 
-
-
-    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 
 });
 
