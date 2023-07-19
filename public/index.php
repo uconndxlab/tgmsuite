@@ -130,6 +130,12 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $color_rating = $data['color_rating'];
     $percent_shade = $data['percent_shade'];
 
+    $irrigation_system = $data['irrigation_system'];
+    $water_source = $data['water_source'];
+    $irrigation_frequency = $data['irrigation_frequency'];  
+    $portable_system = $data['portable_system'];
+    $wetting_agents = $data['wetting_agents'];
+
     $multiple_sport_usage = $data['multiple_sport_usage'];
 
     // this is a comma delimited in the database, but should be an array in the form
@@ -140,8 +146,27 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
-    $q = "UPDATE fields SET name = '$name', address = '$address', city = '$city', state = '$state', 
-    zip = '$zip', multiple_sport_usage = '$multiple_sport_usage', shade_or_sun = '$shade_or_sun', sports_played = '$sports_played', turfgrass_species_present = '$turfgrass_species_present', color_rating = '$color_rating' , percent_shade = '$percent_shade', description = '$description' WHERE id = $id"; 
+
+    $q = "UPDATE fields SET 
+    name = '$name', 
+    address = '$address', 
+    city = '$city', state = '$state', 
+    zip = '$zip', 
+    multiple_sport_usage = '$multiple_sport_usage', 
+    shade_or_sun = '$shade_or_sun', 
+    sports_played = '$sports_played', 
+    turfgrass_species_present = '$turfgrass_species_present', 
+    color_rating = '$color_rating' , 
+    percent_shade = '$percent_shade',
+    irrigation_system = '$irrigation_system',
+    water_source = '$water_source',
+    irrigation_frequency = '$irrigation_frequency',
+    portable_system = '$portable_system',
+    wetting_agents = '$wetting_agents',
+    description = '$description' 
+    WHERE id = $id"; 
+
+
     $stmnt = $db->exec($q);
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);

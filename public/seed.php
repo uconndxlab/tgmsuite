@@ -4,6 +4,13 @@ $db = new SQLite3('turfgrass.db');
 
 // Create the "fields" table: id, name, address, city, state, zip, multiple sport usage (yes/no), sports played, turfgrass species present,
 //, and description
+    
+    // irrigation_system = '$irrigation_system',
+    // water_source = '$water_source',
+    // irrigation_frequency = '$irrigation_frequency',
+    // portable_system = '$portable_system',
+    // wetting_agents = '$wetting_agents',
+ 
 
 $db->exec('CREATE TABLE IF NOT EXISTS fields (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,6 +27,11 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
     shade_or_sun TEXT,
     percent_shade TEXT,
     color_rating TEXT,
+    irrigation_system TEXT,
+    water_source TEXT,
+    irrigation_frequency TEXT,
+    portable_system TEXT,
+    wetting_agents TEXT,
     description TEXT
 )');
 
