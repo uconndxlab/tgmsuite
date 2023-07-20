@@ -98,6 +98,65 @@
                 </tbody>
             </table>
             {% endif %}
+
+            <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
+            {% if report.type == 'topdressing' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Material Composition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.user_id }}</td>
+                        <td>{{ content.evaluation_date }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.material_composition }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+
+            <!-- if it's a cultivation event, show the following:
+             Date 
+             Rate 
+             Mixture/Blend 
+             Pre-Germ Y N 
+             Species
+            -->
+
+            {% if report.type == 'cultivation' %}   
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Mixture/Blend</th>
+                        <th scope="col">Pre-Germ Y/N</th>
+                        <th scope="col">Species</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.user_id }}</td>
+                        <td>{{ content.evaluation_date }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.mixture_blend }}</td>
+                        <td>{{ content.pre_germ }}</td>
+                        <td>{{ content.species }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+
+
+
+            
         </div>
     </div>
 
