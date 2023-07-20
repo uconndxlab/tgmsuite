@@ -353,6 +353,31 @@ $app->get('/fields/{id}/submit-photo', function (Request $request, Response $res
 
 });
 
+// route to submit a topdressing report for a field
+
+$app->get('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) { 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Topdressing Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-topdressing.html', $params);
+
+});
+
 // route to submit a color report for a field
 
 $app->get('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) { 
@@ -378,6 +403,33 @@ $app->get('/fields/{id}/submit-color', function (Request $request, Response $res
 
 });
 
+// post route to save topdressing report for a field
+
+$app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d H:ia');
+    $evaluator_id = 1;
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'topdressing')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO topdressing_reports (report_id, topdressing_amount, topdressing_material) VALUES (?, ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['topdressing_amount']);
+    $stmt->bindValue(3, $data['topdressing_material']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Topdressing Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
 
 // route to save a color report for a field
 
