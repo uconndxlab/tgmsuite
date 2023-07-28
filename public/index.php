@@ -5,6 +5,7 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 require __DIR__ . '/../vendor/autoload.php';
+require 'AuthMiddleware.php';
 // Create Twig
 $twig = Twig::create('templates', ['cache' => false]);
 
@@ -16,10 +17,20 @@ $db = new SQLite3('turfgrass.db');
 
 $app = AppFactory::create();
 
+// Add the authentication middleware to the app
+$authMiddleware = new AuthMiddleware();
+
+
+
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
-// define base url
 
+
+
+$app->get('/protected', function (Request $request, Response $response) {
+    $response->getBody()->write('This is a protected route.');
+    return $response;
+})->add($authMiddleware); //
 
 
 $app->get('/', function (Request $request, Response $response, $args) {
@@ -27,8 +38,18 @@ $app->get('/', function (Request $request, Response $response, $args) {
     // return $view->render($response, 'home.html');
 
     // redirect to fields
-    return $response->withHeader('Location', '/fields')->withStatus(302);
+    return $response->withHeader('Location', '/home')->withStatus(302);
 });
+
+$app->get('/home', function (Request $request, Response $response, $args) use ($db, $twig) {
+   
+    // load the home template
+    $view = Twig::fromRequest($request);
+    return $view->render($response, 'home.html');
+
+});
+
+
 
 function dd(...$vars) {
     foreach ($vars as $var) {
@@ -53,8 +74,8 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
     $params = ['rows' => $rows];
     return $view->render($response, 'fields.html', $params);
 
+})->add($authMiddleware)->setArgument('auth', true);
 
-});
 
 // get the field data for a specific field
 
@@ -653,6 +674,8 @@ $app->get('/field/create', function (Request $request, Response $response, $args
     return $view->render($response, 'single-field.html', $params);
 
 });
+
+
 
 $app->run();
 

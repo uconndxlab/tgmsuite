@@ -1,8 +1,64 @@
 <!-- Include parts/header.html -->
 {% include 'parts/header.html' %}
 
-<h2>Home</h2>
-This is the home page. Here is where a user will be able to see a list of all the fields they have access to.
+
+
+<!-- basic login UI -->
+<!-- Login Form -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="mb-0">Login</h4>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#requestAccountModal">Request an Account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Request Account Modal -->
+  <div class="modal fade" id="requestAccountModal" tabindex="-1" aria-labelledby="requestAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="requestAccountModalLabel">Request an Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="reason" class="form-label">Reason for Account Request</label>
+              <textarea class="form-control" id="reason" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
