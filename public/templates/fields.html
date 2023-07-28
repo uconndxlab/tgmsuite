@@ -16,6 +16,14 @@
                 {% include 'components/field.html' with row %}
             </div>
         {% endfor %}
+        <!-- empty state if there's no fields -->
+        {% if rows is empty %}
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    You have no fields. <a href="/field/create">Add a field</a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 

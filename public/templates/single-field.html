@@ -19,11 +19,7 @@
                     <!-- color report -->
                 </div>
 
-                <!-- delete button -->
-                <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
-                    <input type="hidden" name="id" value="{{ field.id }}">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                </form>
+
                 {% endif %}
             </div>
 
@@ -111,8 +107,16 @@
                             <td>Joel Salisbury</td>
                         </tr> -->
                     </tbody>
-                
+                    </table>
+                                    <!-- extra action buttons like delete -->
+                <div class="btn-group">
+                    <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
+                        <input type="hidden" name="id" value="{{ field.id }}">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Delete Field</button>
+                    </form>
+                </div>
                 {% endif %}
+
             </div>
 
 

@@ -201,27 +201,39 @@
 
                   <div class="mb-3">
                     <label for="mowing_frequency" class="form-label">Mowing Frequency:</label>
-                    <select required class="form-select form-control" name="mowing_frequency">
-                      <option value="2+x/week" {% if '2+x/week' in row.mowing_frequency %}selected{% endif %}>
-                        More than 2x/week</option>
-                      <option value="2x/week" {% if '2x/week' in row.mowing_frequency %}selected{% endif %}>
-                        2x/week</option>
-                      <option value="1x/week" {% if '1x/week' in row.mowing_frequency %}selected{% endif %}>1x/week
-                      </option>
-                      <option value="less than 1x/week" {% if 'less than 1x/week' in row.mowing_frequency %}selected{% endif %}>less than 1x/week
-                        </option>
-                    </select>
+
+                    <div>
+                      <!-- Radio button for 'More than 2x/week' -->
+                      <input type="radio" id="mf_gt2x" required name="mowing_frequency" value="2+x/week" {% if '2+x/week'
+                        in row.mowing_frequency %}checked{% endif %}>
+                      <label for="mf_gt2x">More than 2x/week</label><br>
+
+                      <!-- Radio button for '2x/week' -->
+                      <input id="mf_2x" type="radio" required name="mowing_frequency" value="2x/week" {% if '2x/week' in
+                        row.mowing_frequency %}checked{% endif %}>
+                      <label for="mf_2x">2x/week</label><br>
+
+                      <!-- Radio button for '1x/week' -->
+                      <input id="mf_1x" type="radio" required name="mowing_frequency" value="1x/week" {% if '1x/week' in
+                        row.mowing_frequency %}checked{% endif %}>
+                      <label for="mf_1x">1x/week</label><br>
+
+                      <!-- Radio button for 'less than 1x/week' -->
+                      <input id="mf_lt1x" type="radio" required name="mowing_frequency" value="less than 1x/week" {%
+                        if 'less than 1x/week' in row.mowing_frequency %}checked{% endif %}>
+                      <label for="mf_lt1x">Less than 1x/week</label><br>
+                    </div>
                   </div>
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
                     <select required class="form-select form-control" name="mowing_height">
-                      <option value="0-1" {% if '0-1' in row.mowing_height %}selected{% endif %}>0-1</option>
-                      <option value="1-2" {% if '1-2' in row.mowing_height %}selected{% endif %}>1-2</option>
-                      <option value="2-3" {% if '2-3' in row.mowing_height %}selected{% endif %}>2-3</option>
-                      <option value="3-4" {% if '3-4' in row.mowing_height %}selected{% endif %}>3-4</option>
-                      <option value="4-5" {% if '4-5' in row.mowing_height %}selected{% endif %}>4-5</option>
-                      <option value="5+" {% if '5+' in row.mowing_height %}selected{% endif %}>5+</option>
+                      <option value="0-1" {% if '0-1' in row.mowing_height %}selected{% endif %}>0-1"</option>
+                      <option value="1-2" {% if '1-2' in row.mowing_height %}selected{% endif %}>1-2"</option>
+                      <option value="2-3" {% if '2-3' in row.mowing_height %}selected{% endif %}>2-3"</option>
+                      <option value="3-4" {% if '3-4' in row.mowing_height %}selected{% endif %}>3-4"</option>
+                      <option value="4-5" {% if '4-5' in row.mowing_height %}selected{% endif %}>4-5"</option>
+                      <option value="5+" {% if '5+' in row.mowing_height %}selected{% endif %}>5"+</option>
                     </select>
                   </div>
 
