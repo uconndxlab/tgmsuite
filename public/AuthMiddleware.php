@@ -25,6 +25,12 @@ class AuthMiddleware
     {
         // Implement your custom authentication logic here.
         // For example, check if the user is authenticated based on your session or token mechanism.
+
+        // check for session
+        if (isset($_SESSION['user_id'])) {
+            return true;
+        }
+
         return false; // Replace this with your actual authentication logic.
     }
 }

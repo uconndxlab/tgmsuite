@@ -74,7 +74,7 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
     $params = ['rows' => $rows];
     return $view->render($response, 'fields.html', $params);
 
-})->add($authMiddleware)->setArgument('auth', true);
+})->add($authMiddleware);
 
 
 // get the field data for a specific field
