@@ -18,14 +18,17 @@
           <h4 class="mb-0">Login</h4>
         </div>
         <div class="card-body">
-          <form>
+          <form
+            action="/user/login"
+            method="post"
+          >
             <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" required>
+              <label for="username" class="form-label">Email</label>
+              <input type="text" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" required>
+              <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
             <button type="button" class="btn btn-link" data-bs-toggle="modal"

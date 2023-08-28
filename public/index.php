@@ -322,6 +322,45 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
 
 });
 
+// route to login a user via the form
+$app->post('/user/login', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $email = $data['email'];
+    $password = $data['password'];
+
+    // check if the email is already in the database
+    $results = $db->query("SELECT * FROM users WHERE email = '$email'");
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    // if the email is not in the database, then redirect to the login page
+    if(count($rows) == 0) {
+        $msg = "Email not found";
+        $view = Twig::fromRequest($request);
+        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+        return $view->render($response, 'home.html', $params);
+    }
+
+    // if the email is in the database, then check the password
+    $user = $rows[0];
+    if (!password_verify($password, $user['password'])) {
+        $msg = "Password incorrect";
+        $view = Twig::fromRequest($request);
+        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+        return $view->render($response, 'home.html', $params);
+    }
+
+    // if the password is correct, then log the user in
+    $_SESSION['user_id'] = $user['id'];
+    $msg = "User Logged In";
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+    return $view->render($response, 'fields.html', $params);
+
+});
+
 // route to delete a field
 $app->post('/fields/{id}/delete', function (Request $request, Response $response, $args) use ($db, $twig) {
 
