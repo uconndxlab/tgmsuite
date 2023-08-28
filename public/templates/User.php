@@ -23,6 +23,10 @@ class User
         $stmt->execute();
 
         // You might want to handle success/error scenarios appropriately here.
+
+        return $this->db->lastInsertId();
+        
+
     }
 
     public function authenticate($username, $password)

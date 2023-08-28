@@ -4,6 +4,16 @@
 
 <div class="container">
     <h2>My Fields</h2>
+
+    <!-- if message is set -->
+    {% if message is defined %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+
     <div class="row mb-3">
         <div class="col-12">
             <a href="/field/create" class="btn btn-primary">Add Field</a>

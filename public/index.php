@@ -275,6 +275,53 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 
 });
 
+// route to register a new user via the form
+$app->post('/user/register', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $email = $data['email'];
+    $password = $data['password'];
+    $password_confirm = $data['password_confirm'];
+
+    // check if the passwords match
+    if($password != $password_confirm) {
+        $msg = "Passwords do not match";
+        $view = Twig::fromRequest($request);
+        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+        return $view->render($response, 'home.html', $params);
+    }
+
+    // check if the email is already in the database
+    $results = $db->query("SELECT * FROM users WHERE email = '$email'");
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    // if the email is already in the database, then redirect to the login page
+    if(count($rows) > 0) {
+        $msg = "Email already in use";
+        $view = Twig::fromRequest($request);
+        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+        return $view->render($response, 'home.html', $params);
+    }
+
+    // if the email is not in the database, then insert the user into the database
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $db->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
+    $stmt->bindValue(':email', $email);
+    $stmt->bindValue(':password', $hashedPassword);
+    $stmt->execute();
+
+    // You might want to handle success/error scenarios appropriately here.
+
+    $msg = "User Registered";
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+    return $view->render($response, 'fields.html', $params);
+
+});
+
 // route to delete a field
 $app->post('/fields/{id}/delete', function (Request $request, Response $response, $args) use ($db, $twig) {
 

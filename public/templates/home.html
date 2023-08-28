@@ -1,66 +1,103 @@
 <!-- Include parts/header.html -->
 {% include 'parts/header.html' %}
 
-
-
 <!-- basic login UI -->
 <!-- Login Form -->
 <div class="container my-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="mb-0">Login</h4>
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" required>
-              </div>
-              <button type="submit" class="btn btn-primary">Login</button>
-              <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#requestAccountModal">Request an Account</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- if message is set -->
+  {% if message is defined %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-  
-  <!-- Request Account Modal -->
-  <div class="modal fade" id="requestAccountModal" tabindex="-1" aria-labelledby="requestAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="requestAccountModalLabel">Request an Account</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  {% endif %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">Login</h4>
         </div>
-        <div class="modal-body">
+        <div class="card-body">
           <form>
             <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" required>
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" required>
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" required>
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" required>
             </div>
-            <div class="mb-3">
-              <label for="reason" class="form-label">Reason for Account Request</label>
-              <textarea class="form-control" id="reason" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Request</button>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="button" class="btn btn-link" data-bs-toggle="modal"
+              data-bs-target="#requestAccountModal">Create an Account</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Create Account Modal -->
+<div class="modal fade" id="requestAccountModal" tabindex="-1" aria-labelledby="requestAccountModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestAccountModalLabel">Create an Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Your create account form can go here -->
+        <form action="/user/register" method="post">
+
+          <div class="mb-3">
+            <!-- email -->
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+
+
+          <div class="mb-3">
+            <label for="newUsername" class="form-label">New Username</label>
+            <input type="text" class="form-control" id="newUsername" name="username" required>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="newPassword" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="password" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password_confirm" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+          </div>
 
 
 
-<!--Include parts/footer.html -->
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // password confirm validation
+  var password = document.getElementById("newPassword")
+    , confirm_password = document.getElementById("password_confirm");
+
+  function validatePassword() {
+    if (password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("Passwords Don't Match");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+
+  password.onchange = validatePassword;
+  confirm_password.onkeyup = validatePassword;
+</script>
+
+<!-- Include parts/footer.html -->
 {% include 'parts/footer.html' %}
