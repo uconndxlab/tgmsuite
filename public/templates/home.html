@@ -1,6 +1,14 @@
 <!-- Include parts/header.html -->
 {% include 'parts/header.html' %}
 
+<!-- check for auth_info -->
+{% if auth_info.is_authenticated %}
+<h1>
+  Welcome, {{ auth_info.user_id }}
+
+</h1>
+{% endif %}
+
 <!-- basic login UI -->
 <!-- Login Form -->
 <div class="container my-5">

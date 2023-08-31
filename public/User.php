@@ -13,12 +13,21 @@ class User
         $this->db = $db;
     }
 
-    public function register($username, $password)
+    public function getUserById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+
+    public function register($username, $email, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $stmt = $this->db->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+        $stmt = $this->db->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
         $stmt->bindValue(':username', $username);
+        $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $hashedPassword);
         $stmt->execute();
 

@@ -1,4 +1,5 @@
 <?php
+    session_start();
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -6,6 +7,7 @@ use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 require __DIR__ . '/../vendor/autoload.php';
 require 'AuthMiddleware.php';
+
 // Create Twig
 $twig = Twig::create('templates', ['cache' => false]);
 
@@ -19,37 +21,7 @@ $app = AppFactory::create();
 
 // Add the authentication middleware to the app
 $authMiddleware = new AuthMiddleware();
-
-
-
-// Add Twig-View Middleware
-$app->add(TwigMiddleware::create($app, $twig));
-
-
-
-$app->get('/protected', function (Request $request, Response $response) {
-    $response->getBody()->write('This is a protected route.');
-    return $response;
-})->add($authMiddleware); //
-
-
-$app->get('/', function (Request $request, Response $response, $args) {
-    // $view = Twig::fromRequest($request);
-    // return $view->render($response, 'home.html');
-
-    // redirect to fields
-    return $response->withHeader('Location', '/home')->withStatus(302);
-});
-
-$app->get('/home', function (Request $request, Response $response, $args) use ($db, $twig) {
-   
-    // load the home template
-    $view = Twig::fromRequest($request);
-    return $view->render($response, 'home.html');
-
-});
-
-
+$isAuthenticated = $authMiddleware->isAuthenticated();
 
 function dd(...$vars) {
     foreach ($vars as $var) {
@@ -59,7 +31,53 @@ function dd(...$vars) {
 }
 
 
-$app->get('/fields', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+if($isAuthenticated) {
+    $user_id = $_SESSION['user_id'];
+    $sql = "SELECT * FROM users WHERE id = '$user_id'";
+    $result = $db->query($sql);
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    $user['id'] = $row['id'];
+    $user['name'] = $row['name'] . " yeep"  ;
+    $user['email'] = $row['email'];
+
+    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => $_SESSION['user_id'], 'user' => $user['email'], 'name' => $user['name'] );
+} else {
+    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => 0);
+}
+
+
+// Add Twig-View Middleware
+$app->add(TwigMiddleware::create($app, $twig));
+
+$app->get('/', function (Request $request, Response $response, $args) {
+
+
+    // redirect to home
+    return $response->withHeader('Location', '/home')->withStatus(302);
+});
+
+$app->get('/home', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
+   
+    // load the home template
+    $view = Twig::fromRequest($request);
+    $params = array('auth_info' => $auth_info);
+
+    if ($auth_info['is_authenticated']) {
+        return $view->render($response, 'fields.html', $params);
+    } else {
+        return $view->render($response, 'home.html', $params);
+    }
+
+});
+
+
+
+$app->get('/fields', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
+
+
+
+    
     // Query the "fields" table to get all the rows
     $results = $db->query('SELECT * FROM fields');
     $view = Twig::fromRequest($request);
@@ -72,6 +90,7 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
 
     // Render the "fields" template with the rows array
     $params = ['rows' => $rows];
+    $params['auth_info'] = $auth_info;
     return $view->render($response, 'fields.html', $params);
 
 })->add($authMiddleware);
@@ -279,10 +298,11 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 $app->post('/user/register', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $email = $data['email'];
+    $name = $data['username'];
     $password = $data['password'];
     $password_confirm = $data['password_confirm'];
 
-    // check if the passwords match
+    // check if the passwords match... and if they don't... redirect to the login page
     if($password != $password_confirm) {
         $msg = "Passwords do not match";
         $view = Twig::fromRequest($request);
@@ -308,19 +328,31 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
     // if the email is not in the database, then insert the user into the database
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $db->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
-    $stmt->bindValue(':email', $email);
-    $stmt->bindValue(':password', $hashedPassword);
-    $stmt->execute();
+    $q = "INSERT INTO users (name,email, password) VALUES ('$name', '$email', '$hashedPassword')";
 
-    // You might want to handle success/error scenarios appropriately here.
+    $stmnt = $db->exec($q);
 
-    $msg = "User Registered";
+    // get last insert id
+    $id = $db->lastInsertRowID();
+
+    // start a session
+    $_SESSION['user_id'] = $id;
+
+
+    $msg = "User Registered: " . $email;
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    return $view->render($response, 'fields.html', $params);
+    
+    // redirect to /fields if the user is logged in
+    return $response->withHeader('Location', '/fields')->withStatus(302);
+
 
 });
+
+$app->get("/logout", function (Request $request, Response $response, $args) use ($db, $twig) {
+    session_destroy();
+    return $response->withHeader('Location', '/home')->withStatus(302);
+})->add($authMiddleware);
 
 // route to login a user via the form
 $app->post('/user/login', function (Request $request, Response $response, $args) use ($db, $twig) {
@@ -353,11 +385,14 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
     }
 
     // if the password is correct, then log the user in
+
     $_SESSION['user_id'] = $user['id'];
-    $msg = "User Logged In";
+    $msg = "User Logged In: " . $user['email'];
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    return $view->render($response, 'fields.html', $params);
+    
+    // redirect to /fields if the user is logged in
+    return $response->withHeader('Location', '/fields')->withStatus(302);
 
 });
 

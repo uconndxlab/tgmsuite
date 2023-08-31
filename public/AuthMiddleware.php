@@ -3,8 +3,19 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
+// Open a connection to the SQLite database
+
 class AuthMiddleware
 {
+
+    protected $db;
+
+    public function __construct()
+    {
+        $this->db = new SQLite3('turfgrass.db');
+
+    }
+    
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
         // Perform your authentication logic here.
@@ -32,5 +43,24 @@ class AuthMiddleware
         }
 
         return false; // Replace this with your actual authentication logic.
+    }
+
+    public function getCurrentUser() {
+        
+        $user_id = $_SESSION['user_id'];
+        $sql = "SELECT * FROM users WHERE id = '$user_id'";
+        $result = $this->db->query($sql);
+        $row = $result->fetchArray(SQLITE3_ASSOC);
+        $user['id'] = $row['id'];
+        $user['name'] = $row['name'];
+        $user['email'] = $row['email'];
+
+
+        return $user;
+
+        
+
+        
+
     }
 }
