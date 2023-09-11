@@ -115,6 +115,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS field_users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     field_id INTEGER,
     user_id INTEGER,
+    permission_level INTEGER,
     FOREIGN KEY (field_id) REFERENCES fields(id)
     FOREIGN KEY (user_id) REFERENCES users(id)
 )');

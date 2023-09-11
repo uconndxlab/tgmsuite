@@ -76,10 +76,16 @@ $app->get('/home', function (Request $request, Response $response, $args) use ($
 $app->get('/fields', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
 
+    // get the fields, but pivot on field_users to get the fields for the current user id
 
+    $user_id = $_SESSION['user_id'];
+
+    $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id";
+    
     
     // Query the "fields" table to get all the rows
-    $results = $db->query('SELECT * FROM fields');
+    $results = $db->query($query_string);
+
     $view = Twig::fromRequest($request);
 
     // Convert the results into an array of associative arrays
@@ -98,11 +104,18 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
 
 // get the field data for a specific field
 
-$app->get('/fields/{id}', function (Request $request, Response $response, $args) use ($db, $twig) {
+$app->get('/fields/{id}', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
-   
-    // Query the "fields" table to get all the rows
-    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+   $user_id = $auth_info['user_id'];
+    // Query the "fields" table to get all the rows and make sure the user has access to this field
+    $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+    $results = $db->query($query_string);
+
+
+    //$results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+
+
+
     $view = Twig::fromRequest($request);
 
     // select the single row
@@ -122,6 +135,10 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     $reports = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $reports[] = $row;
+    }
+
+    if (count($field) == 0) {
+        return $view->render($response, '404.html');
     }
 
     $params = ['field' => $field[0], 'reports' => $reports];
@@ -159,6 +176,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
 /** post request for updating a field */
 
 $app->post("/fields/{id}", function (Request $request, Response $response, $args) use ($db, $twig) {
+   
     $data = $request->getParsedBody();
     $id = $args['id'];
     $data['id'] = $id;
@@ -191,7 +209,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $mowing_frequency = $data['mowing_frequency'];
     $mowing_height = $data['mowing_height'];
     $mowing_method = $data['mowing_method'];
-    $prgs_used = $data['prgs_used'];
+    $pgrs_used = $data['pgrs_used'];
 
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
@@ -218,7 +236,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         mowing_frequency = '$mowing_frequency',
         mowing_height = '$mowing_height',
         mowing_method = '$mowing_method',
-        prgs_used = '$prgs_used',
+        pgrs_used = '$pgrs_used',
         description = '$description' 
         WHERE id = $id"; 
     } else {
@@ -244,7 +262,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         mowing_frequency,
         mowing_height,
         mowing_method,
-        prgs_used,
+        pgrs_used,
         description) VALUES ('$name', 
         '$address', 
         '$city', 
@@ -266,13 +284,12 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$mowing_frequency',
         '$mowing_height',
         '$mowing_method',
-        '$prgs_used',
+        '$pgrs_used',
         '$description')";
         
     }
 
 
-    //dd($q);
 
     $stmnt = $db->exec($q);
 
@@ -787,19 +804,20 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
 });
 
 // route for /field/create
-$app->get('/field/create', function (Request $request, Response $response, $args) use ($db, $twig) {
+$app->get('/field/create', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
 
     $view = Twig::fromRequest($request);
 
     $params = array(
         'edit' => true,
         'message' => 'You are creating a new field.',
-        'field' => array('id' => 0)
+        'field' => array('id' => 0),
+        'auth_info' => $auth_info
     );
 
     return $view->render($response, 'single-field.html', $params);
 
-});
+})->add($authMiddleware);
 
 
 

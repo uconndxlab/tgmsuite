@@ -250,7 +250,7 @@
                   <!-- PGRs Used? Yes/no -->
                   <div class="mb-3">
                     <label for="pgrs_used" class="form-label">PGRs Used:</label>
-                    <select required class="form-select form-control" name="pgrs_used">
+                    <select id="pgrs_used" required class="form-select form-control" name="pgrs_used">
                       <option value="yes" {% if 'yes' in row.pgrs_used %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.pgrs_used %}selected{% endif %}>No</option>
                     </select>
