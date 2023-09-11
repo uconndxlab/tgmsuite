@@ -34,6 +34,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
     wetting_agents TEXT,
     mowing_height TEXT,
     mowing_frequency TEXT,
+    pgrs_used TEXT,
     mowing_method TEXT,
     description TEXT
 )');

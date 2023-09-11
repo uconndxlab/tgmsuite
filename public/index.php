@@ -171,6 +171,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $percent_shade = $data['percent_shade'];
     $establishment_method = $data['establishment_method'];
     $establishment_date = $data['establishment_date'];
+
     
 
     $irrigation_system = $data['irrigation_system'];
@@ -190,6 +191,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $mowing_frequency = $data['mowing_frequency'];
     $mowing_height = $data['mowing_height'];
     $mowing_method = $data['mowing_method'];
+    $prgs_used = $data['prgs_used'];
 
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
@@ -216,6 +218,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         mowing_frequency = '$mowing_frequency',
         mowing_height = '$mowing_height',
         mowing_method = '$mowing_method',
+        prgs_used = '$prgs_used',
         description = '$description' 
         WHERE id = $id"; 
     } else {
@@ -241,6 +244,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         mowing_frequency,
         mowing_height,
         mowing_method,
+        prgs_used,
         description) VALUES ('$name', 
         '$address', 
         '$city', 
@@ -262,6 +266,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$mowing_frequency',
         '$mowing_height',
         '$mowing_method',
+        '$prgs_used',
         '$description')";
         
     }
