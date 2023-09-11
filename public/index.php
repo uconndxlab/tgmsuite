@@ -175,7 +175,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
 
 /** post request for updating a field */
 
-$app->post("/fields/{id}", function (Request $request, Response $response, $args) use ($db, $twig) {
+$app->post("/fields/{id}", function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
    
     $data = $request->getParsedBody();
     $id = $args['id'];
@@ -289,9 +289,22 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         
     }
 
+    //dd($q);
 
 
     $stmnt = $db->exec($q);
+
+    // store the last insert id for later
+    $new_id = $db->lastInsertRowID();
+
+    $current_user_id = $auth_info['user_id'];
+
+    // also insert into the field_users table
+    $q = "INSERT INTO field_users (user_id, field_id, permission_level) VALUES (
+        $current_user_id
+        , $new_id, 'owner')";
+    $stmnt = $db->exec($q);
+
 
     // did the query work?
     if(!$stmnt) {
@@ -304,12 +317,16 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
+    echo $new_id;
+   
 
     // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
     if($id == 0) {
-        $id = $db->lastInsertRowID();
+        $id = $new_id;
+        
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     } else {
+        
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     }
 

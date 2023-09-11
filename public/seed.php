@@ -128,7 +128,8 @@ $db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_u
 $db->exec('INSERT INTO users (name, email, password) VALUES ("John Doe", "john@doefamily.org", "password")');
 
 /** Seed the field_users table with some sample data */
-$db->exec('INSERT INTO field_users (field_id, user_id) VALUES (1, 1)');
+/** Permission levels can be 1 for read, 2 for rw */
+$db->exec('INSERT INTO field_users (field_id, user_id, permission_level) VALUES (1, 1, 2)');
 
 /** Seed the reports table with some sample data */
 $db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-01", 1, 1, "evaluation")');
