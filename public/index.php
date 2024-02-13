@@ -142,6 +142,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     }
 
     $params = ['field' => $field[0], 'reports' => $reports];
+    $params['auth_info'] = $auth_info;
 
 
   
@@ -151,7 +152,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
 });
 
 // field edit
-$app->get('/fields/{id}/edit', function (Request $request, Response $response, $args) use ($db, $twig) {
+$app->get('/fields/{id}/edit', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
 
     // Query the "fields" table to get all the rows
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
@@ -168,6 +169,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
 
     // Render the "fields" template with the rows array
     $params = ['field' => $rows[0], 'edit' => true];
+    $params['auth_info'] = $auth_info;
     return $view->render($response, 'single-field.html', $params);
 
 });
