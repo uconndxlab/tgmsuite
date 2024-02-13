@@ -130,7 +130,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
                       FROM reports AS r
                       JOIN users AS u ON r.evaluator_id = u.id
                       WHERE r.field_id = ' . $args['id'] .' 
-                      ORDER BY r.evaluation_date DESC');
+                      ORDER BY r.evaluation_date ASC');
 
     $reports = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
@@ -698,7 +698,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d-H-ia');
+    $date = date('Y-m-d H:ia');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
