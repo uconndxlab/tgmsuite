@@ -699,7 +699,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     $data = $request->getParsedBody();
     $field_id = $args['id'];
     $date = date('Y-m-d-H-ia');
-    $evaluator_id = 1;
+    $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
     $db->exec($q);
