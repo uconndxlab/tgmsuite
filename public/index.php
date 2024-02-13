@@ -590,7 +590,7 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $data = $request->getParsedBody();
     $field_id = $args['id'];
     $date = date('Y-m-d H:ia');
-    $evaluator_id = 1;
+    $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'topdressing')";
     $stmt = $db->prepare($q);
@@ -618,7 +618,7 @@ $app->post('/fields/{id}/submit-color', function (Request $request, Response $re
     $data = $request->getParsedBody();
     $field_id = $args['id'];
     $date = date('Y-m-d H:ia');
-    $evaluator_id = 1;
+    $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'color')";
     $stmt = $db->prepare($q);
@@ -647,7 +647,7 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $uploadedFiles = $request->getUploadedFiles();
     $field_id = $args['id'];
     $date = date('Y-m-d-H-ia');
-    $evaluator_id = 1;
+    $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
     $stmt = $db->prepare($q);
