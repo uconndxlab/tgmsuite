@@ -130,7 +130,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
                       FROM reports AS r
                       JOIN users AS u ON r.evaluator_id = u.id
                       WHERE r.field_id = ' . $args['id'] .' 
-                      ORDER BY r.evaluation_date ASC');
+                      ORDER BY r.evaluation_date DESC');
 
     $reports = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
@@ -603,8 +603,8 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
-    $stmt->bindValue(2, $data['topdressing_amount']);
-    $stmt->bindValue(3, $data['topdressing_material']);
+    $stmt->bindValue(2, $data['topdressing_rate']);
+    $stmt->bindValue(3, $data['topdressing_composition']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -803,10 +803,21 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $fertilization_event = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
         break;
+
+        case 'topdressing':
+            $results = $db->query('SELECT * FROM topdressing_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $topdressing_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
     }
 
     $content = $rows[0];
-    
+
 
     $params = array(
         'report' => $report,
