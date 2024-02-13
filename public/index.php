@@ -600,7 +600,7 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO topdressing_reports (report_id, topdressing_amount, topdressing_material) VALUES (?, ?, ?)";
+    $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['topdressing_amount']);

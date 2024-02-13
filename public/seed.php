@@ -99,6 +99,15 @@ $db->exec('CREATE TABLE IF NOT EXISTS color_reports (
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
+/** Create the Topdressing_reports table */
+$db->exec('CREATE TABLE IF NOT EXISTS topdressing_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    topdressing_rate TEXT,
+    topdressing_description TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
 
 //** Create the users table with name, email, and password */
 
