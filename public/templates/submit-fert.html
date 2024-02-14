@@ -22,7 +22,7 @@
         <form method="post" action="" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-12">
-                    <h3>Submit Fertilzation Report</h3>
+                    <h3>Submit Fertilization Report</h3>
                 </div>
 
                 <!-- topdressing form: date, rate, material composition  -->
@@ -44,7 +44,7 @@
                     <!-- rate -->
                     <div class="mb-3">
                         <label for="rate" class="form-label">Rate</label>
-                        <input type="text" class="form-control" id="rate" name="fertilizer_rate">
+                        <input type="text" class="form-control" id="rate" name="rate">
                     </div>
 
                     <!-- NPK Analysis -->
@@ -61,21 +61,12 @@
 
                     <!-- biostimulant y/n? -->
                     <div class="mb-3">
-                        <label for="biostimulant" class="form-label
-                        ">Biostimulant</label>
-                        <!-- radio -->
-                        <div class="form-check
-                        ">
-                        <input class="form-check
-                        -input" type="radio" name="biostimulant" id="biostimulant-yes" value="yes">
-                        <label class="form-check
-
-                        -label" for="biostimulant-yes">Yes</label>
-
-                        <input class="form-check
-                        -input" type="radio" name="biostimulant" id="biostimulant-no" value="no">
-                        <label class="form-check -label" for="biostimulant-no">No</label>
-
+                        <label for="biostimulant" class="form-label">Biostimulant?</label>
+                        <!-- biostimulant y/n as dropdown -->
+                        <select class="form-select" id="biostimulant" name="biostimulant">
+                            <option value="yes">Yes</option>
+                            <option selected value="no">No</option>
+                        </select>
                     </div>
                 </div>
             </div>

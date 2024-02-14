@@ -569,7 +569,7 @@ $app->get('/fields/{id}/submit-fertilization', function (Request $request, Respo
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
     }
-
+ 
     $params = array(
         'field' => $rows[0],
         'field_id' => $args['id'],
@@ -582,6 +582,35 @@ $app->get('/fields/{id}/submit-fertilization', function (Request $request, Respo
 
     return $view->render($response, 'submit-fert.html', $params);
 
+});
+
+$app->post('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d H:ia');
+    $evaluator_id = $_SESSION['user_id'];
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'fertilization')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO fertilization_reports (report_id, product, rate, npk, compost, bio_stimulant) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['product']);
+    $stmt->bindValue(3, $data['rate']);
+    $stmt->bindValue(4, $data['npk']);
+    $stmt->bindValue(5, $data['compost']);
+    $stmt->bindValue(6, $data['biostimulant']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Fertilization Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
 // route to submit a color report for a field
@@ -819,7 +848,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
         break;
         case 'fertilization':
-            $results = $db->query('SELECT * FROM fertilization_events WHERE report_id = ' . $args['id']);
+            $results = $db->query('SELECT * FROM fertilization_reports WHERE report_id = ' . $args['id']);
             // select the single row
             $rows = [];
             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {

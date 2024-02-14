@@ -154,6 +154,35 @@
             </table>
             {% endif %}
 
+            {% if report.type == 'fertilization' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">NPK Analysis</th>
+                        <th scope="col">Compost Analysis</th>
+                        <th scope="col">Biostimulant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.user_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.product }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.npk }}</td>
+                        <td>{{ content.compost }}</td>
+                        <td>{{ content.bio_stimulant }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {% endif %}
+
+
 
 
 

@@ -71,12 +71,14 @@ $db->exec('CREATE TABLE IF NOT EXISTS evaluations (
 
 /** Create Fertilization Event Table */
 
-$db->exec('CREATE TABLE IF NOT EXISTS fertilization_events (
+$db->exec('CREATE TABLE IF NOT EXISTS fertilization_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
-    fertilizer_type TEXT,
-    fertilizer_rate INTEGER,
-    fertilizer_description TEXT,
+    product TEXT,
+    rate TEXT,
+    npk TEXT,
+    compost TEXT,
+    bio_stimulant TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
