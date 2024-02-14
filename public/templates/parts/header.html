@@ -41,6 +41,7 @@
             <a hx-boost="true" class="nav-link active" href="/fields">Fields</a>
           </li>
         </ul>
+          {%if auth_info.user%}
             <span class="navbar-text text-light px-4">
                 <!-- loop through auth_info so we can see what's there -->
              Welcome,   {{auth_info.user}}
@@ -49,6 +50,12 @@
           <!-- login -->
             <a class="btn btn-success" href="/logout">Log Out</a>
         </form>
+        {%endif%}
+        {%if not auth_info.user%}
+
+          <!-- login -->
+            <a class="btn btn-success" href="/home">Log In</a>
+        {%endif%}
       </div>
     </div>
   </nav>

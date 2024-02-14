@@ -648,7 +648,7 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $data = $request->getParsedBody();
     $uploadedFiles = $request->getUploadedFiles();
     $field_id = $args['id'];
-    $date = date('Y-m-d-H-ia');
+    $date = date('Y-m-d H:ia');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
