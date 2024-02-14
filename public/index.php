@@ -638,6 +638,58 @@ $app->get('/fields/{id}/submit-color', function (Request $request, Response $res
 
 });
 
+/** submit overseeding report */
+$app->get('/fields/{id}/submit-overseeding', function (Request $request, Response $response, $args) use ($db, $twig) { 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Overseeding Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-overseeding.html', $params);
+
+});
+
+/** post route for overseeding */
+$app->post('/fields/{id}/submit-overseeding', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d H:ia');
+    $evaluator_id = $_SESSION['user_id'];
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'overseeding')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO overseed_reports (report_id, rate, formula, pre_germ, species) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['rate']);
+    $stmt->bindValue(3, $data['formula']);
+    $stmt->bindValue(4, $data['pre_germ']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Overseeding Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
+
 // post route to save topdressing report for a field
 
 $app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {

@@ -110,6 +110,18 @@ $db->exec('CREATE TABLE IF NOT EXISTS topdressing_reports (
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
+/** create overseed report */
+/** rate, forumla, pre-germ, species **/
+$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    rate TEXT,
+    formula TEXT,
+    pre_germ TEXT,
+    species TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
 
 //** Create the users table with name, email, and password */
 
