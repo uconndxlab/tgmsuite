@@ -1,0 +1,94 @@
+{% include 'parts/header.html' %}
+<div class="row">
+    <div class="col-3">
+        <!-- material design edit icon -->
+
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+            <h2> {{ field.name }}</h2>
+            <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
+            <!-- button group for view or edit-->
+            <div class="btn-group" role="group">
+                <a class="btn btn-secondary {% if edit == true %} active {% endif %}"
+                    href="/fields/{{ field.id }}/edit">Edit</a>
+                <a class="btn btn-secondary {% if edit == false %} active {% endif %}"
+                    href="/fields/{{ field.id }}">History</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-9">
+        <form method="post" action="" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Submit Fertilzation Report</h3>
+                </div>
+
+                <!-- topdressing form: date, rate, material composition  -->
+
+                <div class="col-12">
+
+                    <!-- date of application -->
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+
+                    <!-- product -->
+                    <div class="mb-3">
+                        <label for="product" class="form-label">Product</label>
+                        <input type="text" class="form-control" id="product" name="product">
+                    </div>
+
+                    <!-- rate -->
+                    <div class="mb-3">
+                        <label for="rate" class="form-label">Rate</label>
+                        <input type="text" class="form-control" id="rate" name="fertilizer_rate">
+                    </div>
+
+                    <!-- NPK Analysis -->
+                    <div class="mb-3">
+                        <label for="npk" class="form-label">NPK Analysis</label>
+                        <input type="text" class="form-control" id="npk" name="npk">
+                    </div>
+
+                    <!-- compost analysis -->
+                    <div class="mb-3">
+                        <label for="compost" class="form-label">Compost Analysis</label>
+                        <input type="text" class="form-control" id="compost" name="compost">
+                    </div>
+
+                    <!-- biostimulant y/n? -->
+                    <div class="mb-3">
+                        <label for="biostimulant" class="form-label
+                        ">Biostimulant</label>
+                        <!-- radio -->
+                        <div class="form-check
+                        ">
+                        <input class="form-check
+                        -input" type="radio" name="biostimulant" id="biostimulant-yes" value="yes">
+                        <label class="form-check
+
+                        -label" for="biostimulant-yes">Yes</label>
+
+                        <input class="form-check
+                        -input" type="radio" name="biostimulant" id="biostimulant-no" value="no">
+                        <label class="form-check -label" for="biostimulant-no">No</label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- submit button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}

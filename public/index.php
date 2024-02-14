@@ -561,6 +561,29 @@ $app->get('/fields/{id}/submit-topdressing', function (Request $request, Respons
 
 });
 
+$app->get('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) { 
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Fertilization Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-fert.html', $params);
+
+});
+
 // route to submit a color report for a field
 
 $app->get('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) { 
