@@ -683,6 +683,7 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $stmt->bindValue(2, $data['rate']);
     $stmt->bindValue(3, $data['formula']);
     $stmt->bindValue(4, $data['pre_germ']);
+    $stmt->bindValue(5, $data['species']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -918,6 +919,17 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                 $rows[] = $row;
             }
             $topdressing_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+        break;
+
+        case 'overseeding':
+            $results = $db->query('SELECT * FROM overseed_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $overseeding_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
         break;
     }

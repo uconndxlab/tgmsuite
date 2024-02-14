@@ -159,6 +159,9 @@
                 <thead>
                     <tr>
                         <th scope="col">User</th>
+
+
+            
                         <th scope="col">Date</th>
                         <th scope="col">Product</th>
                         <th scope="col">Rate</th>
@@ -182,11 +185,32 @@
 
             {% endif %}
 
+            {% if report.type == 'overseeding' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Formula</th>
+                        <th scope="col">Pre-Germ</th>
+                        <th scope="col">Species</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.evaluator_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.formula }}</td>
+                        <td>{{ content.pre_germ }}</td>
+                        <td>{{ content.species }}</td>
+                    </tr>
+                </tbody>
 
+            </table>
 
-
-
-            
+            {% endif %}
         </div>
     </div>
 
