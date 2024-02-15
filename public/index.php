@@ -857,7 +857,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 });
 
 // route for /report/{id}/view
-$app->get('/report/{id}/view', function (Request $request, Response $response, $args) use ($db, $twig) {
+$app->get('/report/{id}/view', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info ) {
 
     $results = $db->query('SELECT * FROM reports WHERE id = ' . $args['id']);
     // select the single row
@@ -940,7 +940,8 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
     $params = array(
         'report' => $report,
         'field' => $field,
-        'content' => $content
+        'content' => $content,
+        'auth_info' => $auth_info
     );
 
     $view = Twig::fromRequest($request);
