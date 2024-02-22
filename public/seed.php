@@ -169,7 +169,7 @@ $db->exec('INSERT INTO photos (report_id, photo_url) VALUES (2, "https://via.pla
 $db->exec('INSERT INTO color_reports (report_id, color_option) VALUES (3, "Dark Green 5")');
 
 /** Seed the fertilization_events table with some sample data */
-$db->exec('INSERT INTO fertilization_events (report_id, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (4, "Nitrogen", 1, "This is a description of the fertilization event")');
+//$db->exec('INSERT INTO fertilization_events (report_id, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (4, "Nitrogen", 1, "This is a description of the fertilization event")');
 
 
 
