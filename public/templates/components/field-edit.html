@@ -58,42 +58,41 @@
           <div id="fieldUsage-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
             <div class="accordion-body">
               <div class="row">
-                <div class="form-group mb-3">
-                  <label for="multiple_sport_usage">Multiple Sport Usage:</label>
-                  <div class="form-check">
-                    <input  class="form-check-input" type="radio" name="multiple_sport_usage"
-                      id="multiple_sport_usage_yes" value="yes" {{ row.multiple_sport_usage=='yes' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="multiple_sport_usage_yes">
-                      Yes
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input  class="form-check-input" type="radio" name="multiple_sport_usage"
-                      id="multiple_sport_usage_no" value="no" {{ row.multiple_sport_usage=='no' ? 'checked' : '' }}>
-                    <label class="form-check-label" for="multiple_sport_usage_no">
-                      No
-                    </label>
-                  </div>
-                </div>
-
                 <div class="mb-3">
                   <label for="sports_played" class="form-label">Sports Played:</label>
-                  <select  class="form-select" name="sports_played[]" multiple>
-                    <option value="baseball" {% if 'baseball' in row.sports_played %}selected{% endif %}>Baseball
-                    </option>
-                    <option value="soccer" {% if 'soccer' in row.sports_played %}selected{% endif %}>Soccer</option>
-                    <option value="football" {% if 'football' in row.sports_played %}selected{% endif %}>Football
-                    </option>
-                    <option value="lacrosse" {% if 'lacrosse' in row.sports_played %}selected{% endif %}>Lacrosse
-                    </option>
-                    <option value="rugby" {% if 'rugby' in row.sports_played %}selected{% endif %}>Rugby</option>
-                    <option value="field hockey" {% if 'field hockey' in row.sports_played %}selected{% endif %}>Field
-                      Hockey</option>
-                    <!-- class: in-school use -->
-                    <option value="class" {% if 'class' in row.sports_played %}selected{% endif %}>Class: In-School Use
-                    </option>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="sports_played[]" value="baseball" {% if 'baseball' in row.sports_played %}checked{% endif %}>
+                    <label id="baseball" class="form-check-label" for="baseball">Baseball</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="softball" class="form-check-input" type="checkbox" name="sports_played[]" value="softball" {% if 'softball' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="softball">Softball</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="soccer" class="form-check-input" type="checkbox" name="sports_played[]" value="soccer" {% if 'soccer' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="soccer">Soccer</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="football" class="form-check-input" type="checkbox" name="sports_played[]" value="football" {% if 'football' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="football">Football</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="lacrosse" class="form-check-input" type="checkbox" name="sports_played[]" value="lacrosse" {% if 'lacrosse' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="lacrosse">Lacrosse</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="rugby" class="form-check-input" type="checkbox" name="sports_played[]" value="rugby" {% if 'rugby' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="rugby">Rugby</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="field_hockey" class="form-check-input" type="checkbox" name="sports_played[]" value="field hockey" {% if 'field hockey' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="field_hockey">Field Hockey</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="pe_class" class="form-check-input" type="checkbox" name="sports_played[]" value="pe_class" {% if 'pe_class' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="pe_class">PE Class/Recreational use</label>
+                  </div>
 
-                  </select>
                 </div>
 
                 <!-- traffic events per week -->
