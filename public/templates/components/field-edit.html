@@ -201,69 +201,38 @@
                 <div class="form-group mb-3">
 
                   <div class="mb-3">
-                    <label for="mowing_frequency" class="form-label">Mowing Frequency:</label>
+                    <label for="pgrs_used" class="form-label">PGRs Used:</label>
+                    <select id="pgrs_used" class="form-select form-control" name="pgrs_used">
+                      <option value="no" {% if 'no' in row.pgrs_used %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.pgrs_used %}selected{% endif %}>Yes</option>
+                    </select>
+                  </div>
 
-                    <div>
-                      <!-- Radio button for 'More than 2x/week' -->
-                      <input type="radio" id="mf_gt2x" name="mowing_frequency" value="2+x/week" {% if '2+x/week'
-                        in row.mowing_frequency %}checked{% endif %}>
-                      <label for="mf_gt2x">More than 2x/week</label><br>
-
-                      <!-- Radio button for '2x/week' -->
-                      <input id="mf_2x" type="radio" name="mowing_frequency" value="2x/week" {% if '2x/week' in
-                        row.mowing_frequency %}checked{% endif %}>
-                      <label for="mf_2x">2x/week</label><br>
-
-                      <!-- Radio button for '1x/week' -->
-                      <input id="mf_1x" type="radio" name="mowing_frequency" value="1x/week" {% if '1x/week' in
-                        row.mowing_frequency %}checked{% endif %}>
-                      <label for="mf_1x">1x/week</label><br>
-
-                      <!-- Radio button for 'less than 1x/week' -->
-                      <input id="mf_lt1x" type="radio" name="mowing_frequency" value="less than 1x/week" {%
-                        if 'less than 1x/week' in row.mowing_frequency %}checked{% endif %}>
-                      <label for="mf_lt1x">Less than 1x/week</label><br>
-                    </div>
+                  <div class="mb-3">
+                    <label for="mowing_method" class="form-label">Mowing Method:</label>
+                    <select class="form-select form-control" name="mowing_method">
+                      <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
+                      <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
+                    </select>
                   </div>
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
-                    <select  class="form-select form-control" name="mowing_height">
-                      <option value="0-1" {% if '0-1' in row.mowing_height %}selected{% endif %}>0-1"</option>
-                      <option value="1-2" {% if '1-2' in row.mowing_height %}selected{% endif %}>1-2"</option>
-                      <option value="2-3" {% if '2-3' in row.mowing_height %}selected{% endif %}>2-3"</option>
-                      <option value="3-4" {% if '3-4' in row.mowing_height %}selected{% endif %}>3-4"</option>
-                      <option value="4-5" {% if '4-5' in row.mowing_height %}selected{% endif %}>4-5"</option>
-                      <option value="5+" {% if '5+' in row.mowing_height %}selected{% endif %}>5"+</option>
+                    <select class="form-select form-control" name="mowing_height">
+                      <option value="1-1.75" {% if '1-1.75' in row.mowing_height %}selected{% endif %}>1-1.75"</option>
+                      <option value="2-2.25" {% if '2-2.25' in row.mowing_height %}selected{% endif %}>2-2.25"</option>
+                      <option value="2.5" {% if '2.5' in row.mowing_height %}selected{% endif %}>2.5"</option>
+                      <option value="2.75-3" {% if '2.75-3' in row.mowing_height %}selected{% endif %}>2.75-3"</option>
+                      <option value="3.5-4" {% if '3.5-4' in row.mowing_height %}selected{% endif %}>3.5-4"</option>
+                      <option value="4+" {% if '4+' in row.mowing_height %}selected{% endif %}>4+"</option>
                     </select>
                   </div>
 
-                  <!-- PGRs Used? Yes/no -->
-                  <div class="mb-3">
-                    <label for="pgrs_used" class="form-label">PGRs Used:</label>
-                    <select id="pgrs_used"  class="form-select form-control" name="pgrs_used">
-                      <option value="yes" {% if 'yes' in row.pgrs_used %}selected{% endif %}>Yes</option>
-                      <option value="no" {% if 'no' in row.pgrs_used %}selected{% endif %}>No</option>
-                    </select>
-                  </div>
-
-                  <!-- mowing method -->
-
-                  <div class="mb-3">
-                    <label for="mowing_method" class="form-label">Mowing Method:</label>
-                    <select  class="form-select form-control" name="mowing_method">
-                      <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
-                      <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
-                      <option value="both" {% if 'both' in row.mowing_method %}selected{% endif %}>Both</option>
-                    </select>
-                  </div>
-
-                  <!-- are clippings collected? -->
                   <div class="mb-3">
                     <label for="clippings_collected" class="form-label">Clippings Collected:</label>
-                    <select  class="form-select form-control" name="clippings_collected">
-                      <option value="yes" {% if 'yes' in row.clippings_collected %}selected{% endif %}>Yes</option>
+                    <select class="form-select form-control" name="clippings_collected">
                       <option value="no" {% if 'no' in row.clippings_collected %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.clippings_collected %}selected{% endif %}>Yes</option>
                     </select>
                   </div>
 
