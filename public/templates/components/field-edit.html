@@ -1,4 +1,4 @@
-<h3>Edit Field Details</h3>
+<h3>Field Information</h3>
 <form method="POST" action="/fields/{{ row.id }}">
 
   <div class="row">
@@ -16,30 +16,30 @@
             <div class="accordion-body">
               <div class="row form-group">
                 <div class="mb-3">
-                  <label for="name" class="form-label">Name:</label>
-                  <input required type="text" id="name" class="form-control" name="name" value="{{ row.name }}">
+                  <label for="name" class="form-label">Field Name:</label>
+                  <input  type="text" id="name" class="form-control" name="name" value="{{ row.name }}">
                 </div>
 
                 <div class="mb-3">
                   <label for="address" class="form-label">Address:</label>
-                  <input required type="text" id="address" class="form-control" name="address"
+                  <input  type="text" id="address" class="form-control" name="address"
                     value="{{ row.address }}">
                 </div>
 
                 <div class="row">
                   <div class="mb-3 col">
                     <label for="city" class="form-label">City:</label>
-                    <input required type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
+                    <input  type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
                   </div>
 
                   <div class="mb-3 col">
                     <label for="state" class="form-label">State:</label>
-                    <input required type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
+                    <input  type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
                   </div>
 
                   <div class="mb-3 col">
                     <label for="zip" class="form-label">Zip:</label>
-                    <input required type="text" id="zip" class="form-control" name="zip" value="{{ row.zip }}">
+                    <input  type="text" id="zip" class="form-control" name="zip" value="{{ row.zip }}">
                   </div>
                 </div>
                 <!-- color rating -->
@@ -61,14 +61,14 @@
                 <div class="form-group mb-3">
                   <label for="multiple_sport_usage">Multiple Sport Usage:</label>
                   <div class="form-check">
-                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
+                    <input  class="form-check-input" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_yes" value="yes" {{ row.multiple_sport_usage=='yes' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_yes">
                       Yes
                     </label>
                   </div>
                   <div class="form-check">
-                    <input required class="form-check-input" type="radio" name="multiple_sport_usage"
+                    <input  class="form-check-input" type="radio" name="multiple_sport_usage"
                       id="multiple_sport_usage_no" value="no" {{ row.multiple_sport_usage=='no' ? 'checked' : '' }}>
                     <label class="form-check-label" for="multiple_sport_usage_no">
                       No
@@ -78,7 +78,7 @@
 
                 <div class="mb-3">
                   <label for="sports_played" class="form-label">Sports Played:</label>
-                  <select required class="form-select" name="sports_played[]" multiple>
+                  <select  class="form-select" name="sports_played[]" multiple>
                     <option value="baseball" {% if 'baseball' in row.sports_played %}selected{% endif %}>Baseball
                     </option>
                     <option value="soccer" {% if 'soccer' in row.sports_played %}selected{% endif %}>Soccer</option>
@@ -123,7 +123,7 @@
               <div class="row">
                 <div class="form-group mb-3">
                   <label for="turfgrass_species_present">Turfgrass Species Present:</label>
-                  <select required class="form-select form-control" name="turfgrass_species_present[0]" multiple>
+                  <select class="form-select form-control" name="turfgrass_species_present[0]" multiple>
                     <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif
                       %}>
                       Tall Fescue
@@ -148,7 +148,7 @@
                         value="{{ row.establishment_method }}"> -->
 
                         <!-- select box (seed or sod) -->
-                      <select required class="form-select form-control" name="establishment_method">
+                      <select class="form-select form-control" name="establishment_method">
                         <option value="seed" {% if 'seed' in row.establishment_method %}selected{% endif %}>Seed</option>
                         <option value="sod" {% if 'sod' in row.establishment_method %}selected{% endif %}>Sod</option>
                       </select>
@@ -158,13 +158,13 @@
 
                     <div class="mb-3 col">
                       <label for="establishment_date" class="form-label">Establishment Date:</label>
-                      <input required type="date" id="establishment_date" class="form-control" name="establishment_date"
+                      <input type="date" id="establishment_date" class="form-control" name="establishment_date"
                         value="{{ row.establishment_date }}">
                     </div>
 
                     <div class="mb-3 col">
                       <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
-                      <select id="shade_or_sun" required class="form-select form-control" name="shade_or_sun">
+                      <select id="shade_or_sun" class="form-select form-control" name="shade_or_sun">
                         <option value="shade" {% if 'shade' in row.shade_or_sun %}selected{% endif %}>Shade</option>
                         <option value="sun" {% if 'sun' in row.shade_or_sun %}selected{% endif %}>Full Sun</option>
                       </select>
@@ -172,7 +172,7 @@
 
                     <div class="mb-3 col">
                       <label for="percent_shade" class="form-label">Percent Shade:</label>
-                      <input required type="text" class="form-control" name="percent_shade"
+                      <input type="text" class="form-control" name="percent_shade"
                         value="{{ row.percent_shade }}">
                     </div>
                   </div>
@@ -202,22 +202,22 @@
 
                     <div>
                       <!-- Radio button for 'More than 2x/week' -->
-                      <input type="radio" id="mf_gt2x" required name="mowing_frequency" value="2+x/week" {% if '2+x/week'
+                      <input type="radio" id="mf_gt2x" name="mowing_frequency" value="2+x/week" {% if '2+x/week'
                         in row.mowing_frequency %}checked{% endif %}>
                       <label for="mf_gt2x">More than 2x/week</label><br>
 
                       <!-- Radio button for '2x/week' -->
-                      <input id="mf_2x" type="radio" required name="mowing_frequency" value="2x/week" {% if '2x/week' in
+                      <input id="mf_2x" type="radio" name="mowing_frequency" value="2x/week" {% if '2x/week' in
                         row.mowing_frequency %}checked{% endif %}>
                       <label for="mf_2x">2x/week</label><br>
 
                       <!-- Radio button for '1x/week' -->
-                      <input id="mf_1x" type="radio" required name="mowing_frequency" value="1x/week" {% if '1x/week' in
+                      <input id="mf_1x" type="radio" name="mowing_frequency" value="1x/week" {% if '1x/week' in
                         row.mowing_frequency %}checked{% endif %}>
                       <label for="mf_1x">1x/week</label><br>
 
                       <!-- Radio button for 'less than 1x/week' -->
-                      <input id="mf_lt1x" type="radio" required name="mowing_frequency" value="less than 1x/week" {%
+                      <input id="mf_lt1x" type="radio" name="mowing_frequency" value="less than 1x/week" {%
                         if 'less than 1x/week' in row.mowing_frequency %}checked{% endif %}>
                       <label for="mf_lt1x">Less than 1x/week</label><br>
                     </div>
@@ -225,7 +225,7 @@
 
                   <div class="mb-3">
                     <label for="mowing_height" class="form-label">Mowing Height:</label>
-                    <select required class="form-select form-control" name="mowing_height">
+                    <select  class="form-select form-control" name="mowing_height">
                       <option value="0-1" {% if '0-1' in row.mowing_height %}selected{% endif %}>0-1"</option>
                       <option value="1-2" {% if '1-2' in row.mowing_height %}selected{% endif %}>1-2"</option>
                       <option value="2-3" {% if '2-3' in row.mowing_height %}selected{% endif %}>2-3"</option>
@@ -238,7 +238,7 @@
                   <!-- PGRs Used? Yes/no -->
                   <div class="mb-3">
                     <label for="pgrs_used" class="form-label">PGRs Used:</label>
-                    <select id="pgrs_used" required class="form-select form-control" name="pgrs_used">
+                    <select id="pgrs_used"  class="form-select form-control" name="pgrs_used">
                       <option value="yes" {% if 'yes' in row.pgrs_used %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.pgrs_used %}selected{% endif %}>No</option>
                     </select>
@@ -248,7 +248,7 @@
 
                   <div class="mb-3">
                     <label for="mowing_method" class="form-label">Mowing Method:</label>
-                    <select required class="form-select form-control" name="mowing_method">
+                    <select  class="form-select form-control" name="mowing_method">
                       <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
                       <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
                       <option value="both" {% if 'both' in row.mowing_method %}selected{% endif %}>Both</option>
@@ -258,7 +258,7 @@
                   <!-- are clippings collected? -->
                   <div class="mb-3">
                     <label for="clippings_collected" class="form-label">Clippings Collected:</label>
-                    <select required class="form-select form-control" name="clippings_collected">
+                    <select  class="form-select form-control" name="clippings_collected">
                       <option value="yes" {% if 'yes' in row.clippings_collected %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.clippings_collected %}selected{% endif %}>No</option>
                     </select>
@@ -295,7 +295,7 @@
                 <div class="form-group mb-3">
                   <div class="mb-3">
                     <label for="irrigation_system" class="form-label">Irrigation System:</label>
-                    <select required class="form-select form-control" name="irrigation_system">
+                    <select  class="form-select form-control" name="irrigation_system">
                       <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
                     </select>
@@ -303,7 +303,7 @@
 
                   <div class="mb-3">
                     <label for="water_source" class="form-label">Water Source:</label>
-                    <select required class="form-select form-control" name="water_source">
+                    <select  class="form-select form-control" name="water_source">
                       <option value="well" {% if 'well' in row.water_source %}selected{% endif %}>Well</option>
                       <option value="town water" {% if 'town water' in row.water_source %}selected{% endif %}>Town Water
                       </option>
@@ -315,7 +315,7 @@
 
                   <div class="mb-3">
                     <label for="irrigation_frequency" class="form-label">Irrigation Frequency:</label>
-                    <select required class="form-select form-control" name="irrigation_frequency">
+                    <select  class="form-select form-control" name="irrigation_frequency">
                       <option value="5+x/week" {% if '5+x/week' in row.irrigation_frequency %}selected{% endif %}>
                         5+x/week</option>
                       <option value="2-4x/week" {% if '2-4x/week' in row.irrigation_frequency %}selected{% endif %}>
@@ -327,7 +327,7 @@
 
                   <div class="mb-3">
                     <label for="portable_system" class="form-label">Portable System Used:</label>
-                    <select required class="form-select form-control" name="portable_system">
+                    <select  class="form-select form-control" name="portable_system">
                       <option value="yes" {% if 'yes' in row.portable_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.portable_system %}selected{% endif %}>No</option>
                     </select>
@@ -335,7 +335,7 @@
 
                   <div class="mb-3">
                     <label for="wetting_agents" class="form-label">Wetting Agents Used:</label>
-                    <select required class="form-select form-control" name="wetting_agents">
+                    <select  class="form-select form-control" name="wetting_agents">
                       <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.wetting_agents %}selected{% endif %}>No</option>
                     </select>

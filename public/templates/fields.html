@@ -5,6 +5,12 @@
 <div class="container">
     <h2>My Fields</h2>
 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <p> Welcome, {{ auth_info.user }}. </p>
+        <p> This is the Athletic Field Assessment Tool. Below, you can see the fields you have added. Click on a field to view its history or to edit it. </p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- if message is set -->
     {% if message is defined %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
