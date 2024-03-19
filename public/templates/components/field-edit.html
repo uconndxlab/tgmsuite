@@ -122,23 +122,26 @@
               <div class="row">
                 <div class="form-group mb-3">
                   <label for="turfgrass_species_present">Turfgrass Species Present:</label>
-                  <select class="form-select form-control" name="turfgrass_species_present[0]" multiple>
-                    <option value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}selected{% endif
-                      %}>
-                      Tall Fescue
-                    </option>
-                    <option value="fine leaf fescue" {% if 'fine leaf fescue' in row.turfgrass_species_present
-                      %}selected{% endif %}>Fine Leaf Fescue
-                    </option>
-                    <option value="perennial ryegrass" {% if 'perennial ryegrass' in row.turfgrass_species_present
-                      %}selected{% endif %}>Perennial Ryegrass
-                    </option>
-                    <option value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present
-                      %}selected{% endif %}>
-                      Kentucky Bluegrass</option>
-                    <option value="other" {% if 'other' in row.turfgrass_species_present %}selected{% endif %}>Other
-                    </option>
-                  </select>
+                  <div class="form-check">
+                    <input id="tall_fescue" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="tall_fescue">Tall Fescue</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="perennial_ryegrass" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="perennial ryegrass" {% if 'perennial ryegrass' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="perennial_ryegrass">Perennial Ryegrass</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="kentucky_bluegrass" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="kentucky_bluegrass">Kentucky Bluegrass</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="fine_fescue" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="fine fescue" {% if 'fine fescue' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="fine_fescue">Fine Fescue</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="other" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="other" {% if 'other' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="other">Other</label>
+                  </div>
 
                   <div class="row mt-3">
                     <div class="mb-3 col">
@@ -164,15 +167,16 @@
                     <div class="mb-3 col">
                       <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
                       <select id="shade_or_sun" class="form-select form-control" name="shade_or_sun">
-                        <option value="shade" {% if 'shade' in row.shade_or_sun %}selected{% endif %}>Shade</option>
-                        <option value="sun" {% if 'sun' in row.shade_or_sun %}selected{% endif %}>Full Sun</option>
-                      </select>
+                        <option {% if row.shade_or_sun is null or 'sun' in row.shade_or_sun %}selected{% endif %} value="sun">Full Sun</option>
+                        <option {% if 'shade' in row.shade_or_sun %}selected{% endif %} value="shade">Partial Shade</option>
+                    </select>
+                    
                     </div>
 
-                    <div class="mb-3 col">
+                    <div class="mb-3 col invisible" id="percent_shade_wrap">
                       <label for="percent_shade" class="form-label">Percent Shade:</label>
-                      <input type="text" class="form-control" name="percent_shade"
-                        value="{{ row.percent_shade }}">
+                      <input id="percent_shade" type="text" class="form-control" name="percent_shade"
+                        value="{{ row.percent_shade or 0}}">
                     </div>
                   </div>
                 </div>
@@ -370,87 +374,14 @@
 </div>
 
 <script>
-  // if each field per form-group is filled out, then the form-group is valid
-  // if all form-groups are valid, then the form is valid
-  // if the form is valid, then the submit button is enabled
-  // if the form is invalid, then the submit button is disabled
-
-  // check all fields for validity and then add the valid class to their parent form-group
-  function checkValidity() {
-    var form_groups = document.querySelectorAll('.form-group');
-    var form_valid = true;
-
-    form_groups.forEach(function (form_group) {
-      let form_group_valid = true;
-      form_group.classList.remove('invalid');
-
-      let parent_accordion = form_group.closest('.accordion-item');
-      parent_accordion.classList.remove('invalid');
-
-      var fields = form_group.querySelectorAll('[required]');
-
-      fields.forEach(function (field) {
-        if (field.type === 'checkbox' || field.type === 'radio') {
-          // For checkboxes and radio buttons, check if any of them are checked
-          let isAnyChecked = false;
-          var fieldGroup = document.querySelectorAll('[name="' + field.name + '"]');
-          fieldGroup.forEach(function (option) {
-            if (option.checked) {
-              isAnyChecked = true;
-            }
-          });
-
-          if (isAnyChecked) {
-            console.log(field.name);
-            console.log("valid!");
-          } else {
-            form_group.classList.add('invalid');
-            form_group_valid = false;
-
-            parent_accordion.classList.add('invalid');
-            form_valid = false;
-
-            console.log(field.name);
-            console.log("invalid!");
-          }
-        } else {
-          // For other input fields, check if the value is not empty
-          if (field.value !== '') {
-            console.log(field.name);
-            console.log("valid!");
-          } else {
-            form_group.classList.add('invalid');
-            form_group_valid = false;
-
-            parent_accordion.classList.add('invalid');
-            form_valid = false;
-
-            console.log(field.name);
-            console.log("invalid!");
-          }
-        }
-      });
-    });
-
-    var valid_form_groups = document.querySelectorAll('.form-group.valid');
-
-    if (form_valid) {
-      document.querySelector('button[type="submit"]').disabled = false;
-    } else {
-      document.querySelector('button[type="submit"]').disabled = true;
-    }
+ // if sun_or_shade changes to shade, show percent_shade, otherwise hide it
+document.getElementById('shade_or_sun').addEventListener('change', function() {
+  if (this.value === 'shade') {
+    document.getElementById('percent_shade_wrap').classList.remove('invisible');
+  } else {
+    document.getElementById('percent_shade_wrap').classList.add('invisible');
   }
-
-
-  // check validity on input
-  document.addEventListener('input', function (event) {
-    checkValidity();
-  });
-
-  // check validity on load
-  window.addEventListener('load', function (event) {
-    checkValidity();
-  });
+});
 
 
 </script>
