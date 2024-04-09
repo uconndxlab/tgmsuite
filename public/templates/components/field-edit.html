@@ -266,7 +266,7 @@
 
                 <div class="form-group mb-3">
                   <div class="mb-3">
-                    <label for="irrigation_system" class="form-label">Irrigation System:</label>
+                    <label for="irrigation_system" class="form-label">Irrigation:</label>
                     <select  class="form-select form-control" name="irrigation_system">
                       <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
@@ -275,14 +275,22 @@
 
                   <div class="mb-3">
                     <label for="water_source" class="form-label">Water Source:</label>
-                    <select  class="form-select form-control" name="water_source">
-                      <option value="well" {% if 'well' in row.water_source %}selected{% endif %}>Well</option>
-                      <option value="town water" {% if 'town water' in row.water_source %}selected{% endif %}>Town Water
-                      </option>
-                      <option value="greywater system" {% if 'greywater system' in row.water_source %}selected{% endif
-                        %}>Greywater
-                        System</option>
-                    </select>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="water_source[]" value="well" {% if 'well' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="well">Well</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="water_source[]" value="pond" {% if 'pond' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="pond">Pond</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="water_source[]" value="town water" {% if 'town water' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="town water">Town Water</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="water_source[]" value="greywater system" {% if 'greywater system' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="greywater system">Greywater System</label>
+                    </div>
                   </div>
 
                   <div class="mb-3">
@@ -298,18 +306,18 @@
                   </div>
 
                   <div class="mb-3">
-                    <label for="portable_system" class="form-label">Portable System Used:</label>
-                    <select  class="form-select form-control" name="portable_system">
-                      <option value="yes" {% if 'yes' in row.portable_system %}selected{% endif %}>Yes</option>
-                      <option value="no" {% if 'no' in row.portable_system %}selected{% endif %}>No</option>
+                    <label for="portable_system" class="form-label">System Used:</label>
+                    <select class="form-select form-control" name="portable_system">
+                      <option value="in_ground" {% if 'in_ground' in row.portable_system %}selected{% endif %}>In ground</option>
+                      <option value="portable" {% if 'portable' in row.portable_system %}selected{% endif %}>Portable</option>
                     </select>
                   </div>
 
                   <div class="mb-3">
                     <label for="wetting_agents" class="form-label">Wetting Agents Used:</label>
                     <select  class="form-select form-control" name="wetting_agents">
-                      <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.wetting_agents %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
                     </select>
                   </div>
 
