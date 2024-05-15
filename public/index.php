@@ -64,7 +64,7 @@ $app->get('/home', function (Request $request, Response $response, $args) use ($
     $params = array('auth_info' => $auth_info);
 
     if ($auth_info['is_authenticated']) {
-        return $view->render($response, 'fields.html', $params);
+        header('Location: /fields');
     } else {
         return $view->render($response, 'home.html', $params);
     }
