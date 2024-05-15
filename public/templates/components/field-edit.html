@@ -276,20 +276,20 @@
                   <div class="mb-3">
                     <label for="water_source" class="form-label">Water Source:</label>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="water_source[]" value="well" {% if 'well' in row.water_source %}checked{% endif %}>
+                      <input id="well" class="form-check-input" type="checkbox" name="water_source[]" value="well" {% if 'well' in row.water_source %}checked{% endif %}>
                       <label class="form-check-label" for="well">Well</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="water_source[]" value="pond" {% if 'pond' in row.water_source %}checked{% endif %}>
+                      <input id="pond" class="form-check-input" type="checkbox" name="water_source[]" value="pond" {% if 'pond' in row.water_source %}checked{% endif %}>
                       <label class="form-check-label" for="pond">Pond</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="water_source[]" value="town water" {% if 'town water' in row.water_source %}checked{% endif %}>
-                      <label class="form-check-label" for="town water">Town Water</label>
+                      <input id="town_water" class="form-check-input" type="checkbox" name="water_source[]" value="town water" {% if 'town water' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="town_water">Town Water</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="water_source[]" value="greywater system" {% if 'greywater system' in row.water_source %}checked{% endif %}>
-                      <label class="form-check-label" for="greywater system">Greywater System</label>
+                      <input id="greywater_system" class="form-check-input" type="checkbox" name="water_source[]" value="greywater system" {% if 'greywater system' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="greywater_system">Greywater System</label>
                     </div>
                   </div>
 

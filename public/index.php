@@ -1,10 +1,12 @@
 <?php
-    session_start();
+session_start();
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+
 require __DIR__ . '/../vendor/autoload.php';
 require 'AuthMiddleware.php';
 
@@ -23,7 +25,8 @@ $app = AppFactory::create();
 $authMiddleware = new AuthMiddleware();
 $isAuthenticated = $authMiddleware->isAuthenticated();
 
-function dd(...$vars) {
+function dd(...$vars)
+{
     foreach ($vars as $var) {
         var_dump($var);
     }
@@ -32,16 +35,16 @@ function dd(...$vars) {
 
 
 
-if($isAuthenticated) {
+if ($isAuthenticated) {
     $user_id = $_SESSION['user_id'];
     $sql = "SELECT * FROM users WHERE id = '$user_id'";
     $result = $db->query($sql);
     $row = $result->fetchArray(SQLITE3_ASSOC);
     $user['id'] = $row['id'];
-    $user['name'] = $row['name'] . " yeep"  ;
+    $user['name'] = $row['name'] . " yeep";
     $user['email'] = $row['email'];
 
-    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => $_SESSION['user_id'], 'user' => $user['email'], 'name' => $user['name'] );
+    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => $_SESSION['user_id'], 'user' => $user['email'], 'name' => $user['name']);
 } else {
     $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => 0);
 }
@@ -58,7 +61,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
 });
 
 $app->get('/home', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
-   
+
     // load the home template
     $view = Twig::fromRequest($request);
     $params = array('auth_info' => $auth_info);
@@ -68,7 +71,6 @@ $app->get('/home', function (Request $request, Response $response, $args) use ($
     } else {
         return $view->render($response, 'home.html', $params);
     }
-
 });
 
 
@@ -81,8 +83,8 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
     $user_id = $_SESSION['user_id'];
 
     $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id";
-    
-    
+
+
     // Query the "fields" table to get all the rows
     $results = $db->query($query_string);
 
@@ -98,7 +100,6 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
     $params = ['rows' => $rows];
     $params['auth_info'] = $auth_info;
     return $view->render($response, 'fields.html', $params);
-
 })->add($authMiddleware);
 
 
@@ -106,7 +107,7 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
 
 $app->get('/fields/{id}', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
-   $user_id = $auth_info['user_id'];
+    $user_id = $auth_info['user_id'];
     // Query the "fields" table to get all the rows and make sure the user has access to this field
     $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
     $results = $db->query($query_string);
@@ -129,7 +130,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     $results = $db->query('SELECT r.*, u.email
                       FROM reports AS r
                       JOIN users AS u ON r.evaluator_id = u.id
-                      WHERE r.field_id = ' . $args['id'] .' 
+                      WHERE r.field_id = ' . $args['id'] . ' 
                       ORDER BY r.evaluation_date DESC');
 
     $reports = [];
@@ -145,10 +146,9 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     $params['auth_info'] = $auth_info;
 
 
-  
+
     // Render the "fields" template with the rows array
     return $view->render($response, 'single-field.html', $params);
-
 });
 
 // field edit
@@ -157,7 +157,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
     // Query the "fields" table to get all the rows
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     $view = Twig::fromRequest($request);
-    
+
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
     $rows = [];
@@ -165,20 +165,19 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
         $rows[] = $row;
     }
 
-    
+
 
     // Render the "fields" template with the rows array
     $params = ['field' => $rows[0], 'edit' => true];
     $params['auth_info'] = $auth_info;
     return $view->render($response, 'single-field.html', $params);
-
 });
 
 
 /** post request for updating a field */
 
 $app->post("/fields/{id}", function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
-   
+
     $data = $request->getParsedBody();
     $id = $args['id'];
     $data['id'] = $id;
@@ -192,11 +191,15 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $establishment_method = $data['establishment_method'];
     $establishment_date = $data['establishment_date'];
 
-    
+
 
     $irrigation_system = $data['irrigation_system'];
     $water_source = $data['water_source'];
-    $irrigation_frequency = $data['irrigation_frequency'];  
+
+    // water source is a comma delimited in the database, but should be an array in the form
+    $water_source = implode(",", $data['water_source']);
+
+    $irrigation_frequency = $data['irrigation_frequency'];
     $portable_system = $data['portable_system'];
     $wetting_agents = $data['wetting_agents'];
 
@@ -206,7 +209,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $sports_played = implode(",", $data['sports_played']);
 
     // this is a comma delimited in the database, but should be an array in the form
-    $turfgrass_species_present = implode(',',$data['turfgrass_species_present']);
+    $turfgrass_species_present = implode(',', $data['turfgrass_species_present']);
 
     $mowing_frequency = $data['mowing_frequency'];
     $mowing_height = $data['mowing_height'];
@@ -216,7 +219,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $description = "field description";
     $shade_or_sun = $data['shade_or_sun'];
 
-    if($id != 0) {
+    if ($id != 0) {
         $q = "UPDATE fields SET 
         name = '$name', 
         address = '$address', 
@@ -240,7 +243,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         mowing_method = '$mowing_method',
         pgrs_used = '$pgrs_used',
         description = '$description' 
-        WHERE id = $id"; 
+        WHERE id = $id";
     } else {
         // insert query instead of update
         $q = "INSERT INTO fields (name, 
@@ -288,7 +291,6 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$mowing_method',
         '$pgrs_used',
         '$description')";
-        
     }
 
     //dd($q);
@@ -309,7 +311,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 
 
     // did the query work?
-    if(!$stmnt) {
+    if (!$stmnt) {
         $msg = "Error updating field";
     } else {
         $msg = "Field Updated";
@@ -320,19 +322,17 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
     echo $new_id;
-   
+
 
     // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
-    if($id == 0) {
+    if ($id == 0) {
         $id = $new_id;
-        
+
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     } else {
-        
+
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     }
-
-
 });
 
 // route to register a new user via the form
@@ -344,7 +344,7 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
     $password_confirm = $data['password_confirm'];
 
     // check if the passwords match... and if they don't... redirect to the login page
-    if($password != $password_confirm) {
+    if ($password != $password_confirm) {
         $msg = "Passwords do not match";
         $view = Twig::fromRequest($request);
         $params = ['field' => $data, 'edit' => false, 'message' => $msg];
@@ -359,7 +359,7 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
     }
 
     // if the email is already in the database, then redirect to the login page
-    if(count($rows) > 0) {
+    if (count($rows) > 0) {
         $msg = "Email already in use";
         $view = Twig::fromRequest($request);
         $params = ['field' => $data, 'edit' => false, 'message' => $msg];
@@ -383,11 +383,9 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
     $msg = "User Registered: " . $email;
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    
+
     // redirect to /fields if the user is logged in
     return $response->withHeader('Location', '/fields')->withStatus(302);
-
-
 });
 
 $app->get("/logout", function (Request $request, Response $response, $args) use ($db, $twig) {
@@ -409,7 +407,7 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
     }
 
     // if the email is not in the database, then redirect to the login page
-    if(count($rows) == 0) {
+    if (count($rows) == 0) {
         $msg = "Email not found";
         $view = Twig::fromRequest($request);
         $params = ['field' => $data, 'edit' => false, 'message' => $msg];
@@ -431,10 +429,9 @@ $app->post('/user/login', function (Request $request, Response $response, $args)
     $msg = "User Logged In: " . $user['email'];
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    
+
     // redirect to /fields if the user is logged in
     return $response->withHeader('Location', '/fields')->withStatus(302);
-
 });
 
 // route to delete a field
@@ -454,7 +451,6 @@ $app->post('/fields/{id}/delete', function (Request $request, Response $response
 
 
     return $response->withHeader('Location', '/fields')->withStatus(302);
-
 });
 
 // route to delete a report
@@ -481,7 +477,7 @@ $app->post('/report/{id}/delete', function (Request $request, Response $response
     $db->exec("DELETE FROM color_reports WHERE report_id = $id");
     $db->exec("DELETE FROM photos WHERE report_id = $id");
     $db->exec("DELETE FROM fertilization_events WHERE report_id = $id");
-    return $response->withHeader('Location', '/fields/'. $field_id)->withStatus(302);
+    return $response->withHeader('Location', '/fields/' . $field_id)->withStatus(302);
 });
 
 // route to conduct a turf rating
@@ -504,16 +500,15 @@ $app->get('/fields/{id}/quality-checklist', function (Request $request, Response
     $view = Twig::fromRequest($request);
 
 
-    
+
 
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'quality-checklist.html', $params);
-
 });
 
 // route to submit a photo for a field
-$app->get('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->get('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) {
 
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
@@ -533,12 +528,11 @@ $app->get('/fields/{id}/submit-photo', function (Request $request, Response $res
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'submit-photo.html', $params);
-
 });
 
 // route to submit a topdressing report for a field
 
-$app->get('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->get('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
 
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
@@ -558,10 +552,9 @@ $app->get('/fields/{id}/submit-topdressing', function (Request $request, Respons
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'submit-topdressing.html', $params);
-
 });
 
-$app->get('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->get('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) {
 
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
@@ -569,7 +562,7 @@ $app->get('/fields/{id}/submit-fertilization', function (Request $request, Respo
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
     }
- 
+
     $params = array(
         'field' => $rows[0],
         'field_id' => $args['id'],
@@ -581,7 +574,6 @@ $app->get('/fields/{id}/submit-fertilization', function (Request $request, Respo
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'submit-fert.html', $params);
-
 });
 
 $app->post('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) {
@@ -615,7 +607,7 @@ $app->post('/fields/{id}/submit-fertilization', function (Request $request, Resp
 
 // route to submit a color report for a field
 
-$app->get('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->get('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) {
 
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
@@ -635,11 +627,10 @@ $app->get('/fields/{id}/submit-color', function (Request $request, Response $res
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'submit-color.html', $params);
-
 });
 
 /** submit overseeding report */
-$app->get('/fields/{id}/submit-overseeding', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->get('/fields/{id}/submit-overseeding', function (Request $request, Response $response, $args) use ($db, $twig) {
 
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
     // select the single row
@@ -659,7 +650,6 @@ $app->get('/fields/{id}/submit-overseeding', function (Request $request, Respons
     // Render the "fields" template with the rows array
 
     return $view->render($response, 'submit-overseeding.html', $params);
-
 });
 
 /** post route for overseeding */
@@ -749,7 +739,7 @@ $app->post('/fields/{id}/submit-color', function (Request $request, Response $re
 
 // route to save a photo for a field
 
-$app->post('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) { 
+$app->post('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $uploadedFiles = $request->getUploadedFiles();
     $field_id = $args['id'];
@@ -782,15 +772,15 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
         $msg = "Photo Saved";
     } else {
 
-        
+
         $errorCode = $uploadedFile->getError();
         $msg = "Failed to upload photo";
         // get the error code
-        
+
 
         $msg .= " Error code: $errorCode";
     }
-    
+
 
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
@@ -833,7 +823,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $db->exec("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES ($report_id, $turf_density, $smoothness_rating, $weeds_rating, $stones_at_surface, $depressions, $turf_rating, $surface_rating, $overall_rating)");
 
-    
+
 
     $msg = "Turf Rating Saved";
 
@@ -857,7 +847,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 });
 
 // route for /report/{id}/view
-$app->get('/report/{id}/view', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info ) {
+$app->get('/report/{id}/view', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
 
     $results = $db->query('SELECT * FROM reports WHERE id = ' . $args['id']);
     // select the single row
@@ -879,7 +869,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $evaluation = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
         case 'color':
             $results = $db->query('SELECT * FROM color_reports WHERE report_id = ' . $args['id']);
             // select the single row
@@ -889,7 +879,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $color_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
         case 'photo':
             $results = $db->query('SELECT * FROM photos WHERE report_id = ' . $args['id']);
             // select the single row
@@ -899,7 +889,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $photo = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
         case 'fertilization':
             $results = $db->query('SELECT * FROM fertilization_reports WHERE report_id = ' . $args['id']);
             // select the single row
@@ -909,7 +899,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $fertilization_event = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
 
         case 'topdressing':
             $results = $db->query('SELECT * FROM topdressing_reports WHERE report_id = ' . $args['id']);
@@ -920,7 +910,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $topdressing_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
 
         case 'overseeding':
             $results = $db->query('SELECT * FROM overseed_reports WHERE report_id = ' . $args['id']);
@@ -931,7 +921,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             }
             $overseeding_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
-        break;
+            break;
     }
 
     $content = $rows[0];
@@ -947,7 +937,6 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
     $view = Twig::fromRequest($request);
 
     return $view->render($response, 'report.html', $params);
-
 });
 
 // route for /field/create
@@ -963,7 +952,6 @@ $app->get('/field/create', function (Request $request, Response $response, $args
     );
 
     return $view->render($response, 'single-field.html', $params);
-
 })->add($authMiddleware);
 
 
@@ -972,4 +960,3 @@ $app->run();
 
 // Close the database connection
 $db->close();
-?>
