@@ -7,19 +7,41 @@
 
             <div class="field-lede">
                 <!-- Back to Fields -->
-                <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+                <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
                             <!-- if the field id is set -->
                 {% if field.id is defined %}
-                <h2> {{ field.name }}</h2>
-                {% if field.address %}
-                <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
-                {% endif %}
-                <!-- button group for view or edit-->
-                <div class="btn-group" role="group">
-                    <a class="btn btn-secondary {% if edit == true %} active {% endif %}"  href="/fields/{{ field.id }}/edit">Edit</a>
-                    <a class="btn btn-secondary {% if edit == false %} active {% endif %}" href="/fields/{{ field.id }}">History</a>
-                    <!-- color report -->
+
+               <!-- card of field info -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ field.name }}</h5>
+                        {% if field.address %}
+                        <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+             
+                      {% else %}
+                        <p class="card-text">No address provided</p>
+                        {% endif %}
+
+                        
+                    </div>
+                    <div class="card-footer">
+                       
+                        <a href="/fields/{{ field.id }}" class="
+                        {% if edit == false %} active {% endif %}
+                        btn btn-sm btn-outline-secondary">
+                            <!-- bs info icoon-->
+                            <i class="bi-info-circle"></i>
+                            View Field Reports</a>
+
+
+                        <a href="/fields/{{ field.id }}/edit" class="
+                        btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
+                        <i class="bi-pencil"></i>
+                        Edit</a>
+
+                    </div>
                 </div>
+
 
 
                 {% endif %}
@@ -45,11 +67,12 @@
 
             {% endif %}
 
-            {% if edit == false %}
+            {% if edit == false %}              
+
                 <h3>Field Reports</h3>
                 <!-- dropdown button for "Add Report" with options of "Turf Assessment" and "Fertilization Event"-->
-                <div class="btn-group float-end">
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                         Add Report
                         <span class="visually-hidden">Add Report</span>
                     </button>
@@ -83,40 +106,29 @@
                             <td>{{ report.type }}</td>
                             <td>{{ report.email }}</td>
                             <td>
-                                <a href="/report/{{ report.id }}/view" class="btn btn-sm btn-outline-primary">View</a>
+                                <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View Report</a>
                                 <!-- delete -->
                                 <form class="d-inline" action="/report/{{ report.id }}/delete" method="post">
                                     <input type="hidden" name="id" value="{{ report.id }}">
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-link text-danger">
+                                        <i class="bi-trash"></i> <!-- material design trash icon -->
+                                        Delete Report
+                                    </button>
                                 </form>
                             </td>
                         </tr>
                         {% endfor %}
 
-                        <!-- sample data for now -->
-                        <!-- <tr>
-                            <td>23 May 2023</td>
-                            <td>Quality Checklist</td>
-                            <td>John Doe</td>
-                        </tr>
-                        <tr>
-                            <td>20 May 2023</td>
-                            <td>Color Report</td>
-                            <td>John Doe</td>
-                        </tr>
-
-                        <tr>
-                            <td>18 May 2023</td>
-                            <td>Pest Management Report</td>
-                            <td>Joel Salisbury</td>
-                        </tr> -->
                     </tbody>
                     </table>
                                     <!-- extra action buttons like delete -->
                 <div class="btn-group">
                     <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
                         <input type="hidden" name="id" value="{{ field.id }}">
-                        <button type="submit" class="btn btn-sm btn-outline-secondary">Delete Field</button>
+                        <button type="submit" class="btn btn-sm btn-link text-danger">
+                            <i class="bi-trash"></i> <!-- material design trash icon -->
+                            Delete Field
+                        </button>
                     </form>
                 </div>
                 {% endif %}
