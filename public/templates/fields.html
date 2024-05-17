@@ -4,6 +4,11 @@
 
 <div class="container">
     <h2>My Fields</h2>
+    <div class="row mb-3">
+        <div class="col-12">
+            <a hx-boost="true" href="/field/create" class="btn btn-primary btn-lg">Add Field</a>
+        </div>
+    </div>
 
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <p> Welcome, {{ auth_info.user }}. </p>
@@ -20,11 +25,7 @@
     {% endif %}
 
 
-    <div class="row mb-3">
-        <div class="col-12">
-            <a hx-boost="true" href="/field/create" class="btn btn-primary">Add Field</a>
-        </div>
-    </div>
+
     <div class="row">
         {% for row in rows %}
             <div class="col-4 mb-2">

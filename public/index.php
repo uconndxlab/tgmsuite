@@ -581,7 +581,7 @@ $app->get('/fields/{id}/submit-fertilization', function (Request $request, Respo
 $app->post('/fields/{id}/submit-fertilization', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d', strtotime($data['date']));
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'fertilization')";
@@ -658,7 +658,7 @@ $app->get('/fields/{id}/submit-overseeding', function (Request $request, Respons
 $app->post('/fields/{id}/submit-overseeding', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d', strtotime($data['date']));
     $evaluator_id = $_SESSION['user_id'];
 
     // species is a comma delimited in the database, but should be an array in the form
@@ -691,7 +691,11 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
 $app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+   
+    // there should be a date field in the form ($args['topdressing_date']), which should be a date string and should be converted to a date object
+    $date = $data['topdressing_date'];
+    $date = date('Y-m-d', strtotime($date));
+
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'topdressing')";
@@ -699,6 +703,7 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $stmt->bindValue(1, $date);
     $stmt->bindValue(2, $evaluator_id);
     $stmt->bindValue(3, $field_id);
+
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 

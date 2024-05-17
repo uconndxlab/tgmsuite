@@ -64,7 +64,8 @@
                     <!-- field for date -->
                     <div class="mb-3">
                         <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date">
+                        <!-- default to today's date -->
+                        <input type="date" class="form-control" id="date" name="topdressing_date" value="{{ "now"|date("Y-m-d") }}">
                     </div>
 
                     <!-- field for rate -->
