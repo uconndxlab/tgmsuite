@@ -1,94 +1,108 @@
 {% include 'parts/header.html' %}
 <div class="row">
-        <div class="col-3">
-            <!-- material design edit icon -->
-            
+    <div class="col-3">
+        <!-- material design edit icon -->
 
 
-            <div class="field-lede">
-                <!-- Back to Fields -->
-                <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
-                
-                <!-- if the field id is not 0 -->
-                {% if field.id != 0 %}
 
-               <!-- card of field info -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ field.name }}</h5>
-                        {% if field.address %}
-                        <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
-             
-                      {% else %}
-                        <p class="card-text">No address provided</p>
-                        {% endif %}
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
 
-                        
-                    </div>
-                    <div class="card-footer">
-                       
-                        <a href="/fields/{{ field.id }}" class="
+            <!-- if the field id is not 0 -->
+            {% if field.id != 0 %}
+
+            <!-- card of field info -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.name }}</h5>
+                    {% if field.address %}
+                    <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+
+                    {% else %}
+                    <p class="card-text">No address provided</p>
+                    {% endif %}
+
+
+                </div>
+                <div class="card-footer">
+
+                    <a href="/fields/{{ field.id }}" class="
                         {% if edit == false %} active {% endif %}
                         btn btn-sm btn-outline-secondary">
-                            <!-- bs info icoon-->
-                            <i class="bi-info-circle"></i>
-                            View Field Reports</a>
+                        <!-- bs info icoon-->
+                        <i class="bi-info-circle"></i>
+                        View Field Reports</a>
 
 
-                        <a href="/fields/{{ field.id }}/edit" class="
+                    <a href="/fields/{{ field.id }}/edit" class="
                         btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
                         <i class="bi-pencil"></i>
                         Edit</a>
 
-                    </div>
                 </div>
-
-
-
-                {% endif %}
             </div>
 
-           
+
+
+            {% endif %}
         </div>
-        
 
 
-        <div class="col-9">
-            <!-- if there is a message variable, display a dismissable alert -->
-            {% if message is defined %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endif %}
+    </div>
 
-              <!-- if it's the edit template, include edit form -->
-            {% if edit == true %}
-                {% include 'components/field-edit.html' with {'row' : field } %}
 
-            {% endif %}
 
-            {% if edit == false %}              
+    <div class="col-9">
+        <!-- if there is a message variable, display a dismissable alert -->
+        {% if message is defined %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
 
-                <h3>Field Reports</h3>
+        <!-- if it's the edit template, include edit form -->
+        {% if edit == true %}
+        {% include 'components/field-edit.html' with {'row' : field } %}
+
+        {% endif %}
+
+        {% if edit == false %}
+
+        <div class="row mb-4">
+            <div class="col-12 d-flex">
                 <!-- dropdown button for "Add Report" with options of "Turf Assessment" and "Fertilization Event"-->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-primary dropdown-toggle btn-lg dropdown-toggle-split"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Add Report
                         <span class="visually-hidden">Add Report</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Quality Checklist</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Quality
+                                Checklist</a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-color">Color Report</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-topdressing">Topdressing Report</a></li>
-                        <li> <a class="dropdown-item" href="/fields/{{ field.id }}/submit-overseeding">Overseeding Report</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-fertilization">Fertilization Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-topdressing">Topdressing
+                                Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-overseeding">Overseeding
+                                Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-fertilization">Fertilization
+                                Report</a></li>
                         <li><a class="dropdown-item" href="#">Pest Management</a></li>
                         <li><a class="dropdown-item" href="/fields/{{field.id}}/submit-photo">Add a Photo</a></li>
                     </ul>
                 </div>
-                
+            </div>
+        </div>
 
+
+        <div class="row">
+            <div class="col-12">
+                <h4>Report History</h4>
+            </div>
+            <div class="col-12">
+                <p>Below is a list of all reports for this field. Click on a report to view more details.</p>
 
                 <!-- combined table of evaluations, pest management reports, color reports and photo reports  (just date, type, and evaluator name)-->
                 <table class="table table-striped">
@@ -107,7 +121,8 @@
                             <td>{{ report.type }}</td>
                             <td>{{ report.email }}</td>
                             <td>
-                                <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View Report</a>
+                                <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View
+                                    Report</a>
                                 <!-- delete -->
                                 <form class="d-inline" action="/report/{{ report.id }}/delete" method="post">
                                     <input type="hidden" name="id" value="{{ report.id }}">
@@ -121,8 +136,8 @@
                         {% endfor %}
 
                     </tbody>
-                    </table>
-                                    <!-- extra action buttons like delete -->
+                </table>
+                <!-- extra action buttons like delete -->
                 <div class="btn-group">
                     <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
                         <input type="hidden" name="id" value="{{ field.id }}">
@@ -135,11 +150,10 @@
                 {% endif %}
 
             </div>
+        </div>
+    </div>
+</div>
 
 
-
-            </div>
-          
-
-            <!-- Include parts/footer.html -->
-            {% include 'parts/footer.html' %}
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}
