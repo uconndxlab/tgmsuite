@@ -182,42 +182,44 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $id = $args['id'];
     $data['id'] = $id;
     $name = $data['name'];
-    $address = $data['address'];
-    $city = $data['city'];
-    $state = $data['state'];
-    $zip = $data['zip'];
-    $color_rating = $data['color_rating'];
-    $percent_shade = $data['percent_shade'];
-    $establishment_method = $data['establishment_method'];
-    $establishment_date = $data['establishment_date'];
+    // $name might have a single quote in it, so we need to escape it
+    $name = str_replace("'", "''", $name);
+    
+    
 
+    $address = isset($data['address']) ? $data['address'] : '';
+    $city = isset($data['city']) ? $data['city'] : '';
+    $state = isset($data['state']) ? $data['state'] : '';
+    $zip = isset($data['zip']) ? $data['zip'] : '';
+    $color_rating = isset($data['color_rating']) ? $data['color_rating'] : '';
+    $percent_shade = isset($data['percent_shade']) ? $data['percent_shade'] : '';
+    $establishment_method = isset($data['establishment_method']) ? $data['establishment_method'] : '';
+    $establishment_date = isset($data['establishment_date']) ? $data['establishment_date'] : '';
 
-
-    $irrigation_system = $data['irrigation_system'];
-    $water_source = $data['water_source'];
-
+    $irrigation_system = isset($data['irrigation_system']) ? $data['irrigation_system'] : '';
+    
     // water source is a comma delimited in the database, but should be an array in the form
-    $water_source = implode(",", $data['water_source']);
+    $water_source = isset($data['water_source']) ? implode(",", $data['water_source']) : '';
 
-    $irrigation_frequency = $data['irrigation_frequency'];
-    $portable_system = $data['portable_system'];
-    $wetting_agents = $data['wetting_agents'];
+    $irrigation_frequency = isset($data['irrigation_frequency']) ? $data['irrigation_frequency'] : '';
+    $portable_system = isset($data['portable_system']) ? $data['portable_system'] : '';
+    $wetting_agents = isset($data['wetting_agents']) ? $data['wetting_agents'] : '';
 
-    $multiple_sport_usage = $data['multiple_sport_usage'];
-
-    // this is a comma delimited in the database, but should be an array in the form
-    $sports_played = implode(",", $data['sports_played']);
+    $multiple_sport_usage = isset($data['multiple_sport_usage']) ? $data['multiple_sport_usage'] : '';
 
     // this is a comma delimited in the database, but should be an array in the form
-    $turfgrass_species_present = implode(',', $data['turfgrass_species_present']);
+    $sports_played = isset($data['sports_played']) ? implode(",", $data['sports_played']) : '';
 
-    $mowing_frequency = $data['mowing_frequency'];
-    $mowing_height = $data['mowing_height'];
-    $mowing_method = $data['mowing_method'];
-    $pgrs_used = $data['pgrs_used'];
+    // this is a comma delimited in the database, but should be an array in the form
+    $turfgrass_species_present = isset($data['turfgrass_species_present']) ? implode(',', $data['turfgrass_species_present']) : '';
+
+    $mowing_frequency = isset($data['mowing_frequency']) ? $data['mowing_frequency'] : '';
+    $mowing_height = isset($data['mowing_height']) ? $data['mowing_height'] : '';
+    $mowing_method = isset($data['mowing_method']) ? $data['mowing_method'] : '';
+    $pgrs_used = isset($data['pgrs_used']) ? $data['pgrs_used'] : '';
 
     $description = "field description";
-    $shade_or_sun = $data['shade_or_sun'];
+    $shade_or_sun = isset($data['shade_or_sun']) ? $data['shade_or_sun'] : '';
 
     if ($id != 0) {
         $q = "UPDATE fields SET 

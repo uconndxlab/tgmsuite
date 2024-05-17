@@ -3,7 +3,11 @@
 <div class="card">
     <div class="card-body">
       <h5 class="card-title">{{ row.name }}</h5>
-      <p class="card-text">{{ row.address }}, {{row.city}}, {{row.state}}</p>
+
+      {% if row.address %}
+        <p class="card-text">{{ row.address }}, {{row.city}}, {{row.state}}</p>
+      {% endif %}
+
       <a class="btn btn-primary" href="/fields/{{ row.id }}" class="card-link">View</a>
 
     </div>

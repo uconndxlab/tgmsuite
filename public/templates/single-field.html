@@ -11,7 +11,9 @@
                             <!-- if the field id is set -->
                 {% if field.id is defined %}
                 <h2> {{ field.name }}</h2>
+                {% if field.address %}
                 <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
+                {% endif %}
                 <!-- button group for view or edit-->
                 <div class="btn-group" role="group">
                     <a class="btn btn-secondary {% if edit == true %} active {% endif %}"  href="/fields/{{ field.id }}/edit">Edit</a>
