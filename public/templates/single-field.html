@@ -8,8 +8,9 @@
             <div class="field-lede">
                 <!-- Back to Fields -->
                 <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
-                            <!-- if the field id is set -->
-                {% if field.id is defined %}
+                
+                <!-- if the field id is not 0 -->
+                {% if field.id != 0 %}
 
                <!-- card of field info -->
                 <div class="card">
