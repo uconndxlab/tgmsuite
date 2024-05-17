@@ -7,7 +7,10 @@
             <!-- Back to Fields -->
             <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
             <h2> {{ field.name }}</h2>
+
+            {% if field.address %}
             <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
+            {% endif %}
             <!-- button group for view or edit-->
             <div class="btn-group" role="group">
                 <a class="btn btn-secondary {% if edit == true %} active {% endif %}"
@@ -52,15 +55,52 @@
                         <label for="pre_germ" class="form-label
                         ">Pre-Germ Y/N</label>
                         <select class="form-select" id="pre_germ" name="pre_germ">
-                            <option value="yes">Yes</option>
                             <option value="no">No</option>
+                            <option value="yes">Yes</option>
                         </select>
                     </div>
 
                     <!-- field for species -->
+                    <!--Tall fescue  
+
+Perennial Ryegrass  
+
+Kentucky Bluegrass 
+
+Fine Fescue  
+
+Other  
+
+checkboxes
+-->
                     <div class="mb-3">
                         <label for="species" class="form-label">Species</label>
-                        <input type="text" class="form-control" id="species" name="species">
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="tall_fescue" name="species[]" value="tall_fescue">
+                            <label for="tall_fescue">Tall fescue</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="perennial_ryegrass" name="species[]" value="perennial_ryegrass">
+                            <label for="perennial_ryegrass">Perennial Ryegrass</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="kentucky_bluegrass" name="species[]" value="kentucky_bluegrass">
+                            <label for="kentucky_bluegrass">Kentucky Bluegrass</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fine_fescue" name="species[]" value="fine_fescue">
+                            <label for="fine_fescue">Fine Fescue</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="other" name="species[]" value="other">
+                            <label for="other">Other</label><br>
+                        </div>
+
                     </div>
                 </div>
             </div>

@@ -184,7 +184,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $name = $data['name'];
     // $name might have a single quote in it, so we need to escape it
     $name = str_replace("'", "''", $name);
-    
+
     
 
     $address = isset($data['address']) ? $data['address'] : '';
@@ -661,6 +661,9 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $date = date('Y-m-d H:ia');
     $evaluator_id = $_SESSION['user_id'];
 
+    // species is a comma delimited in the database, but should be an array in the form
+    $species = implode(",", $data['species']);
+
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'overseeding')";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $date);
@@ -675,7 +678,7 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $stmt->bindValue(2, $data['rate']);
     $stmt->bindValue(3, $data['formula']);
     $stmt->bindValue(4, $data['pre_germ']);
-    $stmt->bindValue(5, $data['species']);
+    $stmt->bindValue(5, $species);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
