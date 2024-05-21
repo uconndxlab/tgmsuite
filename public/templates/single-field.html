@@ -1,4 +1,6 @@
 {% include 'parts/header.html' %}
+
+
 <div class="row">
     <div class="col-3">
         <!-- material design edit icon -->
@@ -104,8 +106,40 @@
             <div class="col-12">
                 <p>Below is a list of all reports for this field. Click on a report to view more details.</p>
 
+                <!-- filter reports by type and date range -->
+
+                <form action="/fields/{{ field.id }}" method="get" hx-trigger="change">
+                    <div class="row my-3">
+                        <div class="col-4">
+                            <label for="type" class="form-label">Filter by Type</label>
+                            <select 
+                            hx-get="/fields/{{ field.id }}?type={{value}}"
+                            hx-trigger="change"
+                            hx-target="#report_results"
+                            hx-select="#report_results"
+                            class="form-select" name="type" id="type">
+                                <option value="">All</option>
+                                <option value="evaluation">Turf Assessment</option>
+                                <option value="fertilization">Fertilization Event</option>
+                                <option value="color">Color Report</option>
+                                <option value="topdressing">Topdressing Report</option>
+                                <option value="photo">Photo Report</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label for="start_date" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" name="start_date" id="start_date">
+                        </div>
+                        <div class="col-4">
+                            <label for="end_date" class="form-label">End Date</label>
+                            <input type="date" class="form-control" name="end_date" id="end_date">
+                        </div>
+                    </div>
+                </form>
+
+
                 <!-- combined table of evaluations, pest management reports, color reports and photo reports  (just date, type, and evaluator name)-->
-                <table class="table table-striped">
+                <table id="report_results" class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Date</th>

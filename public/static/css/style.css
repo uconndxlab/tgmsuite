@@ -16,6 +16,11 @@ html {
  
 }
 
+label {
+  font-weight: 600;
+
+}
+
 input[type="radio"], label {
   cursor: pointer;
 }
