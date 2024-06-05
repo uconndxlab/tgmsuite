@@ -268,8 +268,9 @@
                   <div class="mb-3">
                     <label for="irrigation_system" class="form-label">Irrigation:</label>
                     <select  class="form-select form-control" name="irrigation_system">
-                      <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
                       <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
+
+                      <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
                     </select>
                   </div>
 
