@@ -4,8 +4,8 @@
         <!-- material design edit icon -->
 
         <div class="field-lede">
-            <!-- Back to Fields -->
-            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Fields</a>
+            <!-- Back to Field -->
+            <a href="/fields/{{ field.id }}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
             <h2> {{ field.name }}</h2>
             <address>{{field.address }} {{field.city}} , {{field.state}} {{field.zip}}</address>
             <!-- button group for view or edit-->
@@ -20,139 +20,136 @@
 
     <div class="col-9">
         <form method="post" action="">
-        <div class="row">
-            <div class="col-12">
-                <h3>Quality Checklist</h3>
-            </div>
+            <div class="row">
+                <div class="col-12">
+                    <h3>Turf Quality Rating</h3>
+                </div>
 
-            <!-- new turf rating form  -->
+                <!-- new turf rating form  -->
 
-            <!-- bootstrap accordion -->
-            <div class="accordion" id="report">
-                
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Turf Rating
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                        data-bs-parent="#report">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="turfDensity" class="form-label">% Turf Density</label>
-                                        <select required id="turfDensity" name="turfDensity" class="form-select">
-                                            <option value="1">1 = 0-10</option>
-                                            <option value="2">2 = 11-20</option>
-                                            <option value="3">3 = 21-30</option>
-                                            <option value="4">4 = 31-40</option>
-                                            <option value="5">5 = 41-50</option>
-                                            <option value="6">6 = 51-60</option>
-                                            <option value="7">7 = 61-70</option>
-                                            <option value="8">8 = 71-80</option>
-                                            <option value="9">9 = 81-90</option>
-                                            <option value="10">10 = 91-100</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="smoothness" class="form-label">Smoothness</label>
-                                        <select required id="smoothness" name="smoothness" class="form-select">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="surfaceRating">Turf Rating # (Turf Cover Rating + Smoothness)</label>
-                                        <input required type="text" name="turfRating" class="form-control" id="turfRating">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="turfDensity" class="form-label">% Turf Density</label>
+                        <select required id="turfDensity" name="turfDensity" class="form-select">
+                            <option value="1">1 = 0-10%</option>
+                            <option value="2">2 = 11-20%</option>
+                            <option value="3">3 = 21-30%</option>
+                            <option value="4">4 = 31-40%</option>
+                            <option value="5">5 = 41-50%</option>
+                            <option value="6">6 = 51-60%</option>
+                            <option value="7">7 = 61-70%</option>
+                            <option value="8">8 = 71-80%</option>
+                            <option value="9">9 = 81-90%</option>
+                            <option value="10">10 = 91-100%</option>
+                        </select>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Surface Ratings
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                        data-bs-parent="#report">
-                        <div class="accordion-body">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label for="stonesAtSurface">Stones at the Surface</label>
-                                    <select required class="form-control" name="stonesAtSurface" id="stonesAtSurface">
-                                        <option value="0">0 = None</option>
-                                        <option value="1">1 = Few</option>
-                                        <option value="2">2 = Many</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="weedsPercentage">Percent of Weeds</label>
-                                    <select required class="form-control" name="weedsPercentage" id="weedsPercentage">
-                                        <option value="0">0 = 0-10%</option>
-                                        <option value="1">1 = 11-20%</option>
-                                        <option value="2">2 = 21-30%</option>
-                                        <option value="3">3 = 31-40%</option>
-                                        <option value="4">4 = 41-100%</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="depressions">Depressions</label>
-                                    <select required class="form-control" name="depressions" id="depressions">
-                                        <option value="0">0 = None</option>
-                                        <option value="1">1 = Few</option>
-                                        <option value="2">2 = Moderate</option>
-                                        <option value="3">3 = Many</option>
-                                        <option value="4">4 = Extreme</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="surfaceRating">Surface Rating (Stones+Weeds+Depression)</label>
-                                    <input required type="text" name="surfaceRating" class="form-control" id="surfaceRating">
-                                </div>
-
-                            </div>
-                        </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="smoothness" class="form-label">Smoothness</label>
+                        <select required id="smoothness" name="smoothness" class="form-select">
+                            <option value="1">1 - Surface is extremely uneven with holes and vegetative clumps that will
+                                greatly affect play and are hazardous </option>
+                            <option value="2">2 - Surface is very uneven with irregularities and vegetative clumps that
+                                will greatly affect play </option>
+                            <option value="3">3 - Surface is very uneven with irregularities that will moderately affect
+                                play</option>
+                            <option value="4">4 - Smooth surface with some irregularities</option>
+                            <option value="5">5 - Smooth surface with no irregularities</option>
+                        </select>
                     </div>
                 </div>
 
-            </div>
-            <div class="col-12">
-                <div class="alert alert-success">
-                    <p>Overall Rating = Turf Rating - Surface Rating</p>
-                    <h2 id="overallRatingDisplay">[RATING CODE]</h2>
-                    <input required type="hidden" class="form-control" id="overallRating" name="overallRating">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="turfRating">Turf Rating # (Turf Density + Smoothness)</label>
+                        <input required type="text" name="turfRating" class="form-control" id="turfRating">
+                    </div>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h3>Surface Ratings</h3>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="stonesAtSurface">Stones at the Surface</label>
+                        <select required class="form-select" name="stonesAtSurface" id="stonesAtSurface">
+                            <option value="0">0 = None</option>
+                            <option value="1">1 = Few</option>
+                            <option value="2">2 = Many</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="weedsPercentage">Percent of Weeds</label>
+                        <select required class="form-select" name="weedsPercentage" id="weedsPercentage">
+                            <option value="0">0 = 0-10%</option>
+                            <option value="1">1 = 11-20%</option>
+                            <option value="2">2 = 21-30%</option>
+                            <option value="3">3 = 31-40%</option>
+                            <option value="4">4 = 41-100%</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="depressions">Depressions</label>
+                        <select required class="form-select" name="depressions" id="depressions">
+                            <option value="0">0 = None</option>
+                            <option value="1">1 = Few</option>
+                            <option value="2">2 = Moderate</option>
+                            <option value="3">3 = Many</option>
+                            <option value="4">4 = Extreme</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
+            <div class="row mb-3">
 
-        <div class="row">
-            <!-- saving -->
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div class="col-12 mt-3">
+                    <div class="form-group">
+                        <label for="surfaceRating">Surface Rating (Stones+Weeds+Depression)</label>
+                        <input required type="text" name="surfaceRating" class="form-control" id="surfaceRating">
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="row">
 
-    </form>
+                <div class="col-12">
+                    <div class="alert alert-success">
+                        <p>Overall Rating = Turf Rating - Surface Rating</p>
+                        <h2 id="overallRatingDisplay">[RATING CODE]</h2>
+                        <div class="alert alert-info">
+                            <p>Turf Rating Scale:</p>
+                            <ul>
+                                <li>Excellent: 15-12</li>
+                                <li>Good: 11-8</li>
+                                <li>Fair: 7-4</li>
+                                <li>Poor: 3-1</li>
+                                <li>Unusable: &lt;1</li>
+                            </ul>
+                        </div>
+
+
+
+                        <input required type="hidden" class="form-control" id="overallRating" name="overallRating">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- saving -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+
+        </form>
     </div>
 
     <script>
@@ -218,8 +215,6 @@
             overallRating.value = parseInt(turfRating.value) - parseInt(surfaceRating.value);
             overallRatingDisplay.innerHTML = parseInt(turfRating.value) - parseInt(surfaceRating.value);
         });
-        
-
     </script>
 
 

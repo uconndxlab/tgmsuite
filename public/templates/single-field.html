@@ -82,8 +82,8 @@
                         <span class="visually-hidden">Add Report</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Quality
-                                Checklist</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Turf Quality Rating
+                                </a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-color">Color Report</a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-topdressing">Topdressing
                                 Report</a></li>
@@ -152,7 +152,7 @@
                         {% for report in reports %}
                         <tr>
                             <td>{{ report.evaluation_date }}</td>
-                            <td>{{ report.type }}</td>
+                            <td>{{ report.type|capitalize }}</td>
                             <td>{{ report.email }}</td>
                             <td>
                                 <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View

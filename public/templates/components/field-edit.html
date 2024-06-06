@@ -309,6 +309,7 @@
                   <div class="mb-3">
                     <label for="portable_system" class="form-label">System Used:</label>
                     <select class="form-select form-control" name="portable_system">
+                      <option value="none" {% if 'none' in row.portable_system %}selected{% endif %}>None</option>
                       <option value="in_ground" {% if 'in_ground' in row.portable_system %}selected{% endif %}>In ground</option>
                       <option value="portable" {% if 'portable' in row.portable_system %}selected{% endif %}>Portable</option>
                     </select>
