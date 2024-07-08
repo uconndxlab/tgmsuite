@@ -87,5 +87,7 @@ main#app {
   color: #d9534f!important;
 }
 
-
+.coverage-input {
+  display: none;
+}
 
