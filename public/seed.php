@@ -122,6 +122,15 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
+/** create pest management report */
+/**  date, pest(s), control/treatment */
+$db->exec('CREATE TABLE IF NOT EXISTS pest_management_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    pest TEXT,
+    treatment TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
 
 //** Create the users table with name, email, and password */
 

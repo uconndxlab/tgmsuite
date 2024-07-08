@@ -816,6 +816,60 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
+/** submit pest management report */
+$app->get('/fields/{id}/submit-pest', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Pest Management Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-pest.html', $params);
+});
+
+/** post route for pest management report */
+$app->post('/fields/{id}/submit-pest', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d', strtotime($data['date']));
+    $evaluator_id = $_SESSION['user_id'];
+
+    // pest is a comma delimited in the database, but should be an array in the form
+    $pest = implode(",", $data['pest']);
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'pest')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO pest_reports (report_id, pest_type, treatment, treatment_date, species) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['pest_type']);
+    $stmt->bindValue(3, $data['treatment']);
+    $stmt->bindValue(4, $data['treatment_date']);
+    $stmt->bindValue(5, $pest);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Pest Management Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
 
 
 
@@ -949,6 +1003,17 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                 $rows[] = $row;
             }
             $overseeding_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+            break;
+        
+        case 'pest_management':
+            $results = $db->query('SELECT * FROM pest_management_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $pest_management_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
     }
