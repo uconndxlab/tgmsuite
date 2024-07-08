@@ -264,6 +264,39 @@
             </table>
 
             {% endif %}
+
+            <!-- if it's a pest management event, show the following:
+             Date 
+             Pest(s) 
+             Control/Treatment
+            -->
+            {% if report.type == 'pest' %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Broadleaf Weeds</th>
+                        <th scope="col">Grassy Weeds</th>
+                        <th scope="col">Insects</th>
+                        <th scope="col">Disease</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.evaluator_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.broadleaf_weeds }}</td>
+                        <td>{{ content.grassy_weeds }}</td>
+                        <td>{{ content.insects }}</td>
+                        <td>
+                            {{content.disease}}
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            {% endif %}
         </div>
     </div>
 
