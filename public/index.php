@@ -841,13 +841,96 @@ $app->get('/fields/{id}/submit-pest', function (Request $request, Response $resp
 
 /** post route for pest management report */
 $app->post('/fields/{id}/submit-pest', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+
+
     $data = $request->getParsedBody();
     $field_id = $args['id'];
     $date = date('Y-m-d', strtotime($data['date']));
     $evaluator_id = $_SESSION['user_id'];
 
-    // pest is a comma delimited in the database, but should be an array in the form
-    $pest = implode(",", $data['pest']);
+    $broadleaf_dandelion = isset($data['broadleaf_dandelion']) ? 1 : 0;
+    $broadleaf_dandelion_percent = isset($data['broadleaf_dandelion_percent']) ? $data['broadleaf_dandelion_percent'] : null;
+    $broadleaf_plantain = isset($data['broadleaf_plantain']) ? 1 : 0;
+    $broadleaf_plantain_percent = isset($data['broadleaf_plantain_percent']) ? $data['broadleaf_plantain_percent'] : null;
+    $narrowleaf_plantain = isset($data['narrowleaf_plantain']) ? 1 : 0;
+    $narrowleaf_plantain_percent = isset($data['narrowleaf_plantain_percent']) ? $data['narrowleaf_plantain_percent'] : null;
+    $heal_all = isset($data['heal_all']) ? 1 : 0;
+    $heal_all_percent = isset($data['heal_all_percent']) ? $data['heal_all_percent'] : null;
+    $common_chickweed = isset($data['common_chickweed']) ? 1 : 0;
+    $common_chickweed_percent = isset($data['common_chickweed_percent']) ? $data['common_chickweed_percent'] : null;
+    $oxalis = isset($data['oxalis']) ? 1 : 0;
+    $oxalis_percent = isset($data['oxalis_percent']) ? $data['oxalis_percent'] : null;
+    $spurge = isset($data['spurge']) ? 1 : 0;
+    $spurge_percent = isset($data['spurge_percent']) ? $data['spurge_percent'] : null;
+    $knotweed = isset($data['knotweed']) ? 1 : 0;
+    $knotweed_percent = isset($data['knotweed_percent']) ? $data['knotweed_percent'] : null;
+    $ground_ivy = isset($data['ground_ivy']) ? 1 : 0;
+    $ground_ivy_percent = isset($data['ground_ivy_percent']) ? $data['ground_ivy_percent'] : null;
+    $violet = isset($data['violet']) ? 1 : 0;
+    $violet_percent = isset($data['violet_percent']) ? $data['violet_percent'] : null;
+    $mouse_ear_chickweed = isset($data['mouse_ear_chickweed']) ? 1 : 0;
+    $mouse_ear_chickweed_percent = isset($data['mouse_ear_chickweed_percent']) ? $data['mouse_ear_chickweed_percent'] : null;
+    $clover_white = isset($data['clover_white']) ? 1 : 0;
+    $clover_white_percent = isset($data['clover_white_percent']) ? $data['clover_white_percent'] : null;
+    $speedwell = isset($data['speedwell']) ? 1 : 0;
+    $speedwell_percent = isset($data['speedwell_percent']) ? $data['speedwell_percent'] : null;
+    $other = isset($data['other']) ? 1 : 0;
+    $other_percent = isset($data['other_percent']) ? $data['other_percent'] : null;
+    $broadleaf_control = isset($data['broadleaf_control']) ? $data['broadleaf_control'] : null;
+
+    $crabgrass = isset($data['crabgrass']) ? 1 : 0;
+    $crabgrass_percent = isset($data['crabgrass_percent']) ? $data['crabgrass_percent'] : null;
+    $poa_annua = isset($data['poa_annua']) ? 1 : 0;
+    $poa_annua_percent = isset($data['poa_annua_percent']) ? $data['poa_annua_percent'] : null;
+
+    $quackgrass = isset($data['quackgrass']) ? 1 : 0;
+    $quackgrass_percent = isset($data['quackgrass_percent']) ? $data['quackgrass_percent'] : null;
+    $goosegrass = isset($data['goosegrass']) ? 1 : 0;
+    $goosegrass_percent = isset($data['goosegrass_percent']) ? $data['goosegrass_percent'] : null;
+    $poa_trivialis = isset($data['poa_trivialis']) ? 1 : 0;
+    $poa_trivialis_percent = isset($data['poa_trivialis_percent']) ? $data['poa_trivialis_percent'] : null;
+    $bentgrass = isset($data['bentgrass']) ? 1 : 0;
+    $bentgrass_percent = isset($data['bentgrass_percent']) ? $data['bentgrass_percent'] : null;
+    $tall_fescue = isset($data['tall_fescue']) ? 1 : 0;
+    $tall_fescue_percent = isset($data['tall_fescue_percent']) ? $data['tall_fescue_percent'] : null;
+    $yellow_nutsedge = isset($data['yellow_nutsedge']) ? 1 : 0;
+    $yellow_nutsedge_percent = isset($data['yellow_nutsedge_percent']) ? $data['yellow_nutsedge_percent'] : null;
+    $orchardgrass = isset($data['orchardgrass']) ? 1 : 0;
+    $orchardgrass_percent = isset($data['orchardgrass_percent']) ? $data['orchardgrass_percent'] : null;
+    $other_grasses = isset($data['other_grasses']) ? 1 : 0;
+    $other_grasses_percent = isset($data['other_grasses_percent']) ? $data['other_grasses_percent'] : null;
+
+    $insects_grubs = isset($data['insects_grubs']) ? 1 : 0;
+    $insects_grubs_type = isset($data['insects_grubs_type']) ? $data['insects_grubs_type'] : null;
+    $insects_grubs_percent = isset($data['insects_grubs_percent']) ? $data['insects_grubs_percent'] : null;
+
+    $insects_sod_webworm = isset($data['insects_sod_webworm']) ? 1 : 0;
+    $insects_sod_webworm_percent = isset($data['insects_sod_webworm_percent']) ? $data['insects_sod_webworm_percent'] : null;
+
+    $insects_chinch_bug = isset($data['insects_chinch_bug']) ? 1 : 0;
+    $insects_chinch_bug_percent = isset($data['insects_chinch_bug_percent']) ? $data['insects_chinch_bug_percent'] : null;
+
+    $insects_billbug = isset($data['insects_billbug']) ? 1 : 0;
+    $insects_billbug_percent = isset($data['insects_billbug_percent']) ? $data['insects_billbug_percent'] : null;
+
+    $other_insects = isset($data['other_insects']) ? 1 : 0;
+    $other_insects_percent = isset($data['other_insects_percent']) ? $data['other_insects_percent'] : null;
+
+    $insects_control = isset($data['insects_control']) ? $data['insects_control'] : null;
+
+    $disease_present = isset($data['disease_present']) ? 1 : 0;
+    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : null;
+
+    $disease_perennial_ryegrass = isset($data['disease_perennial_ryegrass']) ? 1 : 0;
+    $disease_kentucky_bluegrass = isset($data['disease_kentucky_bluegrass']) ? 1 : 0;
+    $disease_fine_fescue = isset($data['disease_fine_fescue']) ? 1 : 0;
+    $disease_other = isset($data['disease_other']) ? 1 : 0;
+    $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : null;
+    $disease_control = isset($data['disease_control']) ? $data['disease_control'] : null;
+
+
+
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'pest')";
     $stmt = $db->prepare($q);
@@ -857,14 +940,168 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO pest_reports (report_id, pest_type, treatment, treatment_date, species) VALUES (?, ?, ?, ?, ?)";
+   
+    $q = "INSERT INTO pest_management_reports (
+        report_id, broadleaf_dandelion, broadleaf_dandelion_percent, 
+        broadleaf_plantain, broadleaf_plantain_percent, 
+        narrowleaf_plantain, narrowleaf_plantain_percent, 
+        heal_all, heal_all_percent, 
+        common_chickweed, common_chickweed_percent, 
+        oxalis, oxalis_percent, 
+        spurge, spurge_percent, 
+        knotweed, knotweed_percent, 
+        ground_ivy, ground_ivy_percent, 
+        violet, violet_percent, 
+        mouse_ear_chickweed, mouse_ear_chickweed_percent, 
+        clover_white, clover_white_percent, 
+        speedwell, speedwell_percent, 
+        other, other_percent, 
+        broadleaf_control, 
+        crabgrass, crabgrass_percent, 
+        crabgrass_control, 
+        poa_annua, poa_annua_percent, 
+        quackgrass, quackgrass_percent, 
+        goosegrass, goosegrass_percent, 
+        poa_trivialis, poa_trivialis_percent, 
+        bentgrass, bentgrass_percent, 
+        tall_fescue, tall_fescue_percent, 
+        yellow_nutsedge, yellow_nutsedge_percent, 
+        orchardgrass, orchardgrass_percent, 
+        other_grasses, other_grasses_percent, 
+        insects_grubs, insects_grubs_type, 
+        insects_grubs_percent, 
+        insects_sod_webworm, insects_sod_webworm_percent, 
+        insects_chinch_bug, insects_chinch_bug_percent, 
+        insects_billbug, insects_billbug_percent, 
+        other_insects, other_insects_percent, 
+        insects_control, 
+        disease_present, disease_tall_fescue, 
+        disease_perennial_ryegrass, 
+        disease_kentucky_bluegrass, 
+        disease_fine_fescue, 
+        disease_other, disease_percent, 
+        disease_control
+    ) VALUES (
+        ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?,
+        ?, ?
+    )";
+
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
-    $stmt->bindValue(2, $data['pest_type']);
-    $stmt->bindValue(3, $data['treatment']);
-    $stmt->bindValue(4, $data['treatment_date']);
-    $stmt->bindValue(5, $pest);
-    $stmt->execute();
+    $stmt->bindValue(2, $broadleaf_dandelion);
+    $stmt->bindValue(3, $broadleaf_dandelion_percent);
+    $stmt->bindValue(4, $broadleaf_plantain);
+    $stmt->bindValue(5, $broadleaf_plantain_percent);
+    $stmt->bindValue(6, $narrowleaf_plantain);
+    $stmt->bindValue(7, $narrowleaf_plantain_percent);
+    $stmt->bindValue(8, $heal_all);
+    $stmt->bindValue(9, $heal_all_percent);
+    $stmt->bindValue(10, $common_chickweed);
+    $stmt->bindValue(11, $common_chickweed_percent);
+    $stmt->bindValue(12, $oxalis);
+    $stmt->bindValue(13, $oxalis_percent);
+    $stmt->bindValue(14, $spurge);
+    $stmt->bindValue(15, $spurge_percent);
+    $stmt->bindValue(16, $knotweed);
+    $stmt->bindValue(17, $knotweed_percent);
+    $stmt->bindValue(18, $ground_ivy);
+    $stmt->bindValue(19, $ground_ivy_percent);
+    $stmt->bindValue(20, $violet);
+    $stmt->bindValue(21, $violet_percent);
+    $stmt->bindValue(22, $mouse_ear_chickweed);
+    $stmt->bindValue(23, $mouse_ear_chickweed_percent);
+    $stmt->bindValue(24, $clover_white);
+    $stmt->bindValue(25, $clover_white_percent);
+    $stmt->bindValue(26, $speedwell);
+    $stmt->bindValue(27, $speedwell_percent);
+    $stmt->bindValue(28, $other);
+    $stmt->bindValue(29, $other_percent);
+    $stmt->bindValue(30, $broadleaf_control);
+    $stmt->bindValue(31, $crabgrass);
+    $stmt->bindValue(32, $crabgrass_percent);
+    $stmt->bindValue(34, $poa_annua);
+    $stmt->bindValue(35, $poa_annua_percent);
+    $stmt->bindValue(36, $quackgrass);
+    $stmt->bindValue(37, $quackgrass_percent);
+    $stmt->bindValue(38, $goosegrass);
+    $stmt->bindValue(39, $goosegrass_percent);
+    $stmt->bindValue(40, $poa_trivialis);
+    $stmt->bindValue(41, $poa_trivialis_percent);
+    $stmt->bindValue(42, $bentgrass);
+    $stmt->bindValue(43, $bentgrass_percent);
+    $stmt->bindValue(44, $tall_fescue);
+    $stmt->bindValue(45, $tall_fescue_percent);
+    $stmt->bindValue(46, $yellow_nutsedge);
+    $stmt->bindValue(47, $yellow_nutsedge_percent);
+    $stmt->bindValue(48, $orchardgrass);
+    $stmt->bindValue(49, $orchardgrass_percent);
+    $stmt->bindValue(50, $other_grasses);
+    $stmt->bindValue(51, $other_grasses_percent);
+    $stmt->bindValue(52, $insects_grubs);
+    $stmt->bindValue(53, $insects_grubs_type);
+    $stmt->bindValue(54, $insects_grubs_percent);
+    $stmt->bindValue(55, $insects_sod_webworm);
+    $stmt->bindValue(56, $insects_sod_webworm_percent);
+
+    $stmt->bindValue(57, $insects_chinch_bug);
+    $stmt->bindValue(58, $insects_chinch_bug_percent);
+    $stmt->bindValue(59, $insects_billbug);
+    $stmt->bindValue(60, $insects_billbug_percent);
+    $stmt->bindValue(61, $other_insects);
+    $stmt->bindValue(62, $other_insects_percent);
+    $stmt->bindValue(63, $insects_control);
+    $stmt->bindValue(64, $disease_present);
+    $stmt->bindValue(65, $disease_tall_fescue);
+    $stmt->bindValue(66, $disease_perennial_ryegrass);
+    $stmt->bindValue(67, $disease_kentucky_bluegrass);
+    $stmt->bindValue(68, $disease_fine_fescue);
+    $stmt->bindValue(69, $disease_other);
+    $stmt->bindValue(70, $disease_percent);
+    $stmt->bindValue(71, $disease_control);
+
+    if ($stmt->execute()) {
+        $msg = "Pest Management Report Saved";
+    } else {
+        $msg = "Failed to save Pest Management Report";
+    }
+
+
+
+
 
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => 'Pest Management Report Submitted'];
