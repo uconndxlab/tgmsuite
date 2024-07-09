@@ -124,11 +124,95 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
 
 /** create pest management report */
 /**  date, pest(s), control/treatment */
+// Dandelion (bool and %)
+// Narrowleaf Plantain
+// Broadleaf Plantain
+// Heal-all
+// Common Chickweed
+// Oxalis
+// Spurge
+// Knotweed
+// Ground Ivy
+// Violet
+// Mouse Ear Chickweed
+// Clover (White)
+// Speedwell
+// Other
+
+
 $db->exec('CREATE TABLE IF NOT EXISTS pest_management_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
-    pest TEXT,
-    treatment TEXT,
+    broadleaf_dandelion integer,
+    broadleaf_dandelion_percent integer,
+    broadleaf_plantain integer,
+    broadleaf_plantain_percent integer,
+    narrowleaf_plantain integer,
+    narrowleaf_plantain_percent integer,
+    heal_all integer,
+    heal_all_percent integer,
+    common_chickweed integer,
+    common_chickweed_percent integer,
+    oxalis integer,
+    oxalis_percent integer,
+    spurge integer,
+    spurge_percent integer,
+    knotweed integer,
+    knotweed_percent integer,
+    ground_ivy integer,
+    ground_ivy_percent integer,
+    violet integer,
+    violet_percent integer,
+    mouse_ear_chickweed integer,
+    mouse_ear_chickweed_percent integer,
+    clover_white integer,
+    clover_white_percent integer,
+    speedwell integer,
+    speedwell_percent integer,
+    other integer,
+    other_percent integer,
+    broadleaf_control TEXT,
+    crabgrass integer,
+    crabgrass_percent integer,
+    crabgrass_control TEXT,
+    poa_annua integer,
+    poa_annua_percent integer,
+    quackgrass integer,
+    quackgrass_percent integer,
+    goosegrass integer,
+    goosegrass_percent integer,
+    poa_trivialis integer,
+    poa_trivialis_percent integer,
+    bentgrass integer,
+    bentgrass_percent integer,
+    tall_fescue integer,
+    tall_fescue_percent integer,
+    yellow_nutsedge integer,
+    yellow_nutsedge_percent integer,
+    orchardgrass integer,
+    orchardgrass_percent integer,
+    other_grasses integer,
+    other_grasses_percent integer,
+    insects_grubs integer,
+    insects_grubs_type TEXT,
+    insects_grubs_percent integer,
+    insects_sod_webworm integer,
+    insects_sod_webworm_percent integer,
+    insects_chinch_bug integer,
+    insects_chinch_bug_percent integer,
+    insects_billbug integer,
+    insects_billbug_percent integer,
+    other_insects integer,
+    other_insects_percent integer,
+    insects_control TEXT,
+    disease_present TEXT,
+    disease_tall_fescue integer,
+    disease_perennial_ryegrass integer,
+    disease_kentucky_bluegrass integer,
+    disease_fine_fescue integer,
+    disease_other integer,
+    disease_percent integer,
+    disease_control TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
