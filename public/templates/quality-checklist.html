@@ -153,68 +153,58 @@
     </div>
 
     <script>
-        // auto populate the turf rating by adding the turf density and smoothness, on change of either
-        // get the value of the turf density and smoothness
-        // add them together
-        // set the value of the turf rating to the sum
+        function calculateTurfRating() {
+            var turfDensity = document.getElementById('turfDensity');
+            var smoothness = document.getElementById('smoothness');
+            var turfRating = document.getElementById('turfRating');
+
+            turfRating.value = parseInt(turfDensity.value) + parseInt(smoothness.value);
+            turfRating.dispatchEvent(new Event('change'));
+        }
+
+        function calculateSurfaceRating() {
+            var stonesAtSurface = document.getElementById('stonesAtSurface');
+            var weedsPercentage = document.getElementById('weedsPercentage');
+            var depressions = document.getElementById('depressions');
+            var surfaceRating = document.getElementById('surfaceRating');
+
+            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
+            surfaceRating.dispatchEvent(new Event('change'));
+        }
+
+        function calculateOverallRating() {
+            var turfRating = document.getElementById('turfRating');
+            var surfaceRating = document.getElementById('surfaceRating');
+            var overallRating = document.getElementById('overallRating');
+            var overallRatingDisplay = document.getElementById('overallRatingDisplay');
+
+            overallRating.value = parseInt(turfRating.value) - parseInt(surfaceRating.value);
+            overallRatingDisplay.innerHTML = parseInt(turfRating.value) - parseInt(surfaceRating.value);
+        }
 
         var turfDensity = document.getElementById('turfDensity');
         var smoothness = document.getElementById('smoothness');
-        var turfRating = document.getElementById('turfRating');
-
-        turfDensity.addEventListener('change', function () {
-            turfRating.value = parseInt(turfDensity.value) + parseInt(smoothness.value);
-            turfRating.dispatchEvent(new Event('change'));
-        });
-
-        smoothness.addEventListener('change', function () {
-            turfRating.value = parseInt(turfDensity.value) + parseInt(smoothness.value);
-            turfRating.dispatchEvent(new Event('change'));
-        });
-
-        // auto populate the surface rating by adding the stones at surface, weeds percentage, and depressions, on change of either
-        // get the value of the stones at surface, weeds percentage, and depressions
-        // add them together
-        // set the value of the surface rating to the sum
-
         var stonesAtSurface = document.getElementById('stonesAtSurface');
         var weedsPercentage = document.getElementById('weedsPercentage');
         var depressions = document.getElementById('depressions');
-        var surfaceRating = document.getElementById('surfaceRating');
-
-        stonesAtSurface.addEventListener('change', function () {
-            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
-            surfaceRating.dispatchEvent(new Event('change'));
-        });
-
-        weedsPercentage.addEventListener('change', function () {
-            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
-            surfaceRating.dispatchEvent(new Event('change'));
-        });
-
-        depressions.addEventListener('change', function () {
-            surfaceRating.value = parseInt(stonesAtSurface.value) + parseInt(weedsPercentage.value) + parseInt(depressions.value);
-            surfaceRating.dispatchEvent(new Event('change'));
-        });
-
-        // set the overall rating to the turf rating minus the surface rating on change of either
-        // get the value of the turf rating and surface rating
-        // subtract the surface rating from the turf rating
-
         var turfRating = document.getElementById('turfRating');
         var surfaceRating = document.getElementById('surfaceRating');
         var overallRating = document.getElementById('overallRating');
         var overallRatingDisplay = document.getElementById('overallRatingDisplay');
 
-        turfRating.addEventListener('change', function () {
-            overallRating.value = parseInt(turfRating.value) - parseInt(surfaceRating.value);
-            overallRatingDisplay.innerHTML = parseInt(turfRating.value) - parseInt(surfaceRating.value);
-        });
+        turfDensity.addEventListener('change', calculateTurfRating);
+        smoothness.addEventListener('change', calculateTurfRating);
+        stonesAtSurface.addEventListener('change', calculateSurfaceRating);
+        weedsPercentage.addEventListener('change', calculateSurfaceRating);
+        depressions.addEventListener('change', calculateSurfaceRating);
+        turfRating.addEventListener('change', calculateOverallRating);
+        surfaceRating.addEventListener('change', calculateOverallRating);
 
-        surfaceRating.addEventListener('change', function () {
-            overallRating.value = parseInt(turfRating.value) - parseInt(surfaceRating.value);
-            overallRatingDisplay.innerHTML = parseInt(turfRating.value) - parseInt(surfaceRating.value);
-        });
+
+        calculateTurfRating();
+        calculateSurfaceRating();
+        calculateOverallRating();
+    </script>
     </script>
 
 

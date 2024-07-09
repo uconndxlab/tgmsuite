@@ -3,87 +3,87 @@
 
 
 
-    <div class="row">
+<div class="row">
 
-        <div class="col-3">
-            <!-- material design edit icon -->
-            
+    <div class="col-3">
+        <!-- material design edit icon -->
 
 
-            <div class="field-lede">
-                <!-- Back to Fields -->
-                <a href="/fields/{{field.id}}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
-                            <!-- if the field id is set -->
-                {% if field.id is defined %}
 
-               <!-- card of field info -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ field.name }}</h5>
-                        {% if field.address %}
-                        <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
-             
-                      {% else %}
-                        <p class="card-text">No address provided</p>
-                        {% endif %}
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields/{{field.id}}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
+            <!-- if the field id is set -->
+            {% if field.id is defined %}
 
-                        
-                    </div>
-                    <div class="card-footer">
-                       
-                        <a href="/fields/{{ field.id }}" class="
+            <!-- card of field info -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.name }}</h5>
+                    {% if field.address %}
+                    <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+
+                    {% else %}
+                    <p class="card-text">No address provided</p>
+                    {% endif %}
+
+
+                </div>
+                <div class="card-footer">
+
+                    <a href="/fields/{{ field.id }}" class="
                         {% if edit == false %} active {% endif %}
                         btn btn-sm btn-outline-secondary">
-                            <!-- bs info icoon-->
-                            <i class="bi-info-circle"></i>
-                            View Field Reports</a>
+                        <!-- bs info icoon-->
+                        <i class="bi-info-circle"></i>
+                        View Field Reports</a>
 
 
-                        <a href="/fields/{{ field.id }}/edit" class="
+                    <a href="/fields/{{ field.id }}/edit" class="
                         btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
                         <i class="bi-pencil"></i>
                         Edit</a>
 
-                    </div>
                 </div>
-
-
-
-                {% endif %}
             </div>
 
-           
+
+
+            {% endif %}
         </div>
 
-        <div class="col-md-9">
-            <h3>Viewing a Report</h3>  
-            {{report.id}}
-            ({{report.type}} type report)
-            <!-- if it's a color, show the following:
+
+    </div>
+
+    <div class="col-md-9">
+        <h3>Viewing a Report</h3>
+        {{report.id}}
+        ({{report.type}} type report)
+        <!-- if it's a color, show the following:
             color_option TEXT
             
             -->
 
-            {% if report.type == 'color' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                     
-                        <th scope="col">Date</th>
-                        <th scope="col">Color</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                        <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.color_option }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
+        {% if report.type == 'color' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
 
-            <!-- if it's an evaluation, show the following: 
+                    <th scope="col">Date</th>
+                    <th scope="col">Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.color_option }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- if it's an evaluation, show the following: 
             
                 turf_density INTEGER,
                 smoothness_rating INTEGER,
@@ -95,84 +95,89 @@
                 overall_rating INTEGER,
             
             -->
-            {% if report.type == 'evaluation' %}
+        {% if report.type == 'evaluation' %}
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Field</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Turf Density</th>
-                        <th scope="col">Smoothness Rating</th>
-                        <th scope="col">Weeds Rating</th>
-                        <th scope="col">Stones at Surface</th>
-                        <th scope="col">Depressions</th>
-                        <th scope="col">Turf Rating</th>
-                        <th scope="col">Surface Rating</th>
-                        <th scope="col">Overall Rating</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.field_id }}</td>
-                        <td>{{ content.evaluation_date }}</td>
-                        <td>{{ content.turf_density }}</td>
-                        <td>{{ content.smoothness_rating }}</td>
-                        <td>{{ content.weeds_rating }}</td>
-                        <td>{{ content.stones_at_surface }}</td>
-                        <td>{{ content.depressions }}</td>
-                        <td>{{ content.turf_rating }}</td>
-                        <td>{{ content.surface_rating }}</td>
-                        <td>{{ content.overall_rating }}</td>
-                    </tr>
-                </tbody>
-            </table>
-                
-                {% endif %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Field</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Turf Density</th>
+                    <th scope="col">Smoothness Rating</th>
+                    <th scope="col">Weeds Rating</th>
+                    <th scope="col">Stones at Surface</th>
+                    <th scope="col">Depressions</th>
+                    <th scope="col">Turf Rating</th>
+                    <th scope="col">Surface Rating</th>
+                    <th scope="col">Overall Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.field_id }}</td>
+                    <td>{{ content.evaluation_date }}</td>
+                    <td>{{ content.turf_density }}</td>
+                    <td>{{ content.smoothness_rating }}</td>
+                    <td>{{ content.weeds_rating }}</td>
+                    <td>{{ content.stones_at_surface }}</td>
+                    <td>{{ content.depressions }}</td>
+                    <td>{{ content.turf_rating }}</td>
+                    <td>{{ content.surface_rating }}</td>
+                    <td>{{ content.overall_rating }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <!-- if it's a photo show the following:     photo_url TEXT, -->
-            {% if report.type == 'photo' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Field</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Photo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.field_id }}</td>
-                        <td>{{ content.evaluation_date }}</td>
-                        <td><img style="max-width:200px;" src="/{{ content.photo_url }}"></td>
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
+        {% endif %}
 
-            <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
-            {% if report.type == 'topdressing' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Material Composition</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.user_id }}</td>
-                        <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.topdressing_rate }}</td>
-                        <td>{{ content.topdressing_description }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
+        <!-- if it's a photo show the following:     photo_url TEXT, -->
+        {% if report.type == 'photo' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Field</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Photo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.field_id }}</td>
+                    <td>{{ content.evaluation_date }}</td>
+                    <td>
+                        <a target="_blank" href="/{{ content.photo_url }}">
+                            <img style="max-width:200px;" src="/{{ content.photo_url }}">
+                        </a>
 
-            <!-- if it's a cultivation event, show the following:
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
+        {% if report.type == 'topdressing' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Material Composition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.user_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.topdressing_rate }}</td>
+                    <td>{{ content.topdressing_description }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- if it's a cultivation event, show the following:
              Date 
              Rate 
              Mixture/Blend 
@@ -180,127 +185,127 @@
              Species
             -->
 
-            {% if report.type == 'cultivation' %}   
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Mixture/Blend</th>
-                        <th scope="col">Pre-Germ Y/N</th>
-                        <th scope="col">Species</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.user_id }}</td>
-                        <td>{{ content.evaluation_date }}</td>
-                        <td>{{ content.rate }}</td>
-                        <td>{{ content.mixture_blend }}</td>
-                        <td>{{ content.pre_germ }}</td>
-                        <td>{{ content.species }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
+        {% if report.type == 'cultivation' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Mixture/Blend</th>
+                    <th scope="col">Pre-Germ Y/N</th>
+                    <th scope="col">Species</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.user_id }}</td>
+                    <td>{{ content.evaluation_date }}</td>
+                    <td>{{ content.rate }}</td>
+                    <td>{{ content.mixture_blend }}</td>
+                    <td>{{ content.pre_germ }}</td>
+                    <td>{{ content.species }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
 
-            {% if report.type == 'fertilization' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">User</th>
+        {% if report.type == 'fertilization' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
 
 
-            
-                        <th scope="col">Date</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">NPK Analysis</th>
-                        <th scope="col">Compost Analysis</th>
-                        <th scope="col">Biostimulant</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.evaluator_id }}</td>
-                        <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.product }}</td>
-                        <td>{{ content.rate }}</td>
-                        <td>{{ content.npk }}</td>
-                        <td>{{ content.compost }}</td>
-                        <td>{{ content.bio_stimulant }}</td>
-                    </tr>
-                </tbody>
-            </table>
 
-            {% endif %}
+                    <th scope="col">Date</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">NPK Analysis</th>
+                    <th scope="col">Compost Analysis</th>
+                    <th scope="col">Biostimulant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.product }}</td>
+                    <td>{{ content.rate }}</td>
+                    <td>{{ content.npk }}</td>
+                    <td>{{ content.compost }}</td>
+                    <td>{{ content.bio_stimulant }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-            {% if report.type == 'overseeding' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Rate</th>
-                        <th scope="col">Formula</th>
-                        <th scope="col">Pre-Germ</th>
-                        <th scope="col">Species</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.evaluator_id }}</td>
-                        <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.rate }}</td>
-                        <td>{{ content.formula }}</td>
-                        <td>{{ content.pre_germ }}</td>
-                        <td>
-                            {{content.species}}
-                        </td>
-                    </tr>
-                </tbody>
+        {% endif %}
 
-            </table>
+        {% if report.type == 'overseeding' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Formula</th>
+                    <th scope="col">Pre-Germ</th>
+                    <th scope="col">Species</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.rate }}</td>
+                    <td>{{ content.formula }}</td>
+                    <td>{{ content.pre_germ }}</td>
+                    <td>
+                        {{content.species}}
+                    </td>
+                </tr>
+            </tbody>
 
-            {% endif %}
+        </table>
 
-            <!-- if it's a pest management event, show the following:
+        {% endif %}
+
+        <!-- if it's a pest management event, show the following:
              Date 
              Pest(s) 
              Control/Treatment
             -->
-            {% if report.type == 'pest' %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">User</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Broadleaf Weeds</th>
-                        <th scope="col">Grassy Weeds</th>
-                        <th scope="col">Insects</th>
-                        <th scope="col">Disease</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ report.evaluator_id }}</td>
-                        <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.broadleaf_weeds }}</td>
-                        <td>{{ content.grassy_weeds }}</td>
-                        <td>{{ content.insects }}</td>
-                        <td>
-                            {{content.disease}}
-                        </td>
-                    </tr>
-                </tbody>
+        {% if report.type == 'pest' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Broadleaf Weeds</th>
+                    <th scope="col">Grassy Weeds</th>
+                    <th scope="col">Insects</th>
+                    <th scope="col">Disease</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.broadleaf_weeds }}</td>
+                    <td>{{ content.grassy_weeds }}</td>
+                    <td>{{ content.insects }}</td>
+                    <td>
+                        {{content.disease}}
+                    </td>
+                </tr>
+            </tbody>
 
-            </table>
-            {% endif %}
-        </div>
+        </table>
+        {% endif %}
     </div>
+</div>
 
 
 
-    <!-- Include parts/footer.html -->
-    {% include 'parts/footer.html' %}
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}
