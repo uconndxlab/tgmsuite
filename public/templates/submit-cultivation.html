@@ -1,0 +1,128 @@
+{% include 'parts/header.html' %}
+<div class="row">
+    <div class="col-3">
+        <!-- material design edit icon -->
+        
+
+
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields/{{field.id}}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
+                        <!-- if the field id is set -->
+            {% if field.id is defined %}
+
+           <!-- card of field info -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.name }}</h5>
+                    {% if field.address %}
+                    <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+         
+                  {% else %}
+                    <p class="card-text">No address provided</p>
+                    {% endif %}
+
+                    
+                </div>
+                <div class="card-footer">
+                   
+                    <a href="/fields/{{ field.id }}" class="
+                    {% if edit == false %} active {% endif %}
+                    btn btn-sm btn-outline-secondary">
+                        <!-- bs info icoon-->
+                        <i class="bi-info-circle"></i>
+                        View Field Reports</a>
+
+
+                    <a href="/fields/{{ field.id }}/edit" class="
+                    btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
+                    <i class="bi-pencil"></i>
+                    Edit</a>
+
+                </div>
+            </div>
+
+
+
+            {% endif %}
+        </div>
+
+       
+    </div>
+
+    <div class="col-9">
+        <form method="post" action="" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Submit Cultivation Report</h3>
+                </div>
+
+                <!-- cultivation form: date, cultivation type, and notes -->
+
+                <div class="col-12">
+
+                    <!-- field for date -->
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ "now"|date("Y-m-d") }}">
+                    </div>
+
+                    <!-- field for Cultivation Type -->
+                    <!-- Hollow
+                         Solid
+                         Slice -->
+                        <div class="mb-3">
+                            <label for="pest" class="form-label">Cultivation Type</label>
+    
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="hollow" name="hollow" value="hollow">
+                                <label for="hollow">Hollow</label>
+                                <input type="text" id="hollow_note" name="hollow_note" placeholder="Additional Notes" class="coverage-input form-control">
+                            </div>
+    
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="solid" name="solid" value="solid">
+                                <label for="solid">Solid</label>
+                                <input type="text" id="solid_note" name="solid_note" placeholder="Additional Notes" class="coverage-input form-control">
+                            </div>
+    
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="slice" name="slice" value="slice">
+                                <label for="slice">Slice</label>
+                                <input type="text" id="slice_note" name="slice_note" placeholder="Additional Notes" class="coverage-input form-control">
+                            </div>
+    
+                        </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- submit button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Function to toggle the display of coverage input based on the checkbox
+      function toggleCoverageInput(checkboxId, inputId) {
+        const checkbox = document.getElementById(checkboxId);
+        const input = document.getElementById(inputId);
+        checkbox.addEventListener('change', function () {
+          input.style.display = checkbox.checked ? 'block' : 'none';
+        });
+      }
+  
+      toggleCoverageInput('hollow', 'hollow_note');
+      toggleCoverageInput('solid', 'solid_note');
+      toggleCoverageInput('slice', 'slice_note');
+
+    });
+</script>
+
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}

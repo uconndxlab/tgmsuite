@@ -111,7 +111,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS topdressing_reports (
 )');
 
 /** create overseed report */
-/** rate, forumla, pre-germ, species **/
+/** rate, formula, pre-germ, species **/
 $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
@@ -119,6 +119,16 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
     formula TEXT,
     pre_germ TEXT,
     species TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
+/** create cultivation report */
+/** type, type_note **/
+$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    cultivation_type TEXT,
+    cultivation_note TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -215,6 +225,26 @@ $db->exec('CREATE TABLE IF NOT EXISTS pest_management_reports (
     disease_control TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
+
+/** create thatch accumulation report */
+/** thatch_accumulation **/
+$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    thatch_accumulation TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
+
+/** create soil test report */
+/** action_taken **/
+$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    report_id INTEGER,
+    action_taken TEXT,
+    FOREIGN KEY (report_id) REFERENCES reports(id)
+)');
+
 
 //** Create the users table with name, email, and password */
 

@@ -705,6 +705,62 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
+/** submit cultivation report PLACEHOLDER */
+$app->get('/fields/{id}/submit-cultivation', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Cultivation Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-cultivation.html', $params);
+});
+
+/** post route for cultivation PLACEHOLDER */
+$app->post('/fields/{id}/submit-cultivation', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d', strtotime($data['date']));
+    $evaluator_id = $_SESSION['user_id'];
+
+    // species is a comma delimited in the database, but should be an array in the form
+    $species = implode(",", $data['species']);
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'cultivation')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO cultivation_reports (report_id, rate, formula, pre_germ, species) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['rate']);
+    $stmt->bindValue(3, $data['formula']);
+    $stmt->bindValue(4, $data['pre_germ']);
+    $stmt->bindValue(5, $species);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Cultivation Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
+
+
 // post route to save topdressing report for a field
 
 $app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
@@ -1108,7 +1164,103 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 
+/** submit thatch accumulation report  */
+$app->get('/fields/{id}/submit-thatch', function (Request $request, Response $response, $args) use ($db, $twig) {
 
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Thatch Accumulation Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-thatch.html', $params);
+});
+
+/** post route for thatch accumulation PLACEHOLDER */
+$app->post('/fields/{id}/submit-thatch', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d', strtotime($data['date']));
+    $evaluator_id = $_SESSION['user_id'];
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'thatch_accumulation')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO thatch_accumulation_reports (report_id, thatch_accumulation) VALUES ( ?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['thatch_accumulation']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Thatch Accumulation Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
+
+/** submit soil test report */
+$app->get('/fields/{id}/submit-soil', function (Request $request, Response $response, $args) use ($db, $twig) {
+
+    $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+    // select the single row
+    $rows = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $rows[] = $row;
+    }
+
+    $params = array(
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Soil Test Report'
+    );
+
+    $view = Twig::fromRequest($request);
+
+    // Render the "fields" template with the rows array
+
+    return $view->render($response, 'submit-soil.html', $params);
+});
+
+/** post route for soil test */
+$app->post('/fields/{id}/submit-soil', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $field_id = $args['id'];
+    $date = date('Y-m-d', strtotime($data['date']));
+    $evaluator_id = $_SESSION['user_id'];
+
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'soil_test')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
+
+    $q = "INSERT INTO soil_test_reports (report_id, action_taken) VALUES (?, ?)";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $report_id);
+    $stmt->bindValue(2, $data['action_taken']);
+    $stmt->execute();
+
+    $view = Twig::fromRequest($request);
+    $params = ['field' => $data, 'edit' => false, 'message' => 'Soil Test Report Submitted'];
+    return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
+});
 
 // save a turf rating
 $app->post('/fields/{id}/quality-checklist', function (Request $request, Response $response, $args) use ($db, $twig) {
@@ -1242,6 +1394,17 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $overseeding_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
+
+        case 'cultivation':
+            $results = $db->query('SELECT * FROM cultivation_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $cultication_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+            break;
         
         case 'pest_management':
             $results = $db->query('SELECT * FROM pest_management_reports WHERE report_id = ' . $args['id']);
@@ -1251,6 +1414,28 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                 $rows[] = $row;
             }
             $pest_management_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+            break;
+
+        case 'thatch_accumulation':
+            $results = $db->query('SELECT * FROM thatch_accumulation_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $thatch_accumulation_report = $rows[0];
+            $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
+            break;
+
+        case 'soil_test':
+            $results = $db->query('SELECT * FROM soil_test_reports WHERE report_id = ' . $args['id']);
+            // select the single row
+            $rows = [];
+            while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                $rows[] = $row;
+            }
+            $soil_test_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
     }
