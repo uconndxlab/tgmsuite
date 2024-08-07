@@ -177,39 +177,6 @@
         </table>
         {% endif %}
 
-        <!-- if it's a cultivation event, show the following:
-             Date 
-             Rate 
-             Mixture/Blend 
-             Pre-Germ Y N 
-             Species
-            -->
-
-        {% if report.type == 'cultivation' %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Mixture/Blend</th>
-                    <th scope="col">Pre-Germ Y/N</th>
-                    <th scope="col">Species</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.user_id }}</td>
-                    <td>{{ content.evaluation_date }}</td>
-                    <td>{{ content.rate }}</td>
-                    <td>{{ content.mixture_blend }}</td>
-                    <td>{{ content.pre_germ }}</td>
-                    <td>{{ content.species }}</td>
-                </tr>
-            </tbody>
-        </table>
-        {% endif %}
-
         {% if report.type == 'fertilization' %}
         <table class="table table-striped">
             <thead>
@@ -321,6 +288,38 @@
             </tbody>
         </table>
         {% endif %}
+
+
+        {% if report.type == 'cultivation' %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Solid?</th>
+                    <th scope="col">Solid Notes</th>
+                    <th scope="col">Hollow?</th>
+                    <th scope="col">Hollow Notes</th>
+                    <th scope="col">Slice?</th>
+                    <th scope="col">Slice Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.solid_yes_no }}</td>
+                    <td>{{ content.solid_notes }}</td>
+                    <td>{{ content.hollow_yes_no }}</td>
+                    <td>{{ content.hollow_notes }}</td>
+                    <td>{{ content.slice_yes_no }}</td>
+                    <td>{{ content.slice_notes }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
+     
     </div>
 </div>
 

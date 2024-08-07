@@ -735,9 +735,6 @@ $app->post('/fields/{id}/submit-cultivation', function (Request $request, Respon
     $date = date('Y-m-d', strtotime($data['date']));
     $evaluator_id = $_SESSION['user_id'];
 
-    // species is a comma delimited in the database, but should be an array in the form
-    $species = implode(",", $data['species']);
-
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'cultivation')";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $date);
@@ -746,13 +743,15 @@ $app->post('/fields/{id}/submit-cultivation', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO cultivation_reports (report_id, rate, formula, pre_germ, species) VALUES (?, ?, ?, ?, ?)";
+    $q = "INSERT INTO cultivation_reports (report_id, hollow_yes_no, hollow_notes, solid_yes_no, solid_notes, slice_yes_no, slice_notes) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
-    $stmt->bindValue(2, $data['rate']);
-    $stmt->bindValue(3, $data['formula']);
-    $stmt->bindValue(4, $data['pre_germ']);
-    $stmt->bindValue(5, $species);
+    $stmt->bindValue(2, $data['hollow']);
+    $stmt->bindValue(3, $data['hollow_note']);
+    $stmt->bindValue(4, $data['solid']);
+    $stmt->bindValue(5, $data['solid_note']);
+    $stmt->bindValue(6, $data['slice']);
+    $stmt->bindValue(7, $data['slice_note']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);

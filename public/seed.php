@@ -124,11 +124,15 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
 
 /** create cultivation report */
 /** type, type_note **/
-$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+$db->exec('CREATE TABLE IF NOT EXISTS cultivation_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
-    cultivation_type TEXT,
-    cultivation_note TEXT,
+    hollow_yes_no TEXT,
+    hollow_notes TEXT,
+    solid_yes_no TEXT,
+    solid_notes TEXT,
+    slice_yes_no TEXT,
+    slice_notes TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
