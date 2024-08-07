@@ -1251,7 +1251,7 @@ $app->post('/fields/{id}/submit-soil', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO soil_test_reports (report_id, action_taken) VALUES (?, ?)";
+    $q = "INSERT INTO soil_test (report_id, action_taken) VALUES (?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['action_taken']);
@@ -1457,7 +1457,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             break;
 
         case 'soil_test':
-            $results = $db->query('SELECT * FROM soil_test_reports WHERE report_id = ' . $args['id']);
+            $results = $db->query('SELECT * FROM soil_test WHERE report_id = ' . $args['id']);
             // select the single row
             $rows = [];
             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {

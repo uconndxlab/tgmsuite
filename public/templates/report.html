@@ -319,6 +319,26 @@
         </table>
         {% endif %}
 
+        {% if report.type == 'soil_test' %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action Taken</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ content.action_taken }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endif %}
+
      
     </div>
 </div>
