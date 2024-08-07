@@ -1191,7 +1191,8 @@ $app->get('/fields/{id}/submit-thatch', function (Request $request, Response $re
 $app->post('/fields/{id}/submit-thatch', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d', strtotime($data['date']));
+    // now
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'thatch_accumulation')";

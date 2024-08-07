@@ -228,7 +228,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS pest_management_reports (
 
 /** create thatch accumulation report */
 /** thatch_accumulation **/
-$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+$db->exec('CREATE TABLE IF NOT EXISTS thatch_accumulation_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     thatch_accumulation TEXT,
@@ -238,7 +238,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
 
 /** create soil test report */
 /** action_taken **/
-$db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
+$db->exec('CREATE TABLE IF NOT EXISTS soil_test(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     action_taken TEXT,
@@ -267,33 +267,17 @@ $db->exec('CREATE TABLE IF NOT EXISTS field_users (
 )');
 
 
-/** Seed the fields table with some sample data */
-$db->exec('INSERT INTO fields (name, address, city, state, zip, multiple_sport_usage, sports_played, turfgrass_species_present, establishment_method, establishment_date, shade_or_sun, percent_shade, color_rating, irrigation_system, water_source, irrigation_frequency, portable_system, wetting_agents, mowing_height, mowing_frequency, mowing_method, description) VALUES ("Field 1", "123 Main St", "Anytown", "NY", "12345", "Yes", "Soccer, Football", "Kentucky Bluegrass, Perennial Ryegrass", "Sod", "2020-01-01", "Sun", "0", "Dark Green 5", "Yes", "City Water", "3 times per week", "No", "No", "2.5 inches", "3 times per week", "rotary", "This is a description of the field")');
-
-/** Seed the users table with some sample data */
-$db->exec('INSERT INTO users (name, email, password) VALUES ("John Doe", "john@doefamily.org", "password")');
-
-/** Seed the field_users table with some sample data */
-/** Permission levels can be 1 for read, 2 for rw */
-$db->exec('INSERT INTO field_users (field_id, user_id, permission_level) VALUES (1, 1, 2)');
-
-/** Seed the reports table with some sample data */
-$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-01", 1, 1, "evaluation")');
-$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-02", 1, 1, "photo")');
-$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-03", 1, 1, "color")');
-$db->exec('INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ("2020-01-04", 1, 1, "fertilization")');
-
-/** Seed the evaluations table with some sample data */
-$db->exec('INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1)');
-/** Seed the photos table with some sample data */
-$db->exec('INSERT INTO photos (report_id, photo_url) VALUES (2, "https://via.placeholder.com/150")');
-
-/** Seed the color_reports table with some sample data */
-$db->exec('INSERT INTO color_reports (report_id, color_option) VALUES (3, "Dark Green 5")');
-
 /** Seed the fertilization_events table with some sample data */
 //$db->exec('INSERT INTO fertilization_events (report_id, fertilizer_type, fertilizer_rate, fertilizer_description) VALUES (4, "Nitrogen", 1, "This is a description of the fertilization event")');
 
+// create user joel@uconn.edu username joel password joel
+
+$test_user = 'Joel Salisbury';
+$test_user_email = 'joel@uconn.edu';
+$password = "password";
+$test_user_password = password_hash($password, PASSWORD_DEFAULT);
+
+$db->exec("INSERT INTO users (name, email, password) VALUES ('$test_user', '$test_user_email', '$test_user_password')");
 
 
 // Close the database connection
