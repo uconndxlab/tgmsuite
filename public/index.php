@@ -1347,6 +1347,34 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             // select the single row
             $rows = [];
             while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+                // add color description to the row based on the color_option
+                $color = '';
+                switch ($row['color_option']) {
+                    case 'TD':
+                        $color = 'Turf Dormant';
+                        break;
+                    case '1':
+                        $color = '1 - Yellow Green';
+                        break;
+                    case '2':
+                        $color = '2 - Light Green';
+                        break;
+
+                    case '3':
+                        $color = '3 - Med/Light Green';
+                        break;
+                    
+                    case '4':
+                        $color = '4 - Medium Green';
+                        break;
+
+                    case '5':
+                        $color = '5 - Dark Green';
+                        break;
+
+                }
+                $row['color'] = $color;
+                
                 $rows[] = $row;
             }
             $color_report = $rows[0];
