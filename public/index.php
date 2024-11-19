@@ -215,7 +215,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $establishment_method = isset($data['establishment_method']) ? $data['establishment_method'] : '';
     $establishment_date = isset($data['establishment_date']) ? $data['establishment_date'] : '';
 
-    // soil details
+    // soil details (texutre, depth, condition)
     $soil_texture = isset($data['soil_texture']) ? $data['soil_texture'] : '';
     $soil_depth = isset($data['soil_depth']) ? $data['soil_depth'] : '';
     $soil_condition = isset($data['soil_condition']) ? $data['soil_condition'] : '';
@@ -257,6 +257,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         turfgrass_species_present = '$turfgrass_species_present', 
         establishment_method = '$establishment_method',
         establishment_date = '$establishment_date',
+        soil_texture = '$soil_texture',
+        soil_depth = '$soil_depth',
+        soil_condition = '$soil_condition',
         color_rating = '$color_rating' , 
         percent_shade = '$percent_shade',
         irrigation_system = '$irrigation_system',
@@ -283,6 +286,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         turfgrass_species_present, 
         establishment_method,
         establishment_date,
+        soil_texture,
+        soil_depth,
+        soil_condition,
         color_rating, 
         percent_shade, 
         irrigation_system, 
@@ -305,6 +311,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$turfgrass_species_present', 
         '$establishment_method',
         '$establishment_date',
+        '$soil_texture',
+        '$soil_depth',
+        '$soil_condition',
         '$color_rating', 
         '$percent_shade', 
         '$irrigation_system', 
