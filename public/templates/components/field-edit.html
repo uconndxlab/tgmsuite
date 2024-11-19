@@ -226,38 +226,13 @@
 
                   <div class="row mt-3">
                     <div class="mb-3 col">
-                      <label for="establishment_method" class="form-label">Establishment Method:</label>
-                      <!-- <input required type="text" class="form-control" name="establishment_method"
-                        value="{{ row.establishment_method }}"> -->
-
-                        <!-- select box (seed or sod) -->
-                      <select class="form-select form-control" name="establishment_method">
-                        <option value="seed" {% if 'seed' in row.establishment_method %}selected{% endif %}>Seed</option>
-                        <option value="sod" {% if 'sod' in row.establishment_method %}selected{% endif %}>Sod</option>
-                      </select>
-
-                        
+                      <label for="soil_depth" class="form-label">Soil Depth:</label>
+                      <input required  type="text" id="soil_depth" class="form-control" name="soil_depth" value="{{ row.soil_depth }}">
                     </div>
 
                     <div class="mb-3 col">
-                      <label for="establishment_date" class="form-label">Establishment Date:</label>
-                      <input type="date" id="establishment_date" class="form-control" name="establishment_date"
-                        value="{{ row.establishment_date }}">
-                    </div>
-
-                    <div class="mb-3 col">
-                      <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
-                      <select id="shade_or_sun" class="form-select form-control" name="shade_or_sun">
-                        <option {% if row.shade_or_sun is null or 'sun' in row.shade_or_sun %}selected{% endif %} value="sun">Full Sun</option>
-                        <option {% if 'shade' in row.shade_or_sun %}selected{% endif %} value="shade">Partial Shade</option>
-                    </select>
-                    
-                    </div>
-
-                    <div class="mb-3 col invisible" id="percent_shade_wrap">
-                      <label for="percent_shade" class="form-label">Percent Shade:</label>
-                      <input id="percent_shade" type="text" class="form-control" name="percent_shade"
-                        value="{{ row.percent_shade or 0}}">
+                      <label for="soil_condition" class="form-label">Soil Condition:</label>
+                      <input required  type="text" id="soil_condition" class="form-control" name="name" value="{{ row.soil_condition }}">
                     </div>
                   </div>
                 </div>
