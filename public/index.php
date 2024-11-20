@@ -10,7 +10,7 @@ use Slim\Views\TwigMiddleware;
 require __DIR__ . '/../vendor/autoload.php';
 require 'AuthMiddleware.php';
 
-// Create f
+// Create Twig
 $twig = Twig::create('templates', ['cache' => false]);
 
 

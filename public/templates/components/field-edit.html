@@ -199,6 +199,7 @@
               <div class="row">
                 <div class="form-group mb-3">
                   <label for="soil_texture">Soil Texture:</label>
+                  <!-- Options for Soil Texture -->
                   <div class="form-check">
                     <input id="sand" class="form-check-input" type="checkbox" name="soil_texture[]" value="sand" {% if 'sand' in row.soil_texture %}checked{% endif %}>
                     <label class="form-check-label" for="tall_fescue">Sand</label>
@@ -225,12 +226,14 @@
                   </div>
 
                   <div class="row mt-3">
+                    <!-- Form for Soil Depth - Plain text -->
                     <div class="mb-3 col">
                       <label for="soil_depth" class="form-label">Soil Depth:</label>
                       <input  type="text" id="soil_depth" class="form-control" name="soil_depth" value="{{ row.soil_depth }}">
                     </div>
 
                     <div class="mb-3 col">
+                      <!-- Form for Soil Condition - Plain text -->
                       <label for="soil_condition" class="form-label">Soil Condition:</label>
                       <input  type="text" id="soil_condition" class="form-control" name="soil_condition" value="{{ row.soil_condition }}">
                     </div>
