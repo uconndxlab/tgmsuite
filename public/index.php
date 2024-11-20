@@ -221,6 +221,11 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $soil_depth = isset($data['soil_depth']) ? $data['soil_depth'] : '';
     $soil_condition = isset($data['soil_condition']) ? $data['soil_condition'] : '';
 
+    // renovation history details
+    $percent_renovated = isset($data['percent_renovated']) ? $data['percent_renovated'] : '';
+    $renovation_date = isset($data['renovation_date']) ? $data['renovation_date'] : '';
+    $renovation_type = isset($data['renovation_type']) ? $data['renovation_type'] : '';
+
     $irrigation_system = isset($data['irrigation_system']) ? $data['irrigation_system'] : '';
     
     // water source is a comma delimited in the database, but should be an array in the form
@@ -261,6 +266,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         soil_texture = '$soil_texture',
         soil_depth = '$soil_depth',
         soil_condition = '$soil_condition',
+        percent_renovated = '$percent_renovated',
+        renovation_date = '$renovation_date',
+        renovation_type = '$renovation_type',
         color_rating = '$color_rating' , 
         percent_shade = '$percent_shade',
         irrigation_system = '$irrigation_system',
