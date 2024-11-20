@@ -10,7 +10,7 @@ use Slim\Views\TwigMiddleware;
 require __DIR__ . '/../vendor/autoload.php';
 require 'AuthMiddleware.php';
 
-// Create Twig
+// Create f
 $twig = Twig::create('templates', ['cache' => false]);
 
 
@@ -216,7 +216,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $establishment_date = isset($data['establishment_date']) ? $data['establishment_date'] : '';
 
     // soil details (texutre, depth, condition)
-    $soil_texture = isset($data['soil_texture']) ? $data['soil_texture'] : '';
+    $soil_texture = isset($data['soil_texture']) ? implode(",", $data['soil_texture']) : '';
     $soil_depth = isset($data['soil_depth']) ? $data['soil_depth'] : '';
     $soil_condition = isset($data['soil_condition']) ? $data['soil_condition'] : '';
 
