@@ -186,6 +186,49 @@
         </div>
 
 
+        <!-- renovation information:
+
+        percent_renovation TEXT,
+    renovation_date TEXT,
+    renovation_type TEXT,
+      -->
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#renovation-meta" aria-expanded="false">
+              Renovation Info
+            </button>
+          </h2>
+          <div id="renovation-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <div class="mb-3">
+                    <label for="percent_renovation" class="form-label">Percent Renovation:</label>
+                    <input  type="text" id="percent_renovation" class="form-control" name="percent_renovation"
+                      value="{{ row.percent_renovation }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_date" class="form-label ">Renovation Date:</label>
+                    <input  type="date" id="renovation_date" class="form-control" name="renovation_date"
+                      value="{{ row.renovation_date }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_type" class="form-label">Renovation Type:</label>
+                    <input  type="text" id="renovation_type" class="form-control" name="renovation_type"
+                      value="{{ row.renovation_type }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+
         <!-- soil details -->
         <div class="accordion-item">
           <h2 class="accordion-header">
@@ -243,6 +286,8 @@
             </div>
           </div>
         </div>
+
+        
 
         <!--mowing practices -->
 
