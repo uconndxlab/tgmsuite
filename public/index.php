@@ -161,6 +161,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
         return $view->render($response, '404.html');
     }
 
+
     $params = ['field' => $field[0], 'reports' => $reports];
     $params['auth_info'] = $auth_info;
 
@@ -184,7 +185,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
         $rows[] = $row;
     }
 
-
+ 
 
     // Render the "fields" template with the rows array
     $params = ['field' => $rows[0], 'edit' => true];
@@ -204,7 +205,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     // $name might have a single quote in it, so we need to escape it
     $name = str_replace("'", "''", $name);
 
-    
+    //dd($data);
 
     $address = isset($data['address']) ? $data['address'] : '';
     $city = isset($data['city']) ? $data['city'] : '';
@@ -266,7 +267,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         soil_texture = '$soil_texture',
         soil_depth = '$soil_depth',
         soil_condition = '$soil_condition',
-        percent_renovated = '$percent_renovated',
+        percent_renovation = '$percent_renovated',
         renovation_date = '$renovation_date',
         renovation_type = '$renovation_type',
         color_rating = '$color_rating' , 
@@ -337,21 +338,17 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$description')";
     }
 
-    //dd($q);
+
+
 
 
     $stmnt = $db->exec($q);
 
-    // store the last insert id for later
-    $new_id = $db->lastInsertRowID();
 
-    $current_user_id = $auth_info['user_id'];
+    // dd the latest error message
+ 
 
-    // also insert into the field_users table
-    $q = "INSERT INTO field_users (user_id, field_id, permission_level) VALUES (
-        $current_user_id
-        , $new_id, 'owner')";
-    $stmnt = $db->exec($q);
+    
 
 
     // did the query work?
@@ -365,17 +362,15 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    echo $new_id;
+  
 
 
     // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
     if ($id == 0) {
-        $id = $new_id;
-
-        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
+        return $view->render($response, 'single-field.html', $params);
     } else {
-
-        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
+        // render the view
+        return $view->render($response, 'single-field.html', $params);
     }
 });
 
