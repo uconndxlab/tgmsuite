@@ -258,12 +258,59 @@
                 <tr>
                     <td>{{ report.evaluator_id }}</td>
                     <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.broadleaf_weeds }}</td>
-                    <td>{{ content.grassy_weeds }}</td>
-                    <td>{{ content.insects }}</td>
                     <td>
-                        {{content.disease}}
+                        <strong>Dandelion:</strong> {{ content.broadleaf_dandelion_percent }}% <br/>
+                        <strong>Narrowleaf Plantain:</strong> {{ content.narrowleaf_plantain_percent}}% <br/>
+                        <strong>Heal All:</strong> {{ content.heal_all_percent}}% <br/>
+                        <strong>Common Chickweed:</strong> {{ content.common_chickweed_percent }}% <br/>
+                        <strong>Oxalis:</strong> {{ content.oxalis_percent}}% <br/>
+                        <strong>Spurge:</strong> {{ content.spurge_percent}}% <br/>
+                        <strong>Knotweed:</strong> {{ content.knotweed_percent }}% <br/>
+                        <strong>Ground Ivy:</strong> {{ content.ground_ivy_percent}}% <br/>
+                        <strong>Violet:</strong> {{ content.violet_percent}}% <br/>
+                        <strong>Mouse Ear Chickweed:</strong> {{ content.mouse_ear_chickweed_percent }}% <br/>
+                        <strong>Clover (White):</strong> {{ content.clover_white_percent}}% <br/>
+                        <strong>Speedwell:</strong> {{ content.speedwell_percent }}% <br/>
+                        <strong>Other:</strong> {{ content.other_percent }}% <br/>
+
+                        <br/>
+
+                        <strong>Control/Treatment:</strong><br/>
+                        {{ content.broadleaf_control }}
+                    
                     </td>
+                    <td>
+                        <strong>Crabgrass:</strong> {{ content.crabgrass_percent }}% <br/>
+                        <strong>Poa Annua:</strong> {{ content.poa_annua_percent}}% <br/>
+                        <strong>Quackgrass:</strong> {{ content.quackgrass_percent}}% <br/>
+                        <strong>Goosegrass:</strong> {{ content.quackgrass_percent }}% <br/>
+                        <strong>Poa Trivialis:</strong> {{ content.poa_trivialis_percent}}% <br/>
+                        <strong>Bentgrass:</strong> {{ content.bentgrass_percent}}% <br/>
+                        <strong>Tall Fescue:</strong> {{ content.tall_fescue_percent }}% <br/>
+                        <strong>Yellow Nutsedge:</strong> {{ content.yellow_nutsedge_percent}}% <br/>
+                        <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent}}% <br/>
+                        <strong>Other:</strong> {{ content.other_percent }}% <br/>
+
+                        <br/><br/><br/><br/>
+
+                        <strong>Control/Treatment:</strong><br/>
+                        {{ content.broadleaf_control }}
+                    
+                    </td>
+                    <td>
+                        <strong>Grubs:</strong> {{ content.insects_grubs_percent }}% <br/>
+                        <strong>Sod Webworm:</strong> {{ content.insects_sod_webworm_percent}}% <br/>
+                        <strong>Chinch Bug:</strong> {{ content.insects_chinch_bug_percent}}% <br/>
+                        <strong>Bluegrass Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
+                        <strong>Other:</strong> {{ content.other_insects_percent}}% <br/>
+
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+                        <strong>Control/Treatment:</strong><br/>
+                        {{ content.broadleaf_control }}
+                    
+                    </td>
+                    <td>{{content.disease}}</td>
                 </tr>
             </tbody>
 
