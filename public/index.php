@@ -110,7 +110,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     $user_id = $auth_info['user_id'];
     // Query the "fields" table to get all the rows and make sure the user has access to this field
     $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
- 
+
     $results = $db->query($query_string);
 
 
@@ -185,7 +185,7 @@ $app->get('/fields/{id}/edit', function (Request $request, Response $response, $
         $rows[] = $row;
     }
 
- 
+
 
     // Render the "fields" template with the rows array
     $params = ['field' => $rows[0], 'edit' => true];
@@ -228,7 +228,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $renovation_type = isset($data['renovation_type']) ? $data['renovation_type'] : '';
 
     $irrigation_system = isset($data['irrigation_system']) ? $data['irrigation_system'] : '';
-    
+
     // water source is a comma delimited in the database, but should be an array in the form
     $water_source = isset($data['water_source']) ? implode(",", $data['water_source']) : '';
 
@@ -345,10 +345,9 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $stmnt = $db->exec($q);
 
 
-    // dd the latest error message
- 
+    // dd the latest row id
 
-    
+
 
 
     // did the query work?
@@ -362,15 +361,22 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-  
+
 
 
     // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
     if ($id == 0) {
-        return $view->render($response, 'single-field.html', $params);
+        $id = $db->lastInsertRowID();
+
+        // also update the field_users table with the current user id
+        $user_id = $_SESSION['user_id'];
+        $q = "INSERT INTO field_users (field_id, user_id, permission_level) VALUES ($id, $user_id, 'admin')";
+        $stmnt = $db->exec($q);
+
+        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     } else {
-        // render the view
-        return $view->render($response, 'single-field.html', $params);
+
+        return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     }
 });
 
@@ -783,7 +789,7 @@ $app->post('/fields/{id}/submit-cultivation', function (Request $request, Respon
 $app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-   
+
     // there should be a date field in the form ($args['topdressing_date']), which should be a date string and should be converted to a date object
     $date = $data['topdressing_date'];
     $date = date('Y-m-d', strtotime($date));
@@ -1013,7 +1019,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-   
+
     $q = "INSERT INTO pest_management_reports (
         report_id, broadleaf_dandelion, broadleaf_dandelion_percent, 
         broadleaf_plantain, broadleaf_plantain_percent, 
@@ -1381,7 +1387,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                     case '3':
                         $color = '3 - Med/Light Green';
                         break;
-                    
+
                     case '4':
                         $color = '4 - Medium Green';
                         break;
@@ -1389,10 +1395,9 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                     case '5':
                         $color = '5 - Dark Green';
                         break;
-
                 }
                 $row['color'] = $color;
-                
+
                 $rows[] = $row;
             }
             $color_report = $rows[0];
@@ -1451,7 +1456,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $cultication_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
-        
+
         case 'pest_management':
             $results = $db->query('SELECT * FROM pest_management_reports WHERE report_id = ' . $args['id']);
             // select the single row
