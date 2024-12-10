@@ -1463,7 +1463,8 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
 
-        case 'pest_management':
+        case 'pest':
+            // dd("Pest management");
             $results = $db->query('SELECT * FROM pest_management_reports WHERE report_id = ' . $args['id']);
             // select the single row
             $rows = [];
