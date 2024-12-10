@@ -24,7 +24,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS fields (
     turfgrass_species_present TEXT,
     establishment_method TEXT,
     establishment_date TEXT,
-    percent_renovation TEXT,
+    percent_renovated TEXT,
     renovation_date TEXT,
     renovation_type TEXT,
     soil_texture TEXT,
