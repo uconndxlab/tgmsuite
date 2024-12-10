@@ -294,7 +294,7 @@
                         <br/><br/><br/><br/>
 
                         <strong>Control/Treatment:</strong><br/>
-                        {{ content.broadleaf_control }}
+                        {{ content.crabgrass_control }}
                     
                     </td>
                     <td>
@@ -307,10 +307,35 @@
                         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
                         <strong>Control/Treatment:</strong><br/>
-                        {{ content.broadleaf_control }}
+                        {{ content.insects_control }}
                     
                     </td>
-                    <td>{{content.disease}}</td>
+                    <td>
+                        <strong>Disease:</strong> {{ content.disease_present }} <br/>
+                        <strong>Affected Species:</strong> <br/>
+                        {% if content.disease_perennial_ryegrass == 1 %}
+                            Perennial Ryegrass <br/>
+                        {% endif %}
+                        {% if content.disease_kentucky_bluegrass == 1 %}
+                            Kentucky Bluegrass
+                        {% endif %}
+                        {% if content.disease_fine_fescue == 1 %}
+                            Fine Fescue
+                        {% endif %}
+                        {% if content.disease_other == 1 %}
+                            Other
+                        {% endif %}
+                        {% if content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
+                            None
+                        {% endif %}
+
+                        <strong></strong>
+                        
+
+                        <strong>Control/Treatment:</strong><br/>
+                        {{ content.disease_control }}
+                    
+                    </td>
                 </tr>
             </tbody>
 

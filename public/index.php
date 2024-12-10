@@ -985,6 +985,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $orchardgrass_percent = isset($data['orchardgrass_percent']) ? $data['orchardgrass_percent'] : 0;
     $other_grasses = isset($data['other_grasses']) ? 1 : 0;
     $other_grasses_percent = isset($data['other_grasses_percent']) ? $data['other_grasses_percent'] : 0;
+    $crabgrass_control = isset($data['crabgrass_control']) ? $data['crabgrass_control'] : 'None';
 
     $insects_grubs = isset($data['insects_grubs']) ? 1 : 0;
     $insects_grubs_type = isset($data['insects_grubs_type']) ? $data['insects_grubs_type'] : null;
@@ -1002,17 +1003,17 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $other_insects = isset($data['other_insects']) ? 1 : 0;
     $other_insects_percent = isset($data['other_insects_percent']) ? $data['other_insects_percent'] : 0;
 
-    $insects_control = isset($data['insects_control']) ? $data['insects_control'] : null;
+    $insects_control = isset($data['insects_control']) ? $data['insects_control'] : 'None';
 
     $disease_present = isset($data['disease_present']) ? 1 : 0;
-    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : null;
+    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : 0;
 
     $disease_perennial_ryegrass = isset($data['disease_perennial_ryegrass']) ? 1 : 0;
     $disease_kentucky_bluegrass = isset($data['disease_kentucky_bluegrass']) ? 1 : 0;
     $disease_fine_fescue = isset($data['disease_fine_fescue']) ? 1 : 0;
     $disease_other = isset($data['disease_other']) ? 1 : 0;
     $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : 0;
-    $disease_control = isset($data['disease_control']) ? $data['disease_control'] : null;
+    $disease_control = isset($data['disease_control']) ? $data['disease_control'] : 'None';
 
 
 
@@ -1138,6 +1139,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->bindValue(30, $broadleaf_control);
     $stmt->bindValue(31, $crabgrass);
     $stmt->bindValue(32, $crabgrass_percent);
+    $stmt->bindValue(33, $crabgrass_control);
     $stmt->bindValue(34, $poa_annua);
     $stmt->bindValue(35, $poa_annua_percent);
     $stmt->bindValue(36, $quackgrass);
