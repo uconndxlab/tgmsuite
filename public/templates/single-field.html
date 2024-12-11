@@ -82,20 +82,16 @@
                         <span class="visually-hidden">Add Report</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Turf Quality Rating
-                                </a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-color">Color Report</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-topdressing">Topdressing
-                                Report</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-overseeding">Overseeding
-                                Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-photo">Add a Photo</a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-cultivation">Cultivation Report</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-fertilization">Fertilization
-                                Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-fertilization">Fertilization Report</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/quality-checklist">Turf Quality Rating</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-overseeding">Overseeding Report</a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-pest">Pest Management</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-thatch">Thatch Accumulation</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-color">Color Report</a></li>
                         <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-soil">Soil Test</a></li>
-                        <li><a class="dropdown-item" href="/fields/{{field.id}}/submit-photo">Add a Photo</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-thatch">Thatch Accumulation</a></li>
+                        <li><a class="dropdown-item" href="/fields/{{ field.id }}/submit-topdressing">Topdressing Report</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,11 +118,17 @@
                             hx-select="#report_results"
                             class="form-select" name="type" id="type">
                                 <option value="">All</option>
-                                <option value="evaluation">Turf Assessment</option>
-                                <option value="fertilization">Fertilization Event</option>
-                                <option value="color">Color Report</option>
-                                <option value="topdressing">Topdressing Report</option>
                                 <option value="photo">Photo Report</option>
+                                <option value="cultivation">Cultivation Report</option>
+                                <option value="fertilization">Fertilization Event</option>
+                                <option value="evaluation">Turf Assessment</option>
+                                <option value="overseeding">Overseeding Report</option>
+                                <option value="pest">Pest Management</option>
+                                <option value="color">Color Report</option>
+                                <option value="soil_test">Soil Test Report</option>
+                                <option value="thatch_accumulation">Thatch Accumulation</option>
+                                <option value="topdressing">Topdressing Report</option>
+                                
                             </select>
                         </div>
                         <div class="col-4">

@@ -185,6 +185,110 @@
           </div>
         </div>
 
+
+        <!-- renovation information:
+
+        percent_renovation TEXT,
+    renovation_date TEXT,
+    renovation_type TEXT,
+      -->
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#renovation-meta" aria-expanded="false">
+              Renovation Info
+            </button>
+          </h2>
+          <div id="renovation-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <div class="mb-3">
+                    <label for="percent_renovated" class="form-label">Percent Renovated:</label>
+                    <input  type="text" id="percent_renovated" class="form-control" name="percent_renovated"
+                      value="{{ row.percent_renovated }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_date" class="form-label ">Renovation Date:</label>
+                    <input  type="date" id="renovation_date" class="form-control" name="renovation_date"
+                      value="{{ row.renovation_date }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_type" class="form-label">Renovation Type:</label>
+                    <input  type="text" id="renovation_type" class="form-control" name="renovation_type"
+                      value="{{ row.renovation_type }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+
+        <!-- soil details -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#soil-meta" aria-expanded="false">
+              Soil Details
+            </button>
+          </h2>
+          <div id="soil-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <label for="soil_texture">Soil Texture:</label>
+                  <!-- Options for Soil Texture -->
+                  <div class="form-check">
+                    <input id="sand" class="form-check-input" type="checkbox" name="soil_texture[]" value="sand" {% if 'sand' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="tall_fescue">Sand</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="silt" class="form-check-input" type="checkbox" name="soil_texture[]" value="silt" {% if 'silt' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="silt">Silt</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="clay" class="form-check-input" type="checkbox" name="soil_texture[]" value="clay" {% if 'clay' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="clay">Clay</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="loam" class="form-check-input" type="checkbox" name="soil_texture[]" value="loam" {% if 'loam' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="loam">Loam</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="sandy_loam" class="form-check-input" type="checkbox" name="soil_texture[]" value="sandy loam" {% if 'sandy loam' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="sandy_loam">Sandy Loam</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="other" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="other" {% if 'other' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="other">Other</label>
+                  </div>
+
+                  <div class="row mt-3">
+                    <!-- Form for Soil Depth - Plain text -->
+                    <div class="mb-3 col">
+                      <label for="soil_depth" class="form-label">Soil Depth:</label>
+                      <input  type="text" id="soil_depth" class="form-control" name="soil_depth" value="{{ row.soil_depth }}">
+                    </div>
+
+                    <div class="mb-3 col">
+                      <!-- Form for Soil Condition - Plain text -->
+                      <label for="soil_condition" class="form-label">Soil Condition:</label>
+                      <input  type="text" id="soil_condition" class="form-control" name="soil_condition" value="{{ row.soil_condition }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+
         <!--mowing practices -->
 
         <div class="accordion-item">

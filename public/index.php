@@ -110,7 +110,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
     $user_id = $auth_info['user_id'];
     // Query the "fields" table to get all the rows and make sure the user has access to this field
     $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
- 
+
     $results = $db->query($query_string);
 
 
@@ -161,6 +161,7 @@ $app->get('/fields/{id}', function (Request $request, Response $response, $args)
         return $view->render($response, '404.html');
     }
 
+
     $params = ['field' => $field[0], 'reports' => $reports];
     $params['auth_info'] = $auth_info;
 
@@ -204,7 +205,7 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     // $name might have a single quote in it, so we need to escape it
     $name = str_replace("'", "''", $name);
 
-    
+    //dd($data);
 
     $address = isset($data['address']) ? $data['address'] : '';
     $city = isset($data['city']) ? $data['city'] : '';
@@ -215,8 +216,19 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $establishment_method = isset($data['establishment_method']) ? $data['establishment_method'] : '';
     $establishment_date = isset($data['establishment_date']) ? $data['establishment_date'] : '';
 
+    // soil details (texutre, depth, condition)
+    // soil texture must be an array so use implode
+    $soil_texture = isset($data['soil_texture']) ? implode(",", $data['soil_texture']) : '';
+    $soil_depth = isset($data['soil_depth']) ? $data['soil_depth'] : '';
+    $soil_condition = isset($data['soil_condition']) ? $data['soil_condition'] : '';
+
+    // renovation history details
+    $percent_renovated = isset($data['percent_renovated']) ? $data['percent_renovated'] : '';
+    $renovation_date = isset($data['renovation_date']) ? $data['renovation_date'] : '';
+    $renovation_type = isset($data['renovation_type']) ? $data['renovation_type'] : '';
+
     $irrigation_system = isset($data['irrigation_system']) ? $data['irrigation_system'] : '';
-    
+
     // water source is a comma delimited in the database, but should be an array in the form
     $water_source = isset($data['water_source']) ? implode(",", $data['water_source']) : '';
 
@@ -252,6 +264,12 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         turfgrass_species_present = '$turfgrass_species_present', 
         establishment_method = '$establishment_method',
         establishment_date = '$establishment_date',
+        soil_texture = '$soil_texture',
+        soil_depth = '$soil_depth',
+        soil_condition = '$soil_condition',
+        percent_renovated = '$percent_renovated',
+        renovation_date = '$renovation_date',
+        renovation_type = '$renovation_type',
         color_rating = '$color_rating' , 
         percent_shade = '$percent_shade',
         irrigation_system = '$irrigation_system',
@@ -278,6 +296,12 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         turfgrass_species_present, 
         establishment_method,
         establishment_date,
+        soil_texture,
+        percent_renovated,
+        renovation_date,
+        renovation_type,
+        soil_depth,
+        soil_condition,
         color_rating, 
         percent_shade, 
         irrigation_system, 
@@ -300,6 +324,12 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$turfgrass_species_present', 
         '$establishment_method',
         '$establishment_date',
+        '$soil_texture',
+        '$percent_renovated',
+        '$renovation_date',
+        '$renovation_type',
+        '$soil_depth',
+        '$soil_condition',
         '$color_rating', 
         '$percent_shade', 
         '$irrigation_system', 
@@ -314,21 +344,16 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
         '$description')";
     }
 
-    //dd($q);
+
+
 
 
     $stmnt = $db->exec($q);
 
-    // store the last insert id for later
-    $new_id = $db->lastInsertRowID();
 
-    $current_user_id = $auth_info['user_id'];
+    // dd the latest row id
 
-    // also insert into the field_users table
-    $q = "INSERT INTO field_users (user_id, field_id, permission_level) VALUES (
-        $current_user_id
-        , $new_id, 'owner')";
-    $stmnt = $db->exec($q);
+
 
 
     // did the query work?
@@ -342,12 +367,17 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
     $msg = "Field Updated";
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-    echo $new_id;
+
 
 
     // if id is 0, then this is a new field, so redirect to the new field by getting the last insert id
     if ($id == 0) {
-        $id = $new_id;
+        $id = $db->lastInsertRowID();
+
+        // also update the field_users table with the current user id
+        $user_id = $_SESSION['user_id'];
+        $q = "INSERT INTO field_users (field_id, user_id, permission_level) VALUES ($id, $user_id, 'admin')";
+        $stmnt = $db->exec($q);
 
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     } else {
@@ -765,7 +795,7 @@ $app->post('/fields/{id}/submit-cultivation', function (Request $request, Respon
 $app->post('/fields/{id}/submit-topdressing', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-   
+
     // there should be a date field in the form ($args['topdressing_date']), which should be a date string and should be converted to a date object
     $date = $data['topdressing_date'];
     $date = date('Y-m-d', strtotime($date));
@@ -905,84 +935,85 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $evaluator_id = $_SESSION['user_id'];
 
     $broadleaf_dandelion = isset($data['broadleaf_dandelion']) ? 1 : 0;
-    $broadleaf_dandelion_percent = isset($data['broadleaf_dandelion_percent']) ? $data['broadleaf_dandelion_percent'] : null;
+    $broadleaf_dandelion_percent = isset($data['broadleaf_dandelion_percent']) ? $data['broadleaf_dandelion_percent'] : 0;
     $broadleaf_plantain = isset($data['broadleaf_plantain']) ? 1 : 0;
-    $broadleaf_plantain_percent = isset($data['broadleaf_plantain_percent']) ? $data['broadleaf_plantain_percent'] : null;
+    $broadleaf_plantain_percent = isset($data['broadleaf_plantain_percent']) ? $data['broadleaf_plantain_percent'] : 0;
     $narrowleaf_plantain = isset($data['narrowleaf_plantain']) ? 1 : 0;
-    $narrowleaf_plantain_percent = isset($data['narrowleaf_plantain_percent']) ? $data['narrowleaf_plantain_percent'] : null;
+    $narrowleaf_plantain_percent = isset($data['narrowleaf_plantain_percent']) ? $data['narrowleaf_plantain_percent'] : 0;
     $heal_all = isset($data['heal_all']) ? 1 : 0;
-    $heal_all_percent = isset($data['heal_all_percent']) ? $data['heal_all_percent'] : null;
+    $heal_all_percent = isset($data['heal_all_percent']) ? $data['heal_all_percent'] : 0;
     $common_chickweed = isset($data['common_chickweed']) ? 1 : 0;
-    $common_chickweed_percent = isset($data['common_chickweed_percent']) ? $data['common_chickweed_percent'] : null;
+    $common_chickweed_percent = isset($data['common_chickweed_percent']) ? $data['common_chickweed_percent'] : 0;
     $oxalis = isset($data['oxalis']) ? 1 : 0;
-    $oxalis_percent = isset($data['oxalis_percent']) ? $data['oxalis_percent'] : null;
+    $oxalis_percent = isset($data['oxalis_percent']) ? $data['oxalis_percent'] : 0;
     $spurge = isset($data['spurge']) ? 1 : 0;
-    $spurge_percent = isset($data['spurge_percent']) ? $data['spurge_percent'] : null;
+    $spurge_percent = isset($data['spurge_percent']) ? $data['spurge_percent'] : 0;
     $knotweed = isset($data['knotweed']) ? 1 : 0;
-    $knotweed_percent = isset($data['knotweed_percent']) ? $data['knotweed_percent'] : null;
+    $knotweed_percent = isset($data['knotweed_percent']) ? $data['knotweed_percent'] : 0;
     $ground_ivy = isset($data['ground_ivy']) ? 1 : 0;
-    $ground_ivy_percent = isset($data['ground_ivy_percent']) ? $data['ground_ivy_percent'] : null;
+    $ground_ivy_percent = isset($data['ground_ivy_percent']) ? $data['ground_ivy_percent'] : 0;
     $violet = isset($data['violet']) ? 1 : 0;
-    $violet_percent = isset($data['violet_percent']) ? $data['violet_percent'] : null;
+    $violet_percent = isset($data['violet_percent']) ? $data['violet_percent'] : 0;
     $mouse_ear_chickweed = isset($data['mouse_ear_chickweed']) ? 1 : 0;
-    $mouse_ear_chickweed_percent = isset($data['mouse_ear_chickweed_percent']) ? $data['mouse_ear_chickweed_percent'] : null;
+    $mouse_ear_chickweed_percent = isset($data['mouse_ear_chickweed_percent']) ? $data['mouse_ear_chickweed_percent'] : 0;
     $clover_white = isset($data['clover_white']) ? 1 : 0;
-    $clover_white_percent = isset($data['clover_white_percent']) ? $data['clover_white_percent'] : null;
+    $clover_white_percent = isset($data['clover_white_percent']) ? $data['clover_white_percent'] : 0;
     $speedwell = isset($data['speedwell']) ? 1 : 0;
-    $speedwell_percent = isset($data['speedwell_percent']) ? $data['speedwell_percent'] : null;
+    $speedwell_percent = isset($data['speedwell_percent']) ? $data['speedwell_percent'] : 0;
     $other = isset($data['other']) ? 1 : 0;
-    $other_percent = isset($data['other_percent']) ? $data['other_percent'] : null;
-    $broadleaf_control = isset($data['broadleaf_control']) ? $data['broadleaf_control'] : null;
+    $other_percent = isset($data['other_percent']) ? $data['other_percent'] : 0;
+    $broadleaf_control = isset($data['broadleaf_control']) ? $data['broadleaf_control'] : "None";
 
     $crabgrass = isset($data['crabgrass']) ? 1 : 0;
-    $crabgrass_percent = isset($data['crabgrass_percent']) ? $data['crabgrass_percent'] : null;
+    $crabgrass_percent = isset($data['crabgrass_percent']) ? $data['crabgrass_percent'] : 0;
     $poa_annua = isset($data['poa_annua']) ? 1 : 0;
-    $poa_annua_percent = isset($data['poa_annua_percent']) ? $data['poa_annua_percent'] : null;
+    $poa_annua_percent = isset($data['poa_annua_percent']) ? $data['poa_annua_percent'] : 0;
 
     $quackgrass = isset($data['quackgrass']) ? 1 : 0;
-    $quackgrass_percent = isset($data['quackgrass_percent']) ? $data['quackgrass_percent'] : null;
+    $quackgrass_percent = isset($data['quackgrass_percent']) ? $data['quackgrass_percent'] : 0;
     $goosegrass = isset($data['goosegrass']) ? 1 : 0;
-    $goosegrass_percent = isset($data['goosegrass_percent']) ? $data['goosegrass_percent'] : null;
+    $goosegrass_percent = isset($data['goosegrass_percent']) ? $data['goosegrass_percent'] : 0;
     $poa_trivialis = isset($data['poa_trivialis']) ? 1 : 0;
-    $poa_trivialis_percent = isset($data['poa_trivialis_percent']) ? $data['poa_trivialis_percent'] : null;
+    $poa_trivialis_percent = isset($data['poa_trivialis_percent']) ? $data['poa_trivialis_percent'] : 0;
     $bentgrass = isset($data['bentgrass']) ? 1 : 0;
-    $bentgrass_percent = isset($data['bentgrass_percent']) ? $data['bentgrass_percent'] : null;
+    $bentgrass_percent = isset($data['bentgrass_percent']) ? $data['bentgrass_percent'] : 0;
     $tall_fescue = isset($data['tall_fescue']) ? 1 : 0;
-    $tall_fescue_percent = isset($data['tall_fescue_percent']) ? $data['tall_fescue_percent'] : null;
+    $tall_fescue_percent = isset($data['tall_fescue_percent']) ? $data['tall_fescue_percent'] : 0;
     $yellow_nutsedge = isset($data['yellow_nutsedge']) ? 1 : 0;
-    $yellow_nutsedge_percent = isset($data['yellow_nutsedge_percent']) ? $data['yellow_nutsedge_percent'] : null;
+    $yellow_nutsedge_percent = isset($data['yellow_nutsedge_percent']) ? $data['yellow_nutsedge_percent'] : 0;
     $orchardgrass = isset($data['orchardgrass']) ? 1 : 0;
-    $orchardgrass_percent = isset($data['orchardgrass_percent']) ? $data['orchardgrass_percent'] : null;
-    $other_grasses = isset($data['other_grasses']) ? 1 : 0;
-    $other_grasses_percent = isset($data['other_grasses_percent']) ? $data['other_grasses_percent'] : null;
+    $orchardgrass_percent = isset($data['orchardgrass_percent']) ? $data['orchardgrass_percent'] : 0;
+    $other_grasses = isset($data['other_grasses']) ? $data['other_grasses'] : 'None';
+    $other_grasses_percent = isset($data['other_grasses_percent']) ? $data['other_grasses_percent'] : 0;
+    $crabgrass_control = isset($data['crabgrass_control']) ? $data['crabgrass_control'] : 'None';
 
     $insects_grubs = isset($data['insects_grubs']) ? 1 : 0;
     $insects_grubs_type = isset($data['insects_grubs_type']) ? $data['insects_grubs_type'] : null;
-    $insects_grubs_percent = isset($data['insects_grubs_percent']) ? $data['insects_grubs_percent'] : null;
+    $insects_grubs_percent = isset($data['insects_grubs_percent']) ? $data['insects_grubs_percent'] : 0;
 
     $insects_sod_webworm = isset($data['insects_sod_webworm']) ? 1 : 0;
-    $insects_sod_webworm_percent = isset($data['insects_sod_webworm_percent']) ? $data['insects_sod_webworm_percent'] : null;
+    $insects_sod_webworm_percent = isset($data['insects_sod_webworm_percent']) ? $data['insects_sod_webworm_percent'] : 0;
 
     $insects_chinch_bug = isset($data['insects_chinch_bug']) ? 1 : 0;
-    $insects_chinch_bug_percent = isset($data['insects_chinch_bug_percent']) ? $data['insects_chinch_bug_percent'] : null;
+    $insects_chinch_bug_percent = isset($data['insects_chinch_bug_percent']) ? $data['insects_chinch_bug_percent'] : 0;
 
     $insects_billbug = isset($data['insects_billbug']) ? 1 : 0;
-    $insects_billbug_percent = isset($data['insects_billbug_percent']) ? $data['insects_billbug_percent'] : null;
+    $insects_billbug_percent = isset($data['insects_billbug_percent']) ? $data['insects_billbug_percent'] : 0;
 
     $other_insects = isset($data['other_insects']) ? 1 : 0;
-    $other_insects_percent = isset($data['other_insects_percent']) ? $data['other_insects_percent'] : null;
+    $other_insects_percent = isset($data['other_insects_percent']) ? $data['other_insects_percent'] : 0;
 
-    $insects_control = isset($data['insects_control']) ? $data['insects_control'] : null;
+    $insects_control = isset($data['insects_control']) ? $data['insects_control'] : 'None';
 
-    $disease_present = isset($data['disease_present']) ? 1 : 0;
-    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : null;
+    $disease_present = isset($data['disease_present']) ? $data['disease_present'] : 0;
+    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? 1 : 0;
 
     $disease_perennial_ryegrass = isset($data['disease_perennial_ryegrass']) ? 1 : 0;
     $disease_kentucky_bluegrass = isset($data['disease_kentucky_bluegrass']) ? 1 : 0;
     $disease_fine_fescue = isset($data['disease_fine_fescue']) ? 1 : 0;
     $disease_other = isset($data['disease_other']) ? 1 : 0;
-    $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : null;
-    $disease_control = isset($data['disease_control']) ? $data['disease_control'] : null;
+    $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : 0;
+    $disease_control = isset($data['disease_control']) ? $data['disease_control'] : 'None';
 
 
 
@@ -995,7 +1026,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-   
+
     $q = "INSERT INTO pest_management_reports (
         report_id, broadleaf_dandelion, broadleaf_dandelion_percent, 
         broadleaf_plantain, broadleaf_plantain_percent, 
@@ -1108,6 +1139,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->bindValue(30, $broadleaf_control);
     $stmt->bindValue(31, $crabgrass);
     $stmt->bindValue(32, $crabgrass_percent);
+    $stmt->bindValue(33, $crabgrass_control);
     $stmt->bindValue(34, $poa_annua);
     $stmt->bindValue(35, $poa_annua_percent);
     $stmt->bindValue(36, $quackgrass);
@@ -1153,10 +1185,6 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     } else {
         $msg = "Failed to save Pest Management Report";
     }
-
-
-
-
 
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => 'Pest Management Report Submitted'];
@@ -1363,7 +1391,7 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                     case '3':
                         $color = '3 - Med/Light Green';
                         break;
-                    
+
                     case '4':
                         $color = '4 - Medium Green';
                         break;
@@ -1371,10 +1399,9 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
                     case '5':
                         $color = '5 - Dark Green';
                         break;
-
                 }
                 $row['color'] = $color;
-                
+
                 $rows[] = $row;
             }
             $color_report = $rows[0];
@@ -1433,8 +1460,9 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
             $cultication_report = $rows[0];
             $field = $db->query('SELECT * FROM fields WHERE id = ' . $report['field_id'])->fetchArray(SQLITE3_ASSOC);
             break;
-        
-        case 'pest_management':
+
+        case 'pest':
+            // dd("Pest management");
             $results = $db->query('SELECT * FROM pest_management_reports WHERE report_id = ' . $args['id']);
             // select the single row
             $rows = [];
