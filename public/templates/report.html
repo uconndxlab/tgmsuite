@@ -385,6 +385,9 @@
                     <td>
                         <strong>Disease:</strong> {% if content.disease_present != "" %} {{ content.disease_present }} {% else %} None {% endif %} <br/>
                         <strong>Affected Species:</strong> <br/>
+                        {% if content.disease_tall_fescue == 1 %}
+                            <li>Tall Fescue</li>
+                        {% endif %}
                         {% if content.disease_perennial_ryegrass == 1 %}
                             <li>Perennial Ryegrass</li>
                         {% endif %}
@@ -397,7 +400,7 @@
                         {% if content.disease_other == 1 %}
                             <li>Other</li>
                         {% endif %}
-                        {% if content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
+                        {% if content.disease_tall_fescue != 1 and content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
                             None
                         {% endif %}
                         <br/>

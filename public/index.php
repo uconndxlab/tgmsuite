@@ -1006,7 +1006,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $insects_control = isset($data['insects_control']) ? $data['insects_control'] : 'None';
 
     $disease_present = isset($data['disease_present']) ? $data['disease_present'] : 0;
-    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : 0;
+    $disease_tall_fescue = isset($data['disease_tall_fescue']) ? 1 : 0;
 
     $disease_perennial_ryegrass = isset($data['disease_perennial_ryegrass']) ? 1 : 0;
     $disease_kentucky_bluegrass = isset($data['disease_kentucky_bluegrass']) ? 1 : 0;
