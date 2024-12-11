@@ -338,12 +338,13 @@
                         {% if content.orchardgrass != 0 %}
                         <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent }}% <br/>
                         {% endif %}
-                        {% if content.other_grasses != 'None' %}
-                        <strong>Other:</strong><br/> {{ content.other_grasses }}: {{content.other_grasses_percent}}% <br/>
+                        {% if content.other_grasses_percent != "" %}
+                        <strong>Other:</strong> {{content.other_grasses_percent}}% <br/>
                         <br/>
+                        {% else %}
                         {% endif %}
 
-
+                        
                         <strong>Control/Treatment:</strong><br/>
                         {% if content.crabgrass_control != "" %}
                         {{ content.crabgrass_control }}
