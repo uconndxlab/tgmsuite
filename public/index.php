@@ -983,7 +983,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $yellow_nutsedge_percent = isset($data['yellow_nutsedge_percent']) ? $data['yellow_nutsedge_percent'] : 0;
     $orchardgrass = isset($data['orchardgrass']) ? 1 : 0;
     $orchardgrass_percent = isset($data['orchardgrass_percent']) ? $data['orchardgrass_percent'] : 0;
-    $other_grasses = isset($data['other_grasses']) ? 1 : 0;
+    $other_grasses = isset($data['other_grasses']) ? $data['other_grasses'] : 'None';
     $other_grasses_percent = isset($data['other_grasses_percent']) ? $data['other_grasses_percent'] : 0;
     $crabgrass_control = isset($data['crabgrass_control']) ? $data['crabgrass_control'] : 'None';
 
@@ -1005,7 +1005,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
 
     $insects_control = isset($data['insects_control']) ? $data['insects_control'] : 'None';
 
-    $disease_present = isset($data['disease_present']) ? 1 : 0;
+    $disease_present = isset($data['disease_present']) ? $data['disease_present'] : 0;
     $disease_tall_fescue = isset($data['disease_tall_fescue']) ? $data['disease_tall_fescue'] : 0;
 
     $disease_perennial_ryegrass = isset($data['disease_perennial_ryegrass']) ? 1 : 0;

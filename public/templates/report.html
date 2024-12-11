@@ -303,7 +303,11 @@
                         {% endif %}
 
                         <strong>Control/Treatment:</strong><br/>
+                        {% if content.broadleaf_control != "" %}
                         {{ content.broadleaf_control }}
+                        {% else %}
+                        None
+                        {% endif %}
                     
                     </td>
                     <td>
@@ -334,14 +338,19 @@
                         {% if content.orchardgrass != 0 %}
                         <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent }}% <br/>
                         {% endif %}
-                        {% if content.other_grasses != 0 %}
-                        <strong>Other:</strong> {{ content.other_grasses_percent }}% <br/>
+                        {% if content.other_grasses != 'None' %}
+                        <strong>Other:</strong><br/> {{ content.other_grasses }}: {{content.other_grasses_percent}}% <br/>
                         <br/>
                         {% endif %}
 
 
                         <strong>Control/Treatment:</strong><br/>
+                        {% if content.crabgrass_control != "" %}
                         {{ content.crabgrass_control }}
+                        {% else %}
+                        None
+                        {% endif %}
+
                     
                     </td>
                     <td>
@@ -365,30 +374,35 @@
                         {% endif %}
 
                         <strong>Control/Treatment:</strong><br/>
+                        {% if content.insects_control != "" %}
                         {{ content.insects_control }}
+                        {% else %}
+                        None
+                        {% endif %}
                     
                     </td>
                     <td>
-                        <strong>Disease:</strong> {{ content.disease_present }} <br/>
+                        <strong>Disease:</strong> {% if content.disease_present != "" %} {{ content.disease_present }} {% else %} None {% endif %} <br/>
                         <strong>Affected Species:</strong> <br/>
                         {% if content.disease_perennial_ryegrass == 1 %}
-                            Perennial Ryegrass <br/>
+                            <li>Perennial Ryegrass</li>
                         {% endif %}
                         {% if content.disease_kentucky_bluegrass == 1 %}
-                            Kentucky Bluegrass
+                            <li>Kentucky Bluegrass</li>
                         {% endif %}
                         {% if content.disease_fine_fescue == 1 %}
-                            Fine Fescue
+                            <li>Fine Fescue</li>
                         {% endif %}
                         {% if content.disease_other == 1 %}
-                            Other
+                            <li>Other</li>
                         {% endif %}
                         {% if content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
                             None
                         {% endif %}
                         <br/>
-                        <strong>Area of Turf Infected:</strong> {{ content.disease_percent }}
-
+                        {% if content.disease_percent != 0 %}
+                        <strong>Area of Turf Infected:</strong> {{ content.disease_percent }}%
+                        {% endif %}
                     
                         <strong>Control/Treatment:</strong> <br/>
                         {{ content.disease_control }}
