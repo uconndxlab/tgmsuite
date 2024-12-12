@@ -81,6 +81,7 @@ main#app {
 .field-lede {
   position: sticky;
   top:55px;
+  margin-bottom:25px;
 }
 
 .accordion-item.invalid button{
