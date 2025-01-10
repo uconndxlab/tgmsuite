@@ -712,7 +712,9 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $evaluator_id = $_SESSION['user_id'];
 
     // species is a comma delimited in the database, but should be an array in the form
-    $species = implode(",", $data['species']);
+    // species is a comma delimited in the database, but should be an array in the form
+    $species = isset($data['species']) ? implode(",", $data['species']) : '';
+
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'overseeding')";
     $stmt = $db->prepare($q);
