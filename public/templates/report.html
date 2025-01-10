@@ -520,6 +520,13 @@
                     <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.action_taken }}</td>
                 </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.soil_comments}}
+                    </td>
+                </tr>
             </tbody>
         </table>
         {% endif %}

@@ -1285,10 +1285,11 @@ $app->post('/fields/{id}/submit-soil', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO soil_test (report_id, action_taken) VALUES (?, ?)";
+    $q = "INSERT INTO soil_test (report_id, action_taken, soil_comments) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['action_taken']);
+    $stmt->bindValue(3, $data['soil_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
