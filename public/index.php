@@ -722,13 +722,14 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO overseed_reports (report_id, rate, formula, pre_germ, species) VALUES (?, ?, ?, ?, ?)";
+    $q = "INSERT INTO overseed_reports (report_id, rate, formula, pre_germ, species, overseed_comments) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['rate']);
     $stmt->bindValue(3, $data['formula']);
     $stmt->bindValue(4, $data['pre_germ']);
     $stmt->bindValue(5, $species);
+    $stmt->bindValue(6, $data['overseed_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -840,10 +841,11 @@ $app->post('/fields/{id}/submit-color', function (Request $request, Response $re
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO color_reports (report_id, color_option) VALUES (?, ?)";
+    $q = "INSERT INTO color_reports (report_id, color_option, color_comments) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['color']);
+    $stmt->bindValue(3, $data['color_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
