@@ -96,15 +96,11 @@
 }
 
 @media screen and (max-width: 800px) {
-    .col-3 {
+    .col-3{
         width: 100%;
-        padding: 0;
-        margin: 0;
     }
 
     .col-4 {
         width: 100%;
-        padding: 0;
-        margin: 0;
     }
 }
