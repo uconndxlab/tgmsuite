@@ -641,7 +641,7 @@ $app->post('/fields/{id}/submit-fertilization', function (Request $request, Resp
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO fertilization_reports (report_id, product, rate, npk, compost, bio_stimulant) VALUES (?, ?, ?, ?, ?, ?)";
+    $q = "INSERT INTO fertilization_reports (report_id, product, rate, npk, compost, bio_stimulant, fert_comments) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['product']);
@@ -649,6 +649,7 @@ $app->post('/fields/{id}/submit-fertilization', function (Request $request, Resp
     $stmt->bindValue(4, $data['npk']);
     $stmt->bindValue(5, $data['compost']);
     $stmt->bindValue(6, $data['biostimulant']);
+    $stmt->bindValue(7, $data['fert_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);

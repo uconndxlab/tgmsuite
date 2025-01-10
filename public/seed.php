@@ -85,6 +85,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS fertilization_reports (
     npk TEXT,
     compost TEXT,
     bio_stimulant TEXT,
+    fert_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
