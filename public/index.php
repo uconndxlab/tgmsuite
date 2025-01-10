@@ -1302,20 +1302,13 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
+    // Insert into reports table
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
     $db->exec($q);
 
     $report_id = $db->lastInsertRowID();
 
-    // report_id INTEGER,
-    // turf_density INTEGER,
-    // smoothness_rating INTEGER,
-    // weeds_rating INTEGER,
-    // stones_at_surface INTEGER,
-    // depressions INTEGER,
-    // turf_rating INTEGER,
-    // surface_rating INTEGER
-
+    // Get the values from the form
     $turf_density = $data['turfDensity'];
     $smoothness_rating = $data['smoothness'];
     $weeds_rating = $data['weedsPercentage'];
@@ -1323,16 +1316,30 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     $depressions = $data['depressions'];
     $turf_rating = $data['turfRating'];
     $surface_rating = $data['surfaceRating'];
+    $quality_comments = $data['quality_comments'];
     $overall_rating = $turf_rating - $surface_rating;
 
-    $db->exec("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES ($report_id, $turf_density, $smoothness_rating, $weeds_rating, $stones_at_surface, $depressions, $turf_rating, $surface_rating, $overall_rating)");
+    // Use a prepared statement to insert into evaluations table
+    $stmt = $db->prepare("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, quality_comments, overall_rating) 
+                          VALUES (:report_id, :turf_density, :smoothness_rating, :weeds_rating, :stones_at_surface, :depressions, :turf_rating, :surface_rating, :quality_comments, :overall_rating)");
 
+    $stmt->bindParam(':report_id', $report_id);
+    $stmt->bindParam(':turf_density', $turf_density);
+    $stmt->bindParam(':smoothness_rating', $smoothness_rating);
+    $stmt->bindParam(':weeds_rating', $weeds_rating);
+    $stmt->bindParam(':stones_at_surface', $stones_at_surface);
+    $stmt->bindParam(':depressions', $depressions);
+    $stmt->bindParam(':turf_rating', $turf_rating);
+    $stmt->bindParam(':surface_rating', $surface_rating);
+    $stmt->bindParam(':quality_comments', $quality_comments);
+    $stmt->bindParam(':overall_rating', $overall_rating);
 
+    $stmt->execute();
 
     $msg = "Turf Rating Saved";
 
+    // Fetch the field data to pass to the template
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
-    // select the single row
     $rows = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
@@ -1345,8 +1352,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
         'message' => $msg
     );
 
-
-    // redirect to /fields/{id}
+    // Redirect to /fields/{id}
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 

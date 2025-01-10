@@ -72,6 +72,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS evaluations (
     turf_rating INTEGER,
     surface_rating INTEGER,
     overall_rating INTEGER,
+    quality_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
