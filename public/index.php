@@ -813,11 +813,12 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description) VALUES (?, ?, ?)";
+    $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description, topdressing_comments) VALUES (?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['topdressing_rate']);
     $stmt->bindValue(3, $data['topdressing_composition']);
+    $stmt->bindValue(4, $data['topdressing_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -1236,10 +1237,11 @@ $app->post('/fields/{id}/submit-thatch', function (Request $request, Response $r
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO thatch_accumulation_reports (report_id, thatch_accumulation) VALUES ( ?, ?)";
+    $q = "INSERT INTO thatch_accumulation_reports (report_id, thatch_accumulation, thatch_comments) VALUES ( ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['thatch_accumulation']);
+    $stmt->bindValue(3, $data['thatch_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);

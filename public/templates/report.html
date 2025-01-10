@@ -185,6 +185,12 @@
                     <td>{{ content.topdressing_rate }}</td>
                     <td>{{ content.topdressing_description }}</td>
                 </tr>
+                <tr>
+                    <td colspan="5">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.topdressing_comments}}
+                    </td>
+                </tr>
             </tbody>
         </table>
         {% endif %}
@@ -469,6 +475,12 @@
                     <td>{{ report.evaluator_id }}</td>
                     <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.thatch_accumulation }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.thatch_comments}}
+                    </td>
                 </tr>
             </tbody>
         </table>
