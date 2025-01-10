@@ -1,14 +1,14 @@
 /** .row class for grid system **/
-.row {
+/* .row {
     width: 100%;
     margin: 0 auto;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-}
+} */
 
-/** large devices only **/
+/* * large devices only *
 @media (min-width: 1200px) {
     .container {
         max-width: 1300px;
@@ -93,7 +93,7 @@
         padding: 0;
         margin: 0;
     }
-}
+} */
 
 @media screen and (max-width: 800px) {
     .col-3{
