@@ -104,3 +104,13 @@
         width: 100%;
     }
 }
+
+@media print {
+    .col-3{
+        width: 100%;
+    }
+
+    .col-4 {
+        width: 100%;
+    }
+}
