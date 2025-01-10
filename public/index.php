@@ -828,7 +828,7 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
 $app->post('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'color')";
@@ -857,7 +857,7 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $data = $request->getParsedBody();
     $uploadedFiles = $request->getUploadedFiles();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
@@ -1295,7 +1295,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
