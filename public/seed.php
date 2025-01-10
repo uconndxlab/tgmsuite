@@ -93,6 +93,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS photos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     photo_url TEXT,
+    photo_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -104,6 +105,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS color_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     color_option TEXT,
+    color_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -113,6 +115,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS topdressing_reports (
     report_id INTEGER,
     topdressing_rate TEXT,
     topdressing_description TEXT,
+    topdressing_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -125,6 +128,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS overseed_reports (
     formula TEXT,
     pre_germ TEXT,
     species TEXT,
+    overseed_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -233,6 +237,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS pest_management_reports (
     disease_other integer,
     disease_percent integer,
     disease_control TEXT,
+    pest_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -242,6 +247,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS thatch_accumulation_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     thatch_accumulation TEXT,
+    thatch_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 
@@ -252,6 +258,7 @@ $db->exec('CREATE TABLE IF NOT EXISTS soil_test(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     report_id INTEGER,
     action_taken TEXT,
+    soil_comments TEXT,
     FOREIGN KEY (report_id) REFERENCES reports(id)
 )');
 

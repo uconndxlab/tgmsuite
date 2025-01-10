@@ -1014,6 +1014,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $disease_other = isset($data['disease_other']) ? 1 : 0;
     $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : 0;
     $disease_control = isset($data['disease_control']) ? $data['disease_control'] : 'None';
+    $pest_comments = isset($data['pest_comments']) ? $data['pest_comments'] : 'None';
 
 
 
@@ -1066,7 +1067,8 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
         disease_kentucky_bluegrass, 
         disease_fine_fescue, 
         disease_other, disease_percent, 
-        disease_control
+        disease_control,
+        pest_comments
     ) VALUES (
         ?,
         ?, ?,
@@ -1103,7 +1105,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
         ?, ?,
         ?, ?,
         ?, ?,
-        ?, ?
+        ?, ?, ?
     )";
 
     $stmt = $db->prepare($q);
@@ -1179,6 +1181,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->bindValue(69, $disease_other);
     $stmt->bindValue(70, $disease_percent);
     $stmt->bindValue(71, $disease_control);
+    $stmt->bindValue(72, $pest_comments);
 
     if ($stmt->execute()) {
         $msg = "Pest Management Report Saved";
