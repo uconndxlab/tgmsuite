@@ -79,6 +79,12 @@
                     <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.color }}</td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.color_comments}}
+                    </td>
+                </tr>
             </tbody>
         </table>
         {% endif %}
@@ -125,8 +131,14 @@
                     <td>{{ content.surface_rating }}</td>
                     <td>{{ content.overall_rating }}</td>
                 </tr>
+                <tr>
+                    <td colspan="10">
+                        <strong>Additional Comments:<br/></strong> {{ content.quality_comments }}
+                    </td>
+                </tr>
             </tbody>
         </table>
+        
 
         {% endif %}
 
@@ -173,6 +185,12 @@
                     <td>{{ content.topdressing_rate }}</td>
                     <td>{{ content.topdressing_description }}</td>
                 </tr>
+                <tr>
+                    <td colspan="5">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.topdressing_comments}}
+                    </td>
+                </tr>
             </tbody>
         </table>
         {% endif %}
@@ -203,38 +221,57 @@
                     <td>{{ content.compost }}</td>
                     <td>{{ content.bio_stimulant }}</td>
                 </tr>
+                <tr>
+                    <td colspan="7">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.fert_comments}}
+                    </td>
+                </tr>
             </tbody>
         </table>
 
         {% endif %}
 
         {% if report.type == 'overseeding' %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Formula</th>
-                    <th scope="col">Pre-Germ</th>
-                    <th scope="col">Species</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.evaluator_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.rate }}</td>
-                    <td>{{ content.formula }}</td>
-                    <td>{{ content.pre_germ }}</td>
-                    <td>
-                        {{content.species}}
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Formula</th>
+                        <th scope="col">Pre-Germ</th>
+                        <th scope="col">Species</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.evaluator_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.formula }}</td>
+                        <td>{{ content.pre_germ }}</td>
+                        <td>
+                            {% set species_map = {
+                                'tall_fescue': 'Tall Fescue',
+                                'perennial_ryegrass': 'Perennial Ryegrass',
+                                'kentucky_bluegrass': 'Kentucky Bluegrass',
+                                'fine_fescue': 'Fine Fescue',
+                                'other': 'Other'
+                            } %}
+                            {% set species_list = content.species|split(',') %}
+                            {% for species in species_list %}
+                                {{ species_map[species] }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <strong>Additional Comments:<br/></strong> {{ content.overseed_comments }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         {% endif %}
 
         <!-- if it's a pest management event, show the following:
@@ -410,10 +447,15 @@
                     
                         <strong>Control/Treatment:</strong> <br/>
                         {{ content.disease_control }}
-
-                    
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="7">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.pest_comments}}
+                    </td>
+                </tr>
+
             </tbody>
 
         </table>
@@ -433,6 +475,12 @@
                     <td>{{ report.evaluator_id }}</td>
                     <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.thatch_accumulation }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.thatch_comments}}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -483,6 +531,13 @@
                     <td>{{ report.evaluator_id }}</td>
                     <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.action_taken }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {{ content.soil_comments}}
+                    </td>
                 </tr>
             </tbody>
         </table>

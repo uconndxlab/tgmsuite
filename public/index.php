@@ -641,7 +641,7 @@ $app->post('/fields/{id}/submit-fertilization', function (Request $request, Resp
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO fertilization_reports (report_id, product, rate, npk, compost, bio_stimulant) VALUES (?, ?, ?, ?, ?, ?)";
+    $q = "INSERT INTO fertilization_reports (report_id, product, rate, npk, compost, bio_stimulant, fert_comments) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['product']);
@@ -649,6 +649,7 @@ $app->post('/fields/{id}/submit-fertilization', function (Request $request, Resp
     $stmt->bindValue(4, $data['npk']);
     $stmt->bindValue(5, $data['compost']);
     $stmt->bindValue(6, $data['biostimulant']);
+    $stmt->bindValue(7, $data['fert_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -723,13 +724,14 @@ $app->post('/fields/{id}/submit-overseeding', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO overseed_reports (report_id, rate, formula, pre_germ, species) VALUES (?, ?, ?, ?, ?)";
+    $q = "INSERT INTO overseed_reports (report_id, rate, formula, pre_germ, species, overseed_comments) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['rate']);
     $stmt->bindValue(3, $data['formula']);
     $stmt->bindValue(4, $data['pre_germ']);
     $stmt->bindValue(5, $species);
+    $stmt->bindValue(6, $data['overseed_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -813,11 +815,12 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description) VALUES (?, ?, ?)";
+    $q = "INSERT INTO topdressing_reports (report_id, topdressing_rate, topdressing_description, topdressing_comments) VALUES (?, ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['topdressing_rate']);
     $stmt->bindValue(3, $data['topdressing_composition']);
+    $stmt->bindValue(4, $data['topdressing_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -830,7 +833,7 @@ $app->post('/fields/{id}/submit-topdressing', function (Request $request, Respon
 $app->post('/fields/{id}/submit-color', function (Request $request, Response $response, $args) use ($db, $twig) {
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'color')";
@@ -841,10 +844,11 @@ $app->post('/fields/{id}/submit-color', function (Request $request, Response $re
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO color_reports (report_id, color_option) VALUES (?, ?)";
+    $q = "INSERT INTO color_reports (report_id, color_option, color_comments) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['color']);
+    $stmt->bindValue(3, $data['color_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -859,7 +863,7 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $data = $request->getParsedBody();
     $uploadedFiles = $request->getUploadedFiles();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
@@ -1016,6 +1020,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $disease_other = isset($data['disease_other']) ? 1 : 0;
     $disease_percent = isset($data['disease_percent']) ? $data['disease_percent'] : 0;
     $disease_control = isset($data['disease_control']) ? $data['disease_control'] : 'None';
+    $pest_comments = isset($data['pest_comments']) ? $data['pest_comments'] : 'None';
 
 
 
@@ -1068,7 +1073,8 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
         disease_kentucky_bluegrass, 
         disease_fine_fescue, 
         disease_other, disease_percent, 
-        disease_control
+        disease_control,
+        pest_comments
     ) VALUES (
         ?,
         ?, ?,
@@ -1105,7 +1111,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
         ?, ?,
         ?, ?,
         ?, ?,
-        ?, ?
+        ?, ?, ?
     )";
 
     $stmt = $db->prepare($q);
@@ -1181,6 +1187,7 @@ $app->post('/fields/{id}/submit-pest', function (Request $request, Response $res
     $stmt->bindValue(69, $disease_other);
     $stmt->bindValue(70, $disease_percent);
     $stmt->bindValue(71, $disease_control);
+    $stmt->bindValue(72, $pest_comments);
 
     if ($stmt->execute()) {
         $msg = "Pest Management Report Saved";
@@ -1232,10 +1239,11 @@ $app->post('/fields/{id}/submit-thatch', function (Request $request, Response $r
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO thatch_accumulation_reports (report_id, thatch_accumulation) VALUES ( ?, ?)";
+    $q = "INSERT INTO thatch_accumulation_reports (report_id, thatch_accumulation, thatch_comments) VALUES ( ?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['thatch_accumulation']);
+    $stmt->bindValue(3, $data['thatch_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -1281,10 +1289,11 @@ $app->post('/fields/{id}/submit-soil', function (Request $request, Response $res
     $stmt->execute();
     $report_id = $db->lastInsertRowId();
 
-    $q = "INSERT INTO soil_test (report_id, action_taken) VALUES (?, ?)";
+    $q = "INSERT INTO soil_test (report_id, action_taken, soil_comments) VALUES (?, ?, ?)";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $report_id);
     $stmt->bindValue(2, $data['action_taken']);
+    $stmt->bindValue(3, $data['soil_comments']);
     $stmt->execute();
 
     $view = Twig::fromRequest($request);
@@ -1297,23 +1306,16 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
 
     $data = $request->getParsedBody();
     $field_id = $args['id'];
-    $date = date('Y-m-d H:ia');
+    $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
+    // Insert into reports table
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES ('$date', $evaluator_id, $field_id, 'evaluation')";
     $db->exec($q);
 
     $report_id = $db->lastInsertRowID();
 
-    // report_id INTEGER,
-    // turf_density INTEGER,
-    // smoothness_rating INTEGER,
-    // weeds_rating INTEGER,
-    // stones_at_surface INTEGER,
-    // depressions INTEGER,
-    // turf_rating INTEGER,
-    // surface_rating INTEGER
-
+    // Get the values from the form
     $turf_density = $data['turfDensity'];
     $smoothness_rating = $data['smoothness'];
     $weeds_rating = $data['weedsPercentage'];
@@ -1321,16 +1323,30 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
     $depressions = $data['depressions'];
     $turf_rating = $data['turfRating'];
     $surface_rating = $data['surfaceRating'];
+    $quality_comments = $data['quality_comments'];
     $overall_rating = $turf_rating - $surface_rating;
 
-    $db->exec("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, overall_rating) VALUES ($report_id, $turf_density, $smoothness_rating, $weeds_rating, $stones_at_surface, $depressions, $turf_rating, $surface_rating, $overall_rating)");
+    // Use a prepared statement to insert into evaluations table
+    $stmt = $db->prepare("INSERT INTO evaluations (report_id, turf_density, smoothness_rating, weeds_rating, stones_at_surface, depressions, turf_rating, surface_rating, quality_comments, overall_rating) 
+                          VALUES (:report_id, :turf_density, :smoothness_rating, :weeds_rating, :stones_at_surface, :depressions, :turf_rating, :surface_rating, :quality_comments, :overall_rating)");
 
+    $stmt->bindParam(':report_id', $report_id);
+    $stmt->bindParam(':turf_density', $turf_density);
+    $stmt->bindParam(':smoothness_rating', $smoothness_rating);
+    $stmt->bindParam(':weeds_rating', $weeds_rating);
+    $stmt->bindParam(':stones_at_surface', $stones_at_surface);
+    $stmt->bindParam(':depressions', $depressions);
+    $stmt->bindParam(':turf_rating', $turf_rating);
+    $stmt->bindParam(':surface_rating', $surface_rating);
+    $stmt->bindParam(':quality_comments', $quality_comments);
+    $stmt->bindParam(':overall_rating', $overall_rating);
 
+    $stmt->execute();
 
     $msg = "Turf Rating Saved";
 
+    // Fetch the field data to pass to the template
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
-    // select the single row
     $rows = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
@@ -1343,8 +1359,7 @@ $app->post('/fields/{id}/quality-checklist', function (Request $request, Respons
         'message' => $msg
     );
 
-
-    // redirect to /fields/{id}
+    // Redirect to /fields/{id}
     return $response->withHeader('Location', '/fields/' . $args['id'])->withStatus(302);
 });
 

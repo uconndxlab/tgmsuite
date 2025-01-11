@@ -1,111 +1,116 @@
 /** .row class for grid system **/
-.row {
-    width:100%;
-    margin:0 auto;
-    padding:0;
+/* .row {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-}
+} */
 
-/** large devices only **/
-
+/* * large devices only *
 @media (min-width: 1200px) {
-.container {
-    max-width: 1300px;
-    width:100%;
-    margin:0 auto;
+    .container {
+        max-width: 1300px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .col {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-1 {
+        width: 8.33%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-2 {
+        width: 16.66%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-3 {
+        width: 25%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-4 {
+        width: 33.33%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-5 {
+        width: 41.66%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-6 {
+        width: 50%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-7 {
+        width: 58.33%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-8 {
+        width: 66.66%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-9 {
+        width: 75%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-10 {
+        width: 83.33%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-11 {
+        width: 91.66%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-12 {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+} */
+
+@media screen and (max-width: 800px) {
+    .col-3{
+        width: 100%;
+    }
+
+    .col-4 {
+        width: 100%;
+    }
 }
 
-/** .col class for grid system **/
-.col {
-    width:100%;
-    padding:0;
-    margin:0;
-}
+@media print {
+    .col-3{
+        width: 100%;
+    }
 
-/** .col class for grid system **/
-.col-1 {
-    width:8.33%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-.col-2 {
-    width:16.66%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-
-.col-md-3 {
-    width:25%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-
-.col-4 {
-    width:33.33%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-
-.col-5 {
-    width:41.66%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-
-.col-6 {
-    width:50%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-
-.col-7 {
-    width:58.33%;
-    padding:0;
-    margin:0;
-}
-
-/** .col class for grid system **/
-.col-8 {
-    width:66.66%;
-    padding:0;
-    margin:0;
-}
-
-.col-md-9 {
-    width:75%;
-    padding:0;
-    margin:0;
-}
-
-.col-10 {
-    width:83.33%;
-    padding:0;
-    margin:0;
-}
-
-.col-11 {
-    width:91.66%;
-    padding:0;
-    margin:0;
-}
-
-.col-12 {
-    width:100%;
-    padding:0;
-    margin:0;
-}
+    .col-4 {
+        width: 100%;
+    }
 }

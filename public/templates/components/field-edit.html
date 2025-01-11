@@ -317,6 +317,8 @@
                     <select class="form-select form-control" name="mowing_method">
                       <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
                       <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
+                      <option value="autonomous" {% if 'autonomous' in row.mowing_method %}selected{% endif %}>Autonomous</option>
+                      <option value="other" {% if 'other' in row.mowing_method %}selected{% endif %}>Other</option>
                     </select>
                   </div>
 
