@@ -105,12 +105,51 @@
     }
 }
 
+
 @media print {
-    .col-3{
-        width: 100%;
+    .btn, .btn-close, .dropdown-menu, a[href], form, .alert, .th-hide {
+        display: none !important;
     }
 
-    .col-4 {
+    body, .row, .col-md-3, .col-md-9 {
+        margin: 0;
+        padding: 0;
+    }
+
+    .col-md-9 {
+        width: 100% !important;
+    }
+
+    table {
         width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    table th, table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    h4 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    tr {
+        page-break-inside: avoid;
     }
 }

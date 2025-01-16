@@ -166,7 +166,7 @@
                             <th scope="col">Date</th>
                             <th scope="col">Type</th>
                             <th scope="col">Evaluator</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" class="th-hide">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,7 +175,7 @@
                             <td>{{ report.evaluation_date }}</td>
                             <td>{{ report.type|capitalize }}</td>
                             <td>{{ report.email }}</td>
-                            <td>
+                            <td class="th-hide">
                                 <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View
                                     Report</a>
                                 <!-- delete -->
