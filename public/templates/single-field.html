@@ -25,6 +25,14 @@
                     <p class="card-text">No address provided</p>
                     {% endif %}
 
+                    <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
+                        <input type="hidden" name="id" value="{{ field.id }}">
+                        <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
+                            <i class="bi-trash"></i>
+                            Delete Field
+                        </button>
+                    </form>
+
 
                 </div>
                 <div class="card-footer">
@@ -43,6 +51,7 @@
                         Edit</a>
 
                 </div>
+
             </div>
 
 
@@ -178,13 +187,7 @@
                 </table>
                 <!-- extra action buttons like delete -->
                 <div class="btn-group">
-                    <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
-                        <input type="hidden" name="id" value="{{ field.id }}">
-                        <button type="submit" class="btn btn-sm btn-link text-danger">
-                            <i class="bi-trash"></i> <!-- material design trash icon -->
-                            Delete Field
-                        </button>
-                    </form>
+                    <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
                 </div>
                 {% endif %}
 
