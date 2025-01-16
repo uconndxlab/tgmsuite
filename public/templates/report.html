@@ -82,7 +82,11 @@
                 <tr>
                     <td colspan="3">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.color_comments}}
+                        {% if content.color_comments %}
+                            {{ content.color_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -133,7 +137,12 @@
                 </tr>
                 <tr>
                     <td colspan="10">
-                        <strong>Additional Comments:<br/></strong> {{ content.quality_comments }}
+                        <strong>Additional Comments:<br/></strong> 
+                        {% if content.quality_comments %}
+                            {{ content.quality_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -188,7 +197,11 @@
                 <tr>
                     <td colspan="5">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.topdressing_comments}}
+                        {% if content.topdressing_comments %}
+                        {{ content.topdressing_comments }}
+                    {% else %}
+                        None
+                    {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -224,7 +237,11 @@
                 <tr>
                     <td colspan="7">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.fert_comments}}
+                        {% if content.fert_comments %}
+                            {{ content.fert_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -267,7 +284,12 @@
                     </tr>
                     <tr>
                         <td colspan="7">
-                            <strong>Additional Comments:<br/></strong> {{ content.overseed_comments }}
+                            <strong>Additional Comments:<br/></strong>
+                        {% if content.overseed_comments %}
+                            {{ content.overseed_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                         </td>
                     </tr>
                 </tbody>
@@ -452,7 +474,11 @@
                 <tr>
                     <td colspan="7">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.pest_comments}}
+                        {% if content.pest_comments %}
+                            {{ content.pest_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
 
@@ -479,7 +505,11 @@
                 <tr>
                     <td colspan="4">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.thatch_comments}}
+                        {% if content.thatch_comments %}
+                            {{ content.thatch_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -536,14 +566,18 @@
                 <tr>
                     <td colspan="4">
                         <strong>Additional Comments:</strong> <br/>
-                        {{ content.soil_comments}}
+                        {% if content.soil_comments %}
+                            {{ content.soil_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
                     </td>
                 </tr>
             </tbody>
         </table>
         {% endif %}
 
-     
+        <button onclick="window.print()" class="btn btn-secondary">Print</button>
     </div>
 </div>
 
