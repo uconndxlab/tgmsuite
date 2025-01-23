@@ -43,7 +43,7 @@
                     <option value="">Select an Associated Report</option>
                     {% for report in reports %}
                     <option value="{{ report.id }}">
-                        {{ report.type|capitalize }} Report - {{ report.evaluation_date }}
+                        {{ report.type}} Report - {{ report.evaluation_date }}
                     </option>
                     {% endfor %}
                 </select>
