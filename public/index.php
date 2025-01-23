@@ -866,13 +866,21 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
-    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
-    $stmt = $db->prepare($q);
-    $stmt->bindValue(1, $date);
-    $stmt->bindValue(2, $evaluator_id);
-    $stmt->bindValue(3, $field_id);
-    $stmt->execute();
-    $report_id = $db->lastInsertRowId();
+    // Check if an associated report is selected
+    $associated_report_id = isset($data['associated_report']) ? intval($data['associated_report']) : null;
+
+    // Create a report if no associated report is selected
+    if (!$associated_report_id) {
+        $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
+        $stmt = $db->prepare($q);
+        $stmt->bindValue(1, $date);
+        $stmt->bindValue(2, $evaluator_id);
+        $stmt->bindValue(3, $field_id);
+        $stmt->execute();
+        $report_id = $db->lastInsertRowId();
+    } else {
+        $report_id = $associated_report_id;
+    }
 
     // Handle the uploaded photo file
     $uploadedFile = $uploadedFiles['photo'];
@@ -881,26 +889,20 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
         $targetPath = "uploads/" . $filename;
         $uploadedFile->moveTo($targetPath);
 
-        // Save the photo URL to the database
+        // Save the photo URL to the database with optional report association
         $photo = "uploads/" . $filename;
-        $q = "INSERT INTO photos (report_id, photo_url) VALUES (?, ?)";
+        $q = "INSERT INTO photos (report_id, photo_url, associated_report_id) VALUES (?, ?, ?)";
         $stmt = $db->prepare($q);
         $stmt->bindValue(1, $report_id);
         $stmt->bindValue(2, $photo);
+        $stmt->bindValue(3, $associated_report_id);
         $result = $stmt->execute();
 
         $msg = "Photo Saved";
     } else {
-
-
         $errorCode = $uploadedFile->getError();
-        $msg = "Failed to upload photo";
-        // get the error code
-
-
-        $msg .= " Error code: $errorCode";
+        $msg = "Failed to upload photo. Error code: $errorCode";
     }
-
 
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];
