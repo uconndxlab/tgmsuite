@@ -1,4 +1,5 @@
 {% include 'parts/header.html' %}
+
 <div class="row">
     <div class="col-md-3">
         <div class="field-lede">
@@ -44,20 +45,16 @@
                 </div>
             </div>
 
-            {% if reports %}
+            <div class="col-12 mb-3">
+                <label for="associated_report" class="form-label">Associated Report (Optional)</label>
                 <select name="associated_report" id="associated_report" class="form-select">
                     <option value="">Select an Associated Report</option>
                     {% for report in reports %}
-                    <option value="{{ report.id }}">
-                    {{ report.type }} Report - {{ report.evaluation_date }}
-                    </option>
+                    <option value="{{ report.id }}">{{ report.type }} Report - {{ report.evaluation_date }}</option>
                     {% endfor %}
                 </select>
-            {% else %}
-                <p>No associated reports to display.</p>
-                {% endif %}
+            </div>
         </div>
-        
         <div class="row">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Submit Photo</button>
