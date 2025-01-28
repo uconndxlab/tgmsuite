@@ -558,25 +558,36 @@ $app->get('/fields/{id}/quality-checklist', function (Request $request, Response
     return $view->render($response, 'quality-checklist.html', $params);
 });
 
-// route to submit a photo for a field
 $app->get('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) {
 
+    // Fetch the field data
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
-    // select the single row
     $rows = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
     }
 
-    $params = array(
-        'field' => $rows[0],
-        'field_id' => $args['id'],
-        'form_type' => 'Submit Photo'
+    $reports_results = $db->query(
+        'SELECT r.*, u.email 
+         FROM reports AS r 
+         JOIN users AS u ON r.evaluator_id = u.id 
+         WHERE r.field_id = ' . $args['id'] . ' 
+         ORDER BY r.evaluation_date DESC'
     );
 
-    $view = Twig::fromRequest($request);
+    $reports = [];
+    while ($report = $reports_results->fetchArray(SQLITE3_ASSOC)) {
+        $reports[] = $report;
+    }
 
-    // Render the "fields" template with the rows array
+    $params = [
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Submit Photo',
+        'reports' => $reports 
+    ];
+
+    $view = Twig::fromRequest($request);
 
     return $view->render($response, 'submit-photo.html', $params);
 });
