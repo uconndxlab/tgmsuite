@@ -216,7 +216,7 @@
 
         <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
         {% if report.type == 'topdressing' %}
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -244,6 +244,20 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="table-striped print-mode">
+            <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
+            <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
+            <strong>Topdressing Rate: </strong>{{ content.topdressing_rate }} <br/>
+            <strong>Topdressing Description: </strong>{{ content.topressing_description }} <br/>
+            <br/>
+            <strong>Additional Comments: </strong><br/>
+            {% if content.topdressing_comments %}
+                {{ content.topdressing_comments }}
+            {% else %}
+                None
+            {% endif %}
+        </div>
         {% endif %}
 
         {% if report.type == 'fertilization' %}
