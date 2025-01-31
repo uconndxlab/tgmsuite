@@ -354,7 +354,7 @@
              Control/Treatment
             -->
         {% if report.type == 'pest' %}
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -537,6 +537,166 @@
             </tbody>
 
         </table>
+
+        <div class="print-mode">
+            <br/>
+            <strong>Field:</strong> {{ report.field_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <br/>
+            <h5>Broadleaf Weeds</h3>
+            {% if content.broadleaf_dandelion != 0 %}
+            <strong>Dandelion:</strong> {{ content.broadleaf_dandelion_percent }}% <br/>
+            {% endif %}
+            {% if content.broadleaf_plantain != 0 %}
+            <strong>Broadleaf Plantain:</strong> {{ content.broadleaf_plantain_percent}}% <br/>
+            {% endif %}
+            {% if content.narrowleaf_plantain != 0 %}
+            <strong>Narrowleaf Plantain:</strong> {{ content.narrowleaf_plantain_percent}}% <br/>
+            {% endif %}
+            {% if content.heal_all != 0 %}
+            <strong>Heal All:</strong> {{ content.heal_all_percent}}% <br/>
+            {% endif %}
+            {% if content.common_chickween != 0 %}
+            <strong>Common Chickweed:</strong> {{ content.common_chickweed_percent }}% <br/>
+            {% endif %}
+            {% if content.oxalis != 0 %}
+            <strong>Oxalis:</strong> {{ content.oxalis_percent}}% <br/>
+            {% endif %}
+            {% if content.spurge != 0 %}
+            <strong>Spurge:</strong> {{ content.spurge_percent}}% <br/>
+            {% endif %}
+            {% if content.knotweed != 0 %}
+            <strong>Knotweed:</strong> {{ content.knotweed_percent }}% <br/>
+            {% endif %}
+            {% if content.ground_ivy != 0 %}
+            <strong>Ground Ivy:</strong> {{ content.ground_ivy_percent}}% <br/>
+            {% endif %}
+            {% if content.violet != 0 %}
+            <strong>Violet:</strong> {{ content.violet_percent}}% <br/>
+            {% endif %}
+            {% if content.mouse_ear_chickweed != 0 %}
+            <strong>Mouse Ear Chickweed:</strong> {{ content.mouse_ear_chickweed_percent }}% <br/>
+            {% endif %}
+            {% if content.clover_white != 0 %}
+            <strong>Clover (White):</strong> {{ content.clover_white_percent}}% <br/>
+            {% endif %}
+            {% if content.speedwell != 0 %}
+            <strong>Speedwell:</strong> {{ content.speedwell_percent }}% <br/>
+            {% endif %}
+            {% if content.other != 0 %}
+            <strong>Other:</strong> {{ content.other_percent }}% <br/> <br/>
+            {% endif %}
+
+            <strong>Control/Treatment:</strong><br/>
+            {% if content.broadleaf_control != "" %}
+            {{ content.broadleaf_control }}
+            {% else %}
+            None
+            {% endif %}
+            <br/>
+            <br/>
+            <h5>Grassy Weeds</h3>
+            {% if content.crabgrass != 0 %}
+            <strong>Crabgrass:</strong> {{ content.crabgrass_percent }}% <br/>
+            {% endif %}
+            {% if content.poa_annua != 0 %}
+            <strong>Poa Annua:</strong> {{ content.poa_annua_percent}}% <br/>
+            {% endif %}
+            {% if content.quackgrass != 0 %}
+            <strong>Quackgrass:</strong> {{ content.quackgrass_percent}}% <br/>
+            {% endif %}
+            {% if content.goosegrass != 0 %}
+            <strong>Goosegrass:</strong> {{ content.goosegrass_percent }}% <br/>
+            {% endif %}
+            {% if content.poa_trivialis != 0 %}
+            <strong>Poa Trivialis:</strong> {{ content.poa_trivialis_percent}}% <br/>
+            {% endif %}
+            {% if content.bentgrass != 0 %}
+            <strong>Bentgrass:</strong> {{ content.bentgrass_percent}}% <br/>
+            {% endif %}
+            {% if content.tall_fescue != 0 %}
+            <strong>Tall Fescue:</strong> {{ content.tall_fescue_percent }}% <br/>
+            {% endif %}
+            {% if content.yellow_nutsedge != 0 %}
+            <strong>Yellow Nutsedge:</strong> {{ content.yellow_nutsedge_percent }}% <br/>
+            {% endif %}
+            {% if content.orchardgrass != 0 %}
+            <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent }}% <br/>
+            {% endif %}
+            {% if content.other_grasses_percent != "" %}
+            <strong>Other:</strong> {{content.other_grasses_percent}}% <br/>
+            <br/>
+            {% else %}
+            {% endif %}
+
+            
+            <strong>Control/Treatment:</strong><br/>
+            {% if content.crabgrass_control != "" %}
+            {{ content.crabgrass_control }}
+            {% else %}
+            None
+            {% endif %}
+
+            <br/><br/>
+
+            <h5>Insects</h5>
+            {% if content.insects_grubs != 0 %}
+            <strong>Grubs:</strong> {{ content.insects_grubs_percent }}% <br/>
+            {% endif %}
+            {% if content.insects_sod_webworm != 0 %}
+            <strong>Sod Webworm:</strong> {{ content.insects_sod_webworm_percent}}% <br/>
+            {% endif %}
+            {% if content.insects_chinch_bug != 0 %}
+            <strong>Chinch Bug:</strong> {{ content.insects_chinch_bug_percent}}% <br/>
+            {% endif %}
+            {% if content.insects_bluegrass_billbug != 0 %}
+            <strong>Bluegrass Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
+            {% endif %}
+            {% if content.insects_billbug != 0 %}
+            <strong>Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
+            {% endif %}
+            {% if content.other_insects != 0 %}
+            <strong>Other:</strong> {{ content.other_insects_percent}}% <br/><br/>
+            {% endif %}
+
+            <strong>Control/Treatment:</strong><br/>
+            {% if content.insects_control != "" %}
+            {{ content.insects_control }}
+            {% else %}
+            None
+            {% endif %}
+
+            <br/><br/>
+
+            <h5>Disease</h5>
+            <strong>Affected Species:</strong> <br/>
+            {% if content.disease_tall_fescue == 1 %}
+                <li>Tall Fescue</li>
+            {% endif %}
+            {% if content.disease_perennial_ryegrass == 1 %}
+                <li>Perennial Ryegrass</li>
+            {% endif %}
+            {% if content.disease_kentucky_bluegrass == 1 %}
+                <li>Kentucky Bluegrass</li>
+            {% endif %}
+            {% if content.disease_fine_fescue == 1 %}
+                <li>Fine Fescue</li>
+            {% endif %}
+            {% if content.disease_other == 1 %}
+                <li>Other</li>
+            {% endif %}
+            {% if content.disease_tall_fescue != 1 and content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
+                None
+            {% endif %}
+            <br/>
+            {% if content.disease_percent != 0 %}
+            <strong>Area of Turf Infected:</strong> {{ content.disease_percent }}%
+            {% endif %}
+            <strong>Control/Treatment:</strong> <br/>
+            {{ content.disease_control }}
+
+
+        </div>
         {% endif %}
 
         {% if report.type == 'thatch_accumulation' %}
