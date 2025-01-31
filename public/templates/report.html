@@ -57,8 +57,16 @@
 
     <div class="col-md-9">
         <h3>Viewing a Report</h3>
-        {{report.id}}
-        ({{report.type}} type report)
+            {% if report.type == 'thatch_accumulation' %}
+                Thatch Accumulation Type Report
+            {% elseif report.type == 'soil_test' %}
+                Soil Test Type Report
+            {% else %}
+                {{ report.type|capitalize }} Type Report
+            {% endif %}
+    </br>
+        Report #{{report.id}}
+        
         <!-- if it's a color, show the following:
             color_option TEXT
             

@@ -173,11 +173,16 @@
                         {% for report in reports %}
                         <tr>
                             <td>{{ report.evaluation_date }}</td>
+                            {% if report.type == 'thatch_accumulation' %}
+                            <td>Thatch Accumulation</td>
+                            {% elseif report.type == 'soil_test' %}
+                            <td>Soil Test</td>
+                            {% else %}
                             <td>{{ report.type|capitalize }}</td>
+                            {% endif %}
                             <td>{{ report.email }}</td>
                             <td class="th-hide">
-                                <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View
-                                    Report</a>
+                                <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View Report</a>
                                 <!-- delete -->
                                 <form class="d-inline" action="/report/{{ report.id }}/delete" method="post">
                                     <input type="hidden" name="id" value="{{ report.id }}">
@@ -189,14 +194,20 @@
                             </td>
                         </tr>
                         {% endfor %}
-
                     </tbody>
+                    
                 </table>
 
                 <div class="mobile-mode">
                     {% for report in reports %}
                         <h5><strong>Evaluation Date: </strong>{{ report.evaluation_date }}</h5>
+                        {% if report.type == 'thatch_accumulation' %}
+                        <h5><strong>Type: </strong>Thatch Accumulation</h5>
+                        {% elseif report.type == 'soil_test' %}
+                        <h5><strong>Type: </strong>Soil Test</h5>
+                        {% else %}
                         <h5><strong>Type: </strong>{{ report.type|capitalize }}</h5>
+                        {% endif %}
                         <p><strong>Evaluator: </strong>{{ report.email }}</p>
                         <div class="mobile-grid-view">
                             <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View Report</a>
