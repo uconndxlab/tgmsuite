@@ -107,7 +107,7 @@
             -->
         {% if report.type == 'evaluation' %}
 
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table">
             <thead>
                 <tr>
                     <th scope="col">Field</th>
@@ -125,7 +125,7 @@
             <tbody>
                 <tr>
                     <td>{{ report.field_id }}</td>
-                    <td>{{ content.evaluation_date }}</td>
+                    <td>{{ report.evaluation_date }}</td>
                     <td>{{ content.turf_density }}</td>
                     <td>{{ content.smoothness_rating }}</td>
                     <td>{{ content.weeds_rating }}</td>
@@ -148,12 +148,31 @@
             </tbody>
         </table>
         
+        <div class="print-mode">
+            <strong>Field:</strong> {{ report.field_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <strong>Turf Density: </strong>{{ content.turf_density }} <br/>
+            <strong>Smoothness Rating: </strong> {{ report.smoothness_rating }} <br/>
+            <strong>Weeds Rating: </strong> {{ content.weeds_rating }} <br/>
+            <strong>Stones at Surface: </strong>{{ content.stones_at_surface }} <br/>
+            <strong>Depressions: </strong>{{ content.depressions }} <br/>
+            <strong>Turf Rating: </strong> {{ content.turf_rating }} <br/>
+            <strong>Surface Rating: </strong> {{ content.surface_rating }} <br/>
+            <strong>Overall Rating: </strong>{{ content.overall_rating }} <br/>
+            <br/>
+            <strong>Additional Comments:<br/></strong> 
+                        {% if content.quality_comments %}
+                            {{ content.quality_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
+        </div>
 
         {% endif %}
 
         <!-- if it's a photo show the following:     photo_url TEXT, -->
         {% if report.type == 'photo' %}
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table">
             <thead>
                 <tr>
                     <th scope="col">Field</th>
@@ -164,12 +183,31 @@
             <tbody>
                 <tr>
                     <td>{{ report.field_id }}</td>
-                    <td>{{ content.evaluation_date }}</td>
+                    <td>{{ report.evaluation_date }}</td>
                     <td>
                         <a target="_blank" href="/{{ content.photo_url }}">
                             <img style="max-width:200px;" src="/{{ content.photo_url }}">
                         </a>
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped print-mode">
+            <thead>
+                <tr>
+                    <th scope="col">Field</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Photo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.field_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>
+                            <img style="max-width:200px;" src="/{{ content.photo_url }}">
                     </td>
                 </tr>
             </tbody>
