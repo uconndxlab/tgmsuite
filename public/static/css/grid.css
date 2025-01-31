@@ -103,6 +103,14 @@
     .col-4 {
         width: 100%;
     }
+
+    .show-full-table { 
+        display: none;
+      }
+    
+      .print-mode {
+        display: block;
+      }
 }
 
 
