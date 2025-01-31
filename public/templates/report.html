@@ -730,7 +730,7 @@
 
 
         {% if report.type == 'cultivation' %}
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -747,15 +747,61 @@
                 <tr>
                     <td>{{ report.evaluator_id }}</td>
                     <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.solid_yes_no }}</td>
+                    <td>
+                        {% if content.solid_yes_no == "slice" %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                     <td>{{ content.solid_notes }}</td>
-                    <td>{{ content.hollow_yes_no }}</td>
+                    <td>
+                        {% if content.hollow_yes_no == "hollow" %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                     <td>{{ content.hollow_notes }}</td>
-                    <td>{{ content.slice_yes_no }}</td>
+                    <td>
+                        {% if content.slice_yes_no == "hollow" %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
                     <td>{{ content.slice_notes }}</td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="print-mode">
+            <br/>
+            <strong>Field:</strong> {{ report.field_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <br/>
+        
+            {% if content.solid_yes_no == "slice" %}
+                <strong>Solid: </strong> Yes <br/>
+                <strong>Solid Notes: </strong> {{ content.solid_notes }} <br/>
+            {% else %}
+                <strong>Solid: </strong> No <br/>
+            {% endif %}
+            <br/><br/>
+            {% if content.hollow_yes_no == "hollow" %}
+                <strong>Hollow: </strong> Yes <br/>
+                <strong>Hollow Notes: </strong> {{ content.hollow_notes }} <br/>
+            {% else %}
+                <strong>Hollow: </strong> No <br/>
+            {% endif %}
+            <br/><br/>
+            {% if content.slice_yes_no == "hollow" %}
+                <strong>Slice: </strong> Yes <br/>
+                <strong>Slice Notes: </strong> {{ content.slice_notes }} <br/>
+            {% else %}
+                <strong>Slice: </strong> No <br/>
+            {% endif %}
+        </div>
         {% endif %}
 
         {% if report.type == 'soil_test' %}
