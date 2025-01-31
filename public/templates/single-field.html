@@ -160,7 +160,7 @@
 
 
                 <!-- combined table of evaluations, pest management reports, color reports and photo reports  (just date, type, and evaluator name)-->
-                <table id="report_results" class="table table-striped">
+                <table id="report_results" class="table table-striped show-full-table-mobile">
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
@@ -192,6 +192,27 @@
 
                     </tbody>
                 </table>
+
+                <div class="mobile-mode">
+                    {% for report in reports %}
+                        <h5><strong>Evaluation Date: </strong>{{ report.evaluation_date }}</h5>
+                        <h5><strong>Type: </strong>{{ report.type|capitalize }}</h5>
+                        <p><strong>Evaluator: </strong>{{ report.email }}</p>
+                        <div class="mobile-grid-view">
+                            <a href="/report/{{ report.id }}/view" class="btn btn-md btn-outline-primary">View Report</a>
+                            <!-- delete -->
+                            <form class="d-inline" action="/report/{{ report.id }}/delete" method="post">
+                                <input type="hidden" name="id" value="{{ report.id }}">
+                                <button type="submit" class="btn btn-sm btn-link text-danger">
+                                    <i class="bi-trash"></i> <!-- material design trash icon -->
+                                    Delete Report
+                                </button>
+                            </form>
+                        </div>
+                        <hr/>
+                        {% endfor %}
+                </div>
+                
                 <!-- extra action buttons like delete -->
                     <a href="/fields" class="btn btn-outline-secondary">&laquo; Back To Fields</a>
                     <button onclick="window.print()" class="btn btn-secondary" style="margin-left: 15px;">Print</button>

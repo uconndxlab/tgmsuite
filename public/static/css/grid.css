@@ -95,6 +95,10 @@
     }
 } */
 
+.mobile-mode {
+    display: none;
+}
+
 @media screen and (max-width: 800px) {
     .col-3{
         width: 100%;
@@ -104,13 +108,13 @@
         width: 100%;
     }
 
-    .show-full-table { 
+    .show-full-table-mobile { 
         display: none;
-      }
+    }
     
-      .print-mode {
-        display: block;
-      }
+    .mobile-mode {
+    display: block;
+    }
 }
 
 
