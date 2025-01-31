@@ -580,17 +580,6 @@ $app->get('/fields/{id}/submit-photo', function (Request $request, Response $res
         $reports[] = $report;
     }
 
-    // Update database with selected report ID if provided
-    // if (!empty($_POST['associated_report'])) {
-    //     $associatedReportId = (int)$_POST['associated_report'];
-    //     $photoId = (int)$_POST['photo_id']; // Assuming photo_id is provided in the request
-
-    //     $stmt = $db->prepare('UPDATE photos SET associated_report_id = :associated_report_id WHERE id = :photo_id');
-    //     $stmt->bindValue(':associated_report_id', $associatedReportId, SQLITE3_INTEGER);
-    //     $stmt->bindValue(':photo_id', $photoId, SQLITE3_INTEGER);
-    //     $stmt->execute();
-    // }
-
     $params = [
         'field' => $rows[0],
         'field_id' => $args['id'],
@@ -892,17 +881,13 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $associated_report_id = isset($data['associated_report']) ? intval($data['associated_report']) : null;
 
     // Create a report if no associated report is selected
-    if (!$associated_report_id) {
-        $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
-        $stmt = $db->prepare($q);
-        $stmt->bindValue(1, $date);
-        $stmt->bindValue(2, $evaluator_id);
-        $stmt->bindValue(3, $field_id);
-        $stmt->execute();
-        $report_id = $db->lastInsertRowId();
-    } else {
-        $report_id = $associated_report_id;
-    }
+    $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
+    $stmt = $db->prepare($q);
+    $stmt->bindValue(1, $date);
+    $stmt->bindValue(2, $evaluator_id);
+    $stmt->bindValue(3, $field_id);
+    $stmt->execute();
+    $report_id = $db->lastInsertRowId();
 
     // Handle the uploaded photo file
     $uploadedFile = $uploadedFiles['photo'];
@@ -913,11 +898,11 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
 
         // Save the photo URL to the database with optional report association
         $photo = "uploads/" . $filename;
-        $q = "INSERT INTO photos (report_id, photo_url, associated_report_id) VALUES (?, ?, ?)";
+        $q = "INSERT INTO photos (report_id, photo_url) VALUES (?, ?)";
         $stmt = $db->prepare($q);
         $stmt->bindValue(1, $report_id);
         $stmt->bindValue(2, $photo);
-        $stmt->bindValue(3, $associated_report_id);
+        // $stmt->bindValue(3, $associated_report_id);
         $result = $stmt->execute();
 
         $msg = "Photo Saved";
