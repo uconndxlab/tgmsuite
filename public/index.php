@@ -558,25 +558,36 @@ $app->get('/fields/{id}/quality-checklist', function (Request $request, Response
     return $view->render($response, 'quality-checklist.html', $params);
 });
 
-// route to submit a photo for a field
 $app->get('/fields/{id}/submit-photo', function (Request $request, Response $response, $args) use ($db, $twig) {
 
+    // Fetch the field data
     $results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
-    // select the single row
     $rows = [];
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         $rows[] = $row;
     }
 
-    $params = array(
-        'field' => $rows[0],
-        'field_id' => $args['id'],
-        'form_type' => 'Submit Photo'
+    $reports_results = $db->query(
+        'SELECT r.*, u.email 
+         FROM reports AS r 
+         JOIN users AS u ON r.evaluator_id = u.id 
+         WHERE r.field_id = ' . $args['id'] . ' 
+         ORDER BY r.evaluation_date DESC'
     );
 
-    $view = Twig::fromRequest($request);
+    $reports = [];
+    while ($report = $reports_results->fetchArray(SQLITE3_ASSOC)) {
+        $reports[] = $report;
+    }
 
-    // Render the "fields" template with the rows array
+    $params = [
+        'field' => $rows[0],
+        'field_id' => $args['id'],
+        'form_type' => 'Submit Photo',
+        'reports' => $reports 
+    ];
+
+    $view = Twig::fromRequest($request);
 
     return $view->render($response, 'submit-photo.html', $params);
 });
@@ -866,6 +877,10 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
     $date = date('Y-m-d');
     $evaluator_id = $_SESSION['user_id'];
 
+    // Check if an associated report is selected
+    $associated_report_id = isset($data['associated_report']) ? intval($data['associated_report']) : null;
+
+    // Create a report if no associated report is selected
     $q = "INSERT INTO reports (evaluation_date, evaluator_id, field_id, type) VALUES (?, ?, ?, 'photo')";
     $stmt = $db->prepare($q);
     $stmt->bindValue(1, $date);
@@ -881,26 +896,20 @@ $app->post('/fields/{id}/submit-photo', function (Request $request, Response $re
         $targetPath = "uploads/" . $filename;
         $uploadedFile->moveTo($targetPath);
 
-        // Save the photo URL to the database
+        // Save the photo URL to the database with optional report association
         $photo = "uploads/" . $filename;
         $q = "INSERT INTO photos (report_id, photo_url) VALUES (?, ?)";
         $stmt = $db->prepare($q);
         $stmt->bindValue(1, $report_id);
         $stmt->bindValue(2, $photo);
+        // $stmt->bindValue(3, $associated_report_id);
         $result = $stmt->execute();
 
         $msg = "Photo Saved";
     } else {
-
-
         $errorCode = $uploadedFile->getError();
-        $msg = "Failed to upload photo";
-        // get the error code
-
-
-        $msg .= " Error code: $errorCode";
+        $msg = "Failed to upload photo. Error code: $errorCode";
     }
-
 
     $view = Twig::fromRequest($request);
     $params = ['field' => $data, 'edit' => false, 'message' => $msg];

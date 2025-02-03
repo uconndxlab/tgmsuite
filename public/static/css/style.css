@@ -92,3 +92,17 @@ main#app {
   display: none;
 }
 
+.print-mode {
+  display: none;
+}
+
+@media print {
+
+  .show-full-table { 
+    display: none;
+  }
+
+  .print-mode {
+    display: block;
+  }
+}
