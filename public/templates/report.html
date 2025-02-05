@@ -61,6 +61,8 @@
                 Thatch Accumulation Type Report
             {% elseif report.type == 'soil_test' %}
                 Soil Test Type Report
+            {% elseif report.type == 'evaluation' %}
+                Turf Quality Rating
             {% else %}
                 {{ report.type|capitalize }} Type Report
             {% endif %}
