@@ -115,7 +115,7 @@
             -->
         {% if report.type == 'evaluation' %}
 
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table-mobile show-full-table">
             <thead>
                 <tr>
                     <th scope="col">Field</th>
@@ -156,7 +156,7 @@
             </tbody>
         </table>
         
-        <div class="print-mode">
+        <div class="print-mode mobile-mode">
             <br/>
             <strong>Field:</strong> {{ report.field_id }} <br/>
             <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
@@ -183,7 +183,7 @@
 
         <!-- if it's a photo show the following:     photo_url TEXT, -->
         {% if report.type == 'photo' %}
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">Field</th>
@@ -223,11 +223,18 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="mobile-mode">
+            <strong>Evaluation Date: </strong> {{ report.evaluation_date }}<br/><br/>
+            <img style="max-width:200px;" src="/{{ content.photo_url }}"> <br/><br/>
+
+        </div>
+
         {% endif %}
 
         <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
         {% if report.type == 'topdressing' %}
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -256,7 +263,7 @@
             </tbody>
         </table>
 
-        <div class="table-striped print-mode">
+        <div class="table-striped print-mod mobile-mode">
             <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
             <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
             <strong>Topdressing Rate: </strong>{{ content.topdressing_rate }} <br/>
@@ -273,13 +280,10 @@
         {% endif %}
 
         {% if report.type == 'fertilization' %}
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table-mobile show-full-table">
             <thead>
                 <tr>
                     <th scope="col">User</th>
-
-
-
                     <th scope="col">Date</th>
                     <th scope="col">Product</th>
                     <th scope="col">Rate</th>
@@ -311,7 +315,7 @@
             </tbody>
         </table>
 
-        <div class="print-mode">
+        <div class="print-mode mobile-mode">
             <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
             <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
             <strong>Product: </strong>{{ content.rate }} <br/>
@@ -382,7 +386,7 @@
              Control/Treatment
             -->
         {% if report.type == 'pest' %}
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -566,7 +570,7 @@
 
         </table>
 
-        <div class="print-mode">
+        <div class="print-mode mobile-mode">
             <br/>
             <strong>Field:</strong> {{ report.field_id }} <br/>
             <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
@@ -729,7 +733,7 @@
         {% endif %}
 
         {% if report.type == 'thatch_accumulation' %}
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -755,11 +759,26 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="mobile-mode">
+            <br/>
+            <strong>Field:</strong> {{ report.field_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <br/>
+            <strong>Accumulation Amount: </strong>{{ content.thatch_accumulation }} <br/><br/>
+            <strong>Additional Comments:</strong> <br/>
+            {% if content.thatch_comments %}
+                {{ content.thatch_comments }}
+            {% else %}
+                None
+            {% endif %}
+            <br/><br/>
+        </div>
         {% endif %}
 
 
         {% if report.type == 'cultivation' %}
-        <table class="table table-striped show-full-table">
+        <table class="table table-striped show-full-table show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -804,7 +823,7 @@
             </tbody>
         </table>
 
-        <div class="print-mode">
+        <div class="print-mode mobile-mode">
             <br/>
             <strong>Field:</strong> {{ report.field_id }} <br/>
             <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
@@ -836,7 +855,7 @@
 
         {% if report.type == 'soil_test' %}
 
-        <table class="table table-striped">
+        <table class="table table-striped show-full-table-mobile">
             <thead>
                 <tr>
                     <th scope="col">User</th>
@@ -863,6 +882,21 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="mobile-mode">
+            <br/>
+            <strong>User:</strong> {{ report.evaluator_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <strong>Action Taken:</strong> {{ content.action_taken }} <br/>
+            <br/>
+            <strong>Additional Comments:</strong> <br/>
+            {% if content.soil_comments %}
+                {{ content.soil_comments }}
+            {% else %}
+                None
+            {% endif %}
+            <br/><br/>
+        </div>
         {% endif %}
 
         <button onclick="window.print()" class="btn btn-secondary">Print</button>
