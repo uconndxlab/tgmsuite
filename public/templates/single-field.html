@@ -175,10 +175,10 @@
                             <td>{{ report.evaluation_date }}</td>
                             {% if report.type == 'thatch_accumulation' %}
                             <td>Thatch Accumulation</td>
-                            {% elif report.type == 'soil_test' %}
+                            {% elseif report.type == 'soil_test' %}
                             <td>Soil Test</td>
-                            {% elif report.type == 'evaluation' %}
-                            <h5><strong>Type: </strong>Turf Quality</h5>
+                            {% elseif report.type == 'evaluation' %}
+                            <td>Turf Quality</td>
                             {% else %}
                             <td>{{ report.type|capitalize }}</td>
                             {% endif %}
@@ -207,7 +207,7 @@
                         <h5><strong>Type: </strong>Thatch Accumulation</h5>
                         {% elseif report.type == 'soil_test' %}
                         <h5><strong>Type: </strong>Soil Test</h5>
-                        {% elif report.type == 'evaluation' %}
+                        {% elseif report.type == 'evaluation' %}
                         <h5><strong>Type: </strong>Turf Quality</h5>
                         {% else %}
                         <h5><strong>Type: </strong>{{ report.type|capitalize }}</h5>
