@@ -1,0 +1,49 @@
+<div class="field-lede">
+    <!-- Back to Fields -->
+    <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
+
+    <!-- if the field id is not 0 -->
+    {% if field.id != 0 %}
+
+    <!-- card of field info -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ field.name }}</h5>
+            {% if field.address %}
+            <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+
+            {% else %}
+            <p class="card-text">No address provided</p>
+            {% endif %}
+
+            <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
+                <input type="hidden" name="id" value="{{ field.id }}">
+                <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
+                    <i class="bi-trash"></i>
+                    Delete Field
+                </button>
+            </form>
+
+
+        </div>
+        <div class="card-footer">
+
+            <a href="/fields/{{ field.id }}" class="
+                {% if edit == false %} active {% endif %}
+                btn btn-sm btn-outline-secondary">
+                <!-- bs info icoon-->
+                <i class="bi-info-circle"></i>
+                View Field Reports</a>
+
+
+            <a href="/fields/{{ field.id }}/edit" class="
+                btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
+                <i class="bi-pencil"></i>
+                Edit</a>
+
+        </div>
+
+    </div>
+    
+    {% endif %}
+</div>
