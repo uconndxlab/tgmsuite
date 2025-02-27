@@ -1,371 +1,259 @@
 {% include 'parts/header.html' %}
+<div class="row">
 
-<div class="field-lede">
-    <!-- Back to Fields -->
-    <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
+    <div class="col-md-3">
 
-    <!-- if the field id is not 0 -->
-    {% if field.id != 0 %}
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
 
-    <!-- card of field info -->
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ field.name }}</h5>
-            {% if field.address %}
-            <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+            <!-- if the field id is not 0 -->
+            {% if field.id != 0 %}
 
-            {% else %}
-            <p class="card-text">No address provided</p>
+            <!-- card of field info -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.name }}</h5>
+                    {% if field.address %}
+                    <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+
+                    {% else %}
+                    <p class="card-text">No address provided</p>
+                    {% endif %}
+
+                    <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
+                        <input type="hidden" name="id" value="{{ field.id }}">
+                        <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
+                            <i class="bi-trash"></i>
+                            Delete Field
+                        </button>
+                    </form>
+
+
+                </div>
+                <div class="card-footer">
+
+                    <a href="/fields/{{ field.id }}" class="
+                        {% if edit == false %} active {% endif %}
+                        btn btn-sm btn-outline-secondary">
+                        <!-- bs info icoon-->
+                        <i class="bi-info-circle"></i>
+                        View Field Reports</a>
+
+
+                    <a href="/fields/{{ field.id }}/edit" class="
+                        btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
+                        <i class="bi-pencil"></i>
+                        Edit</a>
+
+                </div>
+
+            </div>
+
             {% endif %}
-
-            <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
-                <input type="hidden" name="id" value="{{ field.id }}">
-                <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
-                    <i class="bi-trash"></i>
-                    Delete Field
-                </button>
-            </form>
-
-
         </div>
-        <div class="card-footer">
-
-            <a href="/fields/{{ field.id }}" class="
-                {% if edit == false %} active {% endif %}
-                btn btn-sm btn-outline-secondary">
-                <!-- bs info icoon-->
-                <i class="bi-info-circle"></i>
-                View Field Reports</a>
-
-
-            <a href="/fields/{{ field.id }}/edit" class="
-                btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
-                <i class="bi-pencil"></i>
-                Edit</a>
-
-        </div>
-
     </div>
 
-    {% endif %}
-</div>
-
-<div class="col-md-9">
-
-    {% for report in reports %}
     <div class="col-md-9">
-        <h3>Report Type:</h3>
-            {% if report.type == 'thatch_accumulation' %}
-                Thatch Accumulation Type Report
-            {% elseif report.type == 'soil_test' %}
-                Soil Test Type Report
-            {% elseif report.type == 'evaluation' %}
-                Turf Quality Rating
-            {% else %}
-                {{ report.type|capitalize }} Type Report
-            {% endif %}
-    </br>
-        Report #{{report.id}}
 
-        {% if report.type == 'color' %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
+        {% for report in reports %}
+        <div class="col-md-9">
+            <h3>Report Type:</h3>
+                {% if report.type == 'thatch_accumulation' %}
+                    Thatch Accumulation Type Report
+                {% elseif report.type == 'soil_test' %}
+                    Soil Test Type Report
+                {% elseif report.type == 'evaluation' %}
+                    Turf Quality Rating
+                {% else %}
+                    {{ report.type|capitalize }} Type Report
+                {% endif %}
+        </br>
+            Report #{{report.id}}
 
-                    <th scope="col">Date</th>
-                    <th scope="col">Color</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.color }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <strong>Additional Comments:</strong> <br/>
-                        {% if content.color_comments %}
-                            {{ content.color_comments }}
-                        {% else %}
-                            None
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        {% endif %}
-
-        <!-- if it's an evaluation, show the following: 
-            
-                turf_density INTEGER,
-                smoothness_rating INTEGER,
-                weeds_rating INTEGER,
-                stones_at_surface INTEGER,
-                depressions INTEGER,
-                turf_rating INTEGER,
-                surface_rating INTEGER,
-                overall_rating INTEGER,
-            
-            -->
-        {% if report.type == 'evaluation' %}
-
-        <table class="table table-striped show-full-table-mobile show-full-table">
-            <thead>
-                <tr>
-                    <th scope="col">Field</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Turf Density</th>
-                    <th scope="col">Smoothness Rating</th>
-                    <th scope="col">Weeds Rating</th>
-                    <th scope="col">Stones at Surface</th>
-                    <th scope="col">Depressions</th>
-                    <th scope="col">Turf Rating</th>
-                    <th scope="col">Surface Rating</th>
-                    <th scope="col">Overall Rating</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.field_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.turf_density }}</td>
-                    <td>{{ content.smoothness_rating }}</td>
-                    <td>{{ content.weeds_rating }}</td>
-                    <td>{{ content.stones_at_surface }}</td>
-                    <td>{{ content.depressions }}</td>
-                    <td>{{ content.turf_rating }}</td>
-                    <td>{{ content.surface_rating }}</td>
-                    <td>{{ content.overall_rating }}</td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <strong>Additional Comments:<br/></strong> 
-                        {% if content.quality_comments %}
-                            {{ content.quality_comments }}
-                        {% else %}
-                            None
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <div class="print-mode mobile-mode">
-            <br/>
-            <strong>Field:</strong> {{ report.field_id }} <br/>
-            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
-            <br/>
-            <strong>Turf Density: </strong>{{ content.turf_density }} <br/>
-            <strong>Smoothness Rating: </strong> {{ report.smoothness_rating }} <br/>
-            <strong>Weeds Rating: </strong> {{ content.weeds_rating }} <br/>
-            <strong>Stones at Surface: </strong>{{ content.stones_at_surface }} <br/>
-            <strong>Depressions: </strong>{{ content.depressions }} <br/>
-            <strong>Turf Rating: </strong> {{ content.turf_rating }} <br/>
-            <strong>Surface Rating: </strong> {{ content.surface_rating }} <br/>
-            <strong>Overall Rating: </strong>{{ content.overall_rating }} <br/>
-            <br/>
-            <strong>Additional Comments:<br/></strong> 
-            {% if content.quality_comments %}
-                {{ content.quality_comments }}
-            {% else %}
-                None
-            {% endif %}
-        </div>
-        <br/>
-
-        {% endif %}
-
-        <!-- if it's a photo show the following:     photo_url TEXT, -->
-        {% if report.type == 'photo' %}
-        <table class="table table-striped show-full-table show-full-table-mobile">
-            <thead>
-                <tr>
-                    <th scope="col">Field</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Photo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.field_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>
-                        <a target="_blank" href="/{{ content.photo_url }}">
-                            <img style="max-width:200px;" src="/{{ content.photo_url }}">
-                        </a>
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table table-striped print-mode">
-            <thead>
-                <tr>
-                    <th scope="col">Field</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Photo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.field_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>
-                            <img style="max-width:200px;" src="/{{ content.photo_url }}">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="mobile-mode">
-            <strong>Evaluation Date: </strong> {{ report.evaluation_date }}<br/><br/>
-            <img style="max-width:200px;" src="/{{ content.photo_url }}"> <br/><br/>
-
-        </div>
-
-        {% endif %}
-
-        <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
-        {% if report.type == 'topdressing' %}
-        <table class="table table-striped show-full-table show-full-table-mobile">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Material Composition</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.evaluator_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.topdressing_rate }}</td>
-                    <td>{{ content.topdressing_description }}</td>
-                </tr>
-                <tr>
-                    <td colspan="5">
-                        <strong>Additional Comments:</strong> <br/>
-                        {% if content.topdressing_comments %}
-                        {{ content.topdressing_comments }}
-                    {% else %}
-                        None
-                    {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="table-striped print-mode mobile-mode">
-            <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
-            <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
-            <strong>Topdressing Rate: </strong>{{ content.topdressing_rate }} <br/>
-            <strong>Topdressing Description: </strong>{{ content.topressing_description }} <br/>
-            <br/>
-            <strong>Additional Comments: </strong><br/>
-            {% if content.topdressing_comments %}
-                {{ content.topdressing_comments }}
-            {% else %}
-                None
-            {% endif %}
-        </div>
-        <br/>
-        {% endif %}
-
-        {% if report.type == 'fertilization' %}
-        <table class="table table-striped show-full-table-mobile show-full-table">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">NPK Analysis</th>
-                    <th scope="col">Compost Analysis</th>
-                    <th scope="col">Biostimulant</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.evaluator_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>{{ content.product }}</td>
-                    <td>{{ content.rate }}</td>
-                    <td>{{ content.npk }}</td>
-                    <td>{{ content.compost }}</td>
-                    <td>{{ content.bio_stimulant }}</td>
-                </tr>
-                <tr>
-                    <td colspan="7">
-                        <strong>Additional Comments:</strong> <br/>
-                        {% if content.fert_comments %}
-                            {{ content.fert_comments }}
-                        {% else %}
-                            None
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="print-mode mobile-mode">
-            <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
-            <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
-            <strong>Product: </strong>{{ content.rate }} <br/>
-            <strong>NPK Analysis: </strong>{{ content.npk }} <br/>
-            <strong>Compost Analysis: </strong>{{ content.compost }} <br/>
-            <strong>Biostimulant: </strong>{{ content.bio_stimulant }} <br/>
-            <br/>
-            <strong>Additional Comments: </strong><br/>
-            {% if content.fert_comments %}
-                {{ content.fert_comments }}
-            {% else %}
-                None
-            {% endif %}
-        </div>
-        <br/>
-        {% endif %}
-
-        {% if report.type == 'overseeding' %}
+            {% if report.type == 'color' %}
             <table class="table table-striped">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Date</th>
+                        <th scope="col">Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.color }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <strong>Additional Comments:</strong> <br/>
+                            {% if content.color_comments %}
+                                {{ content.color_comments }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
+
+            <!-- if it's an evaluation, show the following: 
+                
+                    turf_density INTEGER,
+                    smoothness_rating INTEGER,
+                    weeds_rating INTEGER,
+                    stones_at_surface INTEGER,
+                    depressions INTEGER,
+                    turf_rating INTEGER,
+                    surface_rating INTEGER,
+                    overall_rating INTEGER,
+                
+                -->
+            {% if report.type == 'evaluation' %}
+
+            <table class="table table-striped show-full-table-mobile show-full-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Turf Density</th>
+                        <th scope="col">Smoothness Rating</th>
+                        <th scope="col">Weeds Rating</th>
+                        <th scope="col">Stones at Surface</th>
+                        <th scope="col">Depressions</th>
+                        <th scope="col">Turf Rating</th>
+                        <th scope="col">Surface Rating</th>
+                        <th scope="col">Overall Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.field_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.turf_density }}</td>
+                        <td>{{ content.smoothness_rating }}</td>
+                        <td>{{ content.weeds_rating }}</td>
+                        <td>{{ content.stones_at_surface }}</td>
+                        <td>{{ content.depressions }}</td>
+                        <td>{{ content.turf_rating }}</td>
+                        <td>{{ content.surface_rating }}</td>
+                        <td>{{ content.overall_rating }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">
+                            <strong>Additional Comments:<br/></strong> 
+                            {% if content.quality_comments %}
+                                {{ content.quality_comments }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="print-mode mobile-mode">
+                <br/>
+                <strong>Field:</strong> {{ report.field_id }} <br/>
+                <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+                <br/>
+                <strong>Turf Density: </strong>{{ content.turf_density }} <br/>
+                <strong>Smoothness Rating: </strong> {{ report.smoothness_rating }} <br/>
+                <strong>Weeds Rating: </strong> {{ content.weeds_rating }} <br/>
+                <strong>Stones at Surface: </strong>{{ content.stones_at_surface }} <br/>
+                <strong>Depressions: </strong>{{ content.depressions }} <br/>
+                <strong>Turf Rating: </strong> {{ content.turf_rating }} <br/>
+                <strong>Surface Rating: </strong> {{ content.surface_rating }} <br/>
+                <strong>Overall Rating: </strong>{{ content.overall_rating }} <br/>
+                <br/>
+                <strong>Additional Comments:<br/></strong> 
+                {% if content.quality_comments %}
+                    {{ content.quality_comments }}
+                {% else %}
+                    None
+                {% endif %}
+            </div>
+            <br/>
+
+            {% endif %}
+
+            <!-- if it's a photo show the following:     photo_url TEXT, -->
+            {% if report.type == 'photo' %}
+            <table class="table table-striped show-full-table show-full-table-mobile">
+                <thead>
+                    <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Photo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.field_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>
+                            <a target="_blank" href="/{{ content.photo_url }}">
+                                <img style="max-width:200px;" src="/{{ content.photo_url }}">
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-striped print-mode">
+                <thead>
+                    <tr>
+                        <th scope="col">Field</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Photo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.field_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>
+                                <img style="max-width:200px;" src="/{{ content.photo_url }}">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mobile-mode">
+                <strong>Evaluation Date: </strong> {{ report.evaluation_date }}<br/><br/>
+                <img style="max-width:200px;" src="/{{ content.photo_url }}"> <br/><br/>
+
+            </div>
+
+            {% endif %}
+
+            <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
+            {% if report.type == 'topdressing' %}
+            <table class="table table-striped show-full-table show-full-table-mobile">
                 <thead>
                     <tr>
                         <th scope="col">User</th>
                         <th scope="col">Date</th>
                         <th scope="col">Rate</th>
-                        <th scope="col">Formula</th>
-                        <th scope="col">Pre-Germ</th>
-                        <th scope="col">Species</th>
+                        <th scope="col">Material Composition</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{{ report.evaluator_id }}</td>
                         <td>{{ report.evaluation_date }}</td>
-                        <td>{{ content.rate }}</td>
-                        <td>{{ content.formula }}</td>
-                        <td>{{ content.pre_germ }}</td>
-                        <td>
-                            {% set species_map = {
-                                'tall_fescue': 'Tall Fescue',
-                                'perennial_ryegrass': 'Perennial Ryegrass',
-                                'kentucky_bluegrass': 'Kentucky Bluegrass',
-                                'fine_fescue': 'Fine Fescue',
-                                'other': 'Other'
-                            } %}
-                            {% set species_list = content.species|split(',') %}
-                            {% for species in species_list %}
-                                {{ species_map[species] }}{% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        </td>
+                        <td>{{ content.topdressing_rate }}</td>
+                        <td>{{ content.topdressing_description }}</td>
                     </tr>
                     <tr>
-                        <td colspan="7">
-                            <strong>Additional Comments:<br/></strong>
-                        {% if content.overseed_comments %}
-                            {{ content.overseed_comments }}
+                        <td colspan="5">
+                            <strong>Additional Comments:</strong> <br/>
+                            {% if content.topdressing_comments %}
+                            {{ content.topdressing_comments }}
                         {% else %}
                             None
                         {% endif %}
@@ -373,201 +261,317 @@
                     </tr>
                 </tbody>
             </table>
-        {% endif %}
 
-        <!-- if it's a pest management event, show the following:
-             Date 
-             Pest(s) 
-             Control/Treatment
-            -->
-        {% if report.type == 'pest' %}
-        <table class="table table-striped show-full-table show-full-table-mobile">
-            <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Broadleaf Weeds</th>
-                    <th scope="col">Grassy Weeds</th>
-                    <th scope="col">Insects</th>
-                    <th scope="col">Disease</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ report.evaluator_id }}</td>
-                    <td>{{ report.evaluation_date }}</td>
-                    <td>
-                        {% if content.broadleaf_dandelion != 0 %}
-                        <strong>Dandelion:</strong> {{ content.broadleaf_dandelion_percent }}% <br/>
-                        {% endif %}
-                        {% if content.broadleaf_plantain != 0 %}
-                        <strong>Broadleaf Plantain:</strong> {{ content.broadleaf_plantain_percent}}% <br/>
-                        {% endif %}
-                        {% if content.narrowleaf_plantain != 0 %}
-                        <strong>Narrowleaf Plantain:</strong> {{ content.narrowleaf_plantain_percent}}% <br/>
-                        {% endif %}
-                        {% if content.heal_all != 0 %}
-                        <strong>Heal All:</strong> {{ content.heal_all_percent}}% <br/>
-                        {% endif %}
-                        {% if content.common_chickween != 0 %}
-                        <strong>Common Chickweed:</strong> {{ content.common_chickweed_percent }}% <br/>
-                        {% endif %}
-                        {% if content.oxalis != 0 %}
-                        <strong>Oxalis:</strong> {{ content.oxalis_percent}}% <br/>
-                        {% endif %}
-                        {% if content.spurge != 0 %}
-                        <strong>Spurge:</strong> {{ content.spurge_percent}}% <br/>
-                        {% endif %}
-                        {% if content.knotweed != 0 %}
-                        <strong>Knotweed:</strong> {{ content.knotweed_percent }}% <br/>
-                        {% endif %}
-                        {% if content.ground_ivy != 0 %}
-                        <strong>Ground Ivy:</strong> {{ content.ground_ivy_percent}}% <br/>
-                        {% endif %}
-                        {% if content.violet != 0 %}
-                        <strong>Violet:</strong> {{ content.violet_percent}}% <br/>
-                        {% endif %}
-                        {% if content.mouse_ear_chickweed != 0 %}
-                        <strong>Mouse Ear Chickweed:</strong> {{ content.mouse_ear_chickweed_percent }}% <br/>
-                        {% endif %}
-                        {% if content.clover_white != 0 %}
-                        <strong>Clover (White):</strong> {{ content.clover_white_percent}}% <br/>
-                        {% endif %}
-                        {% if content.speedwell != 0 %}
-                        <strong>Speedwell:</strong> {{ content.speedwell_percent }}% <br/>
-                        {% endif %}
-                        {% if content.other != 0 %}
-                        <strong>Other:</strong> {{ content.other_percent }}% <br/> <br/>
-                        {% endif %}
+            <div class="table-striped print-mode mobile-mode">
+                <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
+                <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
+                <strong>Topdressing Rate: </strong>{{ content.topdressing_rate }} <br/>
+                <strong>Topdressing Description: </strong>{{ content.topressing_description }} <br/>
+                <br/>
+                <strong>Additional Comments: </strong><br/>
+                {% if content.topdressing_comments %}
+                    {{ content.topdressing_comments }}
+                {% else %}
+                    None
+                {% endif %}
+            </div>
+            <br/>
+            {% endif %}
 
-                        <strong>Control/Treatment:</strong><br/>
-                        {% if content.broadleaf_control != "" %}
-                        {{ content.broadleaf_control }}
-                        {% else %}
-                        None
-                        {% endif %}
-                    
-                    </td>
-                    <td>
-                        {% if content.crabgrass != 0 %}
-                        <strong>Crabgrass:</strong> {{ content.crabgrass_percent }}% <br/>
-                        {% endif %}
-                        {% if content.poa_annua != 0 %}
-                        <strong>Poa Annua:</strong> {{ content.poa_annua_percent}}% <br/>
-                        {% endif %}
-                        {% if content.quackgrass != 0 %}
-                        <strong>Quackgrass:</strong> {{ content.quackgrass_percent}}% <br/>
-                        {% endif %}
-                        {% if content.goosegrass != 0 %}
-                        <strong>Goosegrass:</strong> {{ content.goosegrass_percent }}% <br/>
-                        {% endif %}
-                        {% if content.poa_trivialis != 0 %}
-                        <strong>Poa Trivialis:</strong> {{ content.poa_trivialis_percent}}% <br/>
-                        {% endif %}
-                        {% if content.bentgrass != 0 %}
-                        <strong>Bentgrass:</strong> {{ content.bentgrass_percent}}% <br/>
-                        {% endif %}
-                        {% if content.tall_fescue != 0 %}
-                        <strong>Tall Fescue:</strong> {{ content.tall_fescue_percent }}% <br/>
-                        {% endif %}
-                        {% if content.yellow_nutsedge != 0 %}
-                        <strong>Yellow Nutsedge:</strong> {{ content.yellow_nutsedge_percent }}% <br/>
-                        {% endif %}
-                        {% if content.orchardgrass != 0 %}
-                        <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent }}% <br/>
-                        {% endif %}
-                        {% if content.other_grasses_percent != "" %}
-                        <strong>Other:</strong> {{content.other_grasses_percent}}% <br/>
-                        <br/>
-                        {% else %}
-                        {% endif %}
+            {% if report.type == 'fertilization' %}
+            <table class="table table-striped show-full-table-mobile show-full-table">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">NPK Analysis</th>
+                        <th scope="col">Compost Analysis</th>
+                        <th scope="col">Biostimulant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.evaluator_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>{{ content.product }}</td>
+                        <td>{{ content.rate }}</td>
+                        <td>{{ content.npk }}</td>
+                        <td>{{ content.compost }}</td>
+                        <td>{{ content.bio_stimulant }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <strong>Additional Comments:</strong> <br/>
+                            {% if content.fert_comments %}
+                                {{ content.fert_comments }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="print-mode mobile-mode">
+                <br/><strong>User: </strong>{{ report.evaluator_id }} <br/>
+                <strong>Evaluation Date: </strong>{{ report.evaluation_date }} <br/>
+                <strong>Product: </strong>{{ content.rate }} <br/>
+                <strong>NPK Analysis: </strong>{{ content.npk }} <br/>
+                <strong>Compost Analysis: </strong>{{ content.compost }} <br/>
+                <strong>Biostimulant: </strong>{{ content.bio_stimulant }} <br/>
+                <br/>
+                <strong>Additional Comments: </strong><br/>
+                {% if content.fert_comments %}
+                    {{ content.fert_comments }}
+                {% else %}
+                    None
+                {% endif %}
+            </div>
+            <br/>
+            {% endif %}
+
+            {% if report.type == 'overseeding' %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">Formula</th>
+                            <th scope="col">Pre-Germ</th>
+                            <th scope="col">Species</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ report.evaluator_id }}</td>
+                            <td>{{ report.evaluation_date }}</td>
+                            <td>{{ content.rate }}</td>
+                            <td>{{ content.formula }}</td>
+                            <td>{{ content.pre_germ }}</td>
+                            <td>
+                                {% set species_map = {
+                                    'tall_fescue': 'Tall Fescue',
+                                    'perennial_ryegrass': 'Perennial Ryegrass',
+                                    'kentucky_bluegrass': 'Kentucky Bluegrass',
+                                    'fine_fescue': 'Fine Fescue',
+                                    'other': 'Other'
+                                } %}
+                                {% set species_list = content.species|split(',') %}
+                                {% for species in species_list %}
+                                    {{ species_map[species] }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <strong>Additional Comments:<br/></strong>
+                            {% if content.overseed_comments %}
+                                {{ content.overseed_comments }}
+                            {% else %}
+                                None
+                            {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+            <!-- if it's a pest management event, show the following:
+                Date 
+                Pest(s) 
+                Control/Treatment
+                -->
+            {% if report.type == 'pest' %}
+            <table class="table table-striped show-full-table show-full-table-mobile">
+                <thead>
+                    <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Broadleaf Weeds</th>
+                        <th scope="col">Grassy Weeds</th>
+                        <th scope="col">Insects</th>
+                        <th scope="col">Disease</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ report.evaluator_id }}</td>
+                        <td>{{ report.evaluation_date }}</td>
+                        <td>
+                            {% if content.broadleaf_dandelion != 0 %}
+                            <strong>Dandelion:</strong> {{ content.broadleaf_dandelion_percent }}% <br/>
+                            {% endif %}
+                            {% if content.broadleaf_plantain != 0 %}
+                            <strong>Broadleaf Plantain:</strong> {{ content.broadleaf_plantain_percent}}% <br/>
+                            {% endif %}
+                            {% if content.narrowleaf_plantain != 0 %}
+                            <strong>Narrowleaf Plantain:</strong> {{ content.narrowleaf_plantain_percent}}% <br/>
+                            {% endif %}
+                            {% if content.heal_all != 0 %}
+                            <strong>Heal All:</strong> {{ content.heal_all_percent}}% <br/>
+                            {% endif %}
+                            {% if content.common_chickween != 0 %}
+                            <strong>Common Chickweed:</strong> {{ content.common_chickweed_percent }}% <br/>
+                            {% endif %}
+                            {% if content.oxalis != 0 %}
+                            <strong>Oxalis:</strong> {{ content.oxalis_percent}}% <br/>
+                            {% endif %}
+                            {% if content.spurge != 0 %}
+                            <strong>Spurge:</strong> {{ content.spurge_percent}}% <br/>
+                            {% endif %}
+                            {% if content.knotweed != 0 %}
+                            <strong>Knotweed:</strong> {{ content.knotweed_percent }}% <br/>
+                            {% endif %}
+                            {% if content.ground_ivy != 0 %}
+                            <strong>Ground Ivy:</strong> {{ content.ground_ivy_percent}}% <br/>
+                            {% endif %}
+                            {% if content.violet != 0 %}
+                            <strong>Violet:</strong> {{ content.violet_percent}}% <br/>
+                            {% endif %}
+                            {% if content.mouse_ear_chickweed != 0 %}
+                            <strong>Mouse Ear Chickweed:</strong> {{ content.mouse_ear_chickweed_percent }}% <br/>
+                            {% endif %}
+                            {% if content.clover_white != 0 %}
+                            <strong>Clover (White):</strong> {{ content.clover_white_percent}}% <br/>
+                            {% endif %}
+                            {% if content.speedwell != 0 %}
+                            <strong>Speedwell:</strong> {{ content.speedwell_percent }}% <br/>
+                            {% endif %}
+                            {% if content.other != 0 %}
+                            <strong>Other:</strong> {{ content.other_percent }}% <br/> <br/>
+                            {% endif %}
+
+                            <strong>Control/Treatment:</strong><br/>
+                            {% if content.broadleaf_control != "" %}
+                            {{ content.broadleaf_control }}
+                            {% else %}
+                            None
+                            {% endif %}
+                        
+                        </td>
+                        <td>
+                            {% if content.crabgrass != 0 %}
+                            <strong>Crabgrass:</strong> {{ content.crabgrass_percent }}% <br/>
+                            {% endif %}
+                            {% if content.poa_annua != 0 %}
+                            <strong>Poa Annua:</strong> {{ content.poa_annua_percent}}% <br/>
+                            {% endif %}
+                            {% if content.quackgrass != 0 %}
+                            <strong>Quackgrass:</strong> {{ content.quackgrass_percent}}% <br/>
+                            {% endif %}
+                            {% if content.goosegrass != 0 %}
+                            <strong>Goosegrass:</strong> {{ content.goosegrass_percent }}% <br/>
+                            {% endif %}
+                            {% if content.poa_trivialis != 0 %}
+                            <strong>Poa Trivialis:</strong> {{ content.poa_trivialis_percent}}% <br/>
+                            {% endif %}
+                            {% if content.bentgrass != 0 %}
+                            <strong>Bentgrass:</strong> {{ content.bentgrass_percent}}% <br/>
+                            {% endif %}
+                            {% if content.tall_fescue != 0 %}
+                            <strong>Tall Fescue:</strong> {{ content.tall_fescue_percent }}% <br/>
+                            {% endif %}
+                            {% if content.yellow_nutsedge != 0 %}
+                            <strong>Yellow Nutsedge:</strong> {{ content.yellow_nutsedge_percent }}% <br/>
+                            {% endif %}
+                            {% if content.orchardgrass != 0 %}
+                            <strong>Orchardgrass:</strong> {{ content.orchardgrass_percent }}% <br/>
+                            {% endif %}
+                            {% if content.other_grasses_percent != "" %}
+                            <strong>Other:</strong> {{content.other_grasses_percent}}% <br/>
+                            <br/>
+                            {% else %}
+                            {% endif %}
+
+                            
+                            <strong>Control/Treatment:</strong><br/>
+                            {% if content.crabgrass_control != "" %}
+                            {{ content.crabgrass_control }}
+                            {% else %}
+                            None
+                            {% endif %}
 
                         
-                        <strong>Control/Treatment:</strong><br/>
-                        {% if content.crabgrass_control != "" %}
-                        {{ content.crabgrass_control }}
-                        {% else %}
-                        None
-                        {% endif %}
+                        </td>
+                        <td>
+                            {% if content.insects_grubs != 0 %}
+                            <strong>Grubs:</strong> {{ content.insects_grubs_percent }}% <br/>
+                            {% endif %}
+                            {% if content.insects_sod_webworm != 0 %}
+                            <strong>Sod Webworm:</strong> {{ content.insects_sod_webworm_percent}}% <br/>
+                            {% endif %}
+                            {% if content.insects_chinch_bug != 0 %}
+                            <strong>Chinch Bug:</strong> {{ content.insects_chinch_bug_percent}}% <br/>
+                            {% endif %}
+                            {% if content.insects_bluegrass_billbug != 0 %}
+                            <strong>Bluegrass Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
+                            {% endif %}
+                            {% if content.insects_billbug != 0 %}
+                            <strong>Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
+                            {% endif %}
+                            {% if content.other_insects != 0 %}
+                            <strong>Other:</strong> {{ content.other_insects_percent}}% <br/><br/>
+                            {% endif %}
 
-                    
-                    </td>
-                    <td>
-                        {% if content.insects_grubs != 0 %}
-                        <strong>Grubs:</strong> {{ content.insects_grubs_percent }}% <br/>
-                        {% endif %}
-                        {% if content.insects_sod_webworm != 0 %}
-                        <strong>Sod Webworm:</strong> {{ content.insects_sod_webworm_percent}}% <br/>
-                        {% endif %}
-                        {% if content.insects_chinch_bug != 0 %}
-                        <strong>Chinch Bug:</strong> {{ content.insects_chinch_bug_percent}}% <br/>
-                        {% endif %}
-                        {% if content.insects_bluegrass_billbug != 0 %}
-                        <strong>Bluegrass Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
-                        {% endif %}
-                        {% if content.insects_billbug != 0 %}
-                        <strong>Billbug:</strong> {{ content.insects_billbug_percent }}% <br/>
-                        {% endif %}
-                        {% if content.other_insects != 0 %}
-                        <strong>Other:</strong> {{ content.other_insects_percent}}% <br/><br/>
-                        {% endif %}
-
-                        <strong>Control/Treatment:</strong><br/>
-                        {% if content.insects_control != "" %}
-                        {{ content.insects_control }}
-                        {% else %}
-                        None
-                        {% endif %}
-                    
-                    </td>
-                    <td>
-                        <strong>Disease:</strong> {% if content.disease_present != "" %} {{ content.disease_present }} {% else %} None {% endif %} <br/>
-                        <strong>Affected Species:</strong> <br/>
-                        {% if content.disease_tall_fescue == 1 %}
-                            <li>Tall Fescue</li>
-                        {% endif %}
-                        {% if content.disease_perennial_ryegrass == 1 %}
-                            <li>Perennial Ryegrass</li>
-                        {% endif %}
-                        {% if content.disease_kentucky_bluegrass == 1 %}
-                            <li>Kentucky Bluegrass</li>
-                        {% endif %}
-                        {% if content.disease_fine_fescue == 1 %}
-                            <li>Fine Fescue</li>
-                        {% endif %}
-                        {% if content.disease_other == 1 %}
-                            <li>Other</li>
-                        {% endif %}
-                        {% if content.disease_tall_fescue != 1 and content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
+                            <strong>Control/Treatment:</strong><br/>
+                            {% if content.insects_control != "" %}
+                            {{ content.insects_control }}
+                            {% else %}
                             None
-                        {% endif %}
-                        <br/>
-                        {% if content.disease_percent != 0 %}
-                        <strong>Area of Turf Infected:</strong> {{ content.disease_percent }}%
-                        {% endif %}
-                    
-                        <strong>Control/Treatment:</strong> <br/>
-                        {{ content.disease_control }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="7">
-                        <strong>Additional Comments:</strong> <br/>
-                        {% if content.pest_comments %}
-                            {{ content.pest_comments }}
-                        {% else %}
-                            None
-                        {% endif %}
-                    </td>
-                </tr>
+                            {% endif %}
+                        
+                        </td>
+                        <td>
+                            <strong>Disease:</strong> {% if content.disease_present != "" %} {{ content.disease_present }} {% else %} None {% endif %} <br/>
+                            <strong>Affected Species:</strong> <br/>
+                            {% if content.disease_tall_fescue == 1 %}
+                                <li>Tall Fescue</li>
+                            {% endif %}
+                            {% if content.disease_perennial_ryegrass == 1 %}
+                                <li>Perennial Ryegrass</li>
+                            {% endif %}
+                            {% if content.disease_kentucky_bluegrass == 1 %}
+                                <li>Kentucky Bluegrass</li>
+                            {% endif %}
+                            {% if content.disease_fine_fescue == 1 %}
+                                <li>Fine Fescue</li>
+                            {% endif %}
+                            {% if content.disease_other == 1 %}
+                                <li>Other</li>
+                            {% endif %}
+                            {% if content.disease_tall_fescue != 1 and content.disease_perennial_ryegrass != 1 and content.disease_kentucky_bluegrass != 1 and content.disease_fine_fescue != 1 and content.disease_other != 1 %}
+                                None
+                            {% endif %}
+                            <br/>
+                            {% if content.disease_percent != 0 %}
+                            <strong>Area of Turf Infected:</strong> {{ content.disease_percent }}%
+                            {% endif %}
+                        
+                            <strong>Control/Treatment:</strong> <br/>
+                            {{ content.disease_control }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <strong>Additional Comments:</strong> <br/>
+                            {% if content.pest_comments %}
+                                {{ content.pest_comments }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
 
-            </tbody>
+                </tbody>
 
-        </table>
-        {% endif %}
-        
+            </table>
+            {% endif %}
+            
 
+        </div>
+
+        {% endfor %}
     </div>
-
-    {% endfor %}
-</div>
