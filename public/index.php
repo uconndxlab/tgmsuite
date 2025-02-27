@@ -1537,6 +1537,72 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
     return $view->render($response, 'report.html', $params);
 });
 
+$app->get('/fields/{id}/view-all-reports', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
+
+    $user_id = $auth_info['user_id'];
+    // Query the "fields" table to get all the rows and make sure the user has access to this field
+    $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+
+    $results = $db->query($query_string);
+
+
+    //$results = $db->query('SELECT * FROM fields WHERE id = ' . $args['id']);
+
+
+
+    $view = Twig::fromRequest($request);
+
+    // select the single row
+    $field = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $field[] = $row;
+    }
+
+
+
+    // get the reports for this field
+    if (isset($_GET['date']) || isset($_GET['type'])) {
+        $date = $_GET['date'] ?? null;
+        $type = $_GET['type'] ?? null;
+        $query = 'SELECT r.*, u.email
+                  FROM reports AS r
+                  JOIN users AS u ON r.evaluator_id = u.id
+                  WHERE r.field_id = ' . $args['id'];
+        if ($date) {
+            $query .= ' AND r.evaluation_date = "' . $date . '"';
+        }
+        if ($type) {
+            $query .= ' AND r.type = "' . $type . '"';
+        }
+        $query .= ' ORDER BY r.evaluation_date DESC';
+        $results = $db->query($query);
+    } else {
+        $results = $db->query('SELECT r.*, u.email
+                              FROM reports AS r
+                              JOIN users AS u ON r.evaluator_id = u.id
+                              WHERE r.field_id = ' . $args['id'] . ' 
+                              ORDER BY r.evaluation_date DESC');
+    }
+
+    $reports = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $reports[] = $row;
+    }
+
+    if (count($field) == 0) {
+        return $view->render($response, '404.html');
+    }
+
+
+    $params = ['field' => $field[0], 'reports' => $reports];
+    $params['auth_info'] = $auth_info;
+
+
+
+    // Render the "fields" template with the rows array
+    return $view->render($response, 'view-all-reports.html', $params);
+});
+
 // route for /field/create
 $app->get('/field/create', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
 
