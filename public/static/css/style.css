@@ -181,7 +181,7 @@ main#app {
 
     .page-break {
       display: block;
-      page-break-after: always;
+      page-break-before: always;
     }
 
 }

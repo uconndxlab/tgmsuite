@@ -98,6 +98,7 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="page-break"></div>
             {% endif %}
 
             <!-- if it's an evaluation, show the following: 
@@ -177,7 +178,7 @@
                 {% endif %}
             </div>
             <br/>
-
+            <div class="page-break"></div>
             {% endif %}
 
             <!-- if it's a photo show the following:     photo_url TEXT, -->
@@ -228,7 +229,7 @@
                 <img style="max-width:200px;" src="/{{ report.details.photo_url }}"> <br/><br/>
 
             </div>
-
+            <div class="page-break"></div>
             {% endif %}
 
             <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
@@ -276,6 +277,7 @@
                 {% endif %}
             </div>
             <br/>
+            <div class="page-break"></div>
             {% endif %}
 
             {% if report.type == 'fertilization' %}
@@ -330,6 +332,7 @@
                 {% endif %}
             </div>
             <br/>
+            <div class="page-break"></div>
             {% endif %}
 
             {% if report.type == 'overseeding' %}
@@ -377,6 +380,7 @@
                         </tr>
                     </tbody>
                 </table>
+            <div class="page-break"></div>
             {% endif %}
 
             <!-- if it's a pest management event, show the following:
@@ -564,7 +568,7 @@
                             {% endif %}
                         </td>
                     </tr>
-
+                <div class="page-break"></div>
                 </tbody>
 
             </table>
