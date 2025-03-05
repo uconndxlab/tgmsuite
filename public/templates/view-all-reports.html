@@ -3,15 +3,14 @@
 
     <div class="col-md-3">
 
-        <div class="field-lede">
+        <div class="field-lede print-hidden">
             <!-- Back to Fields -->
-            <a href="/fields" class="btn mb-2 btn-outline-secondary">&laquo; Back To Fields</a>
-
-            <!-- if the field id is not 0 -->
-            {% if field.id != 0 %}
+            <a href="/fields/{{field.id}}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
+            <!-- if the field id is set -->
+            {% if field.id is defined %}
 
             <!-- card of field info -->
-            <div class="card print-hidden">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ field.name }}</h5>
                     {% if field.address %}
@@ -21,17 +20,9 @@
                     <p class="card-text">No address provided</p>
                     {% endif %}
 
-                    <form class="d-inline" action="/fields/{{ field.id }}/delete" method="post">
-                        <input type="hidden" name="id" value="{{ field.id }}">
-                        <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
-                            <i class="bi-trash"></i>
-                            Delete Field
-                        </button>
-                    </form>
-
 
                 </div>
-                <div class="card-footer">
+                <div class="card-footer print-hidden">
 
                     <a href="/fields/{{ field.id }}" class="
                         {% if edit == false %} active {% endif %}
@@ -47,10 +38,9 @@
                         Edit</a>
 
                 </div>
-
             </div>
-            
             {% endif %}
+            <button onclick="window.print()" class="btn btn-primary" style="margin-top:20px;">Print All Reports</button>
         </div>
     </div>
 
@@ -77,7 +67,7 @@
 
 
             </div>
-            <div class="card-footer">
+            <div class="card-footer print-hidden">
 
                 <a href="/fields/{{ field.id }}" class="
                     {% if edit == false %} active {% endif %}
@@ -97,7 +87,7 @@
         </div>
 
         <div class="col-md-9">
-            <h3>
+            <h3 class="margin-text-print">
                 {% if report.type == 'thatch_accumulation' %}
                     Thatch Accumulation Type Report
                 {% elseif report.type == 'soil_test' %}
@@ -139,6 +129,101 @@
             </table>
             <div class="page-break"></div>
             {% endif %}
+
+            {% if report.type == 'soil_test' %}
+
+        <table class="table table-striped show-full-table-mobile">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action Taken</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ report.details.action_taken }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {% if report.details.soil_comments %}
+                            {{ report.details.soil_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mobile-mode">
+            <br/>
+            <strong>User:</strong> {{ report.evaluator_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <strong>Action Taken:</strong> {{ report.details.action_taken }} <br/>
+            <br/>
+            <strong>Additional Comments:</strong> <br/>
+            {% if report.details.soil_comments %}
+                {{ report.details.soil_comments }}
+            {% else %}
+                None
+            {% endif %}
+            <br/><br/>
+        </div>
+        <div class="page-break"></div>
+        {% endif %}
+
+            {% if report.type == 'thatch_accumulation' %}
+        <table class="table table-striped show-full-table-mobile">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Accumulation Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ report.evaluator_id }}</td>
+                    <td>{{ report.evaluation_date }}</td>
+                    <td>{{ report.details.thatch_accumulation }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <strong>Additional Comments:</strong> <br/>
+                        {% if report.details.thatch_comments %}
+                            {{ report.details.thatch_comments }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mobile-mode">
+            <br/>
+            <strong>Field:</strong> {{ report.field_id }} <br/>
+            <strong>Evaluation Date:</strong> {{ report.evaluation_date }} <br/>
+            <br/>
+            <strong>Accumulation Amount: </strong>{{ report.details.thatch_accumulation }} <br/><br/>
+            <strong>Additional Comments:</strong> <br/>
+            {% if report.details.thatch_comments %}
+                {{ report.details.thatch_comments }}
+            {% else %}
+                None
+            {% endif %}
+            <br/><br/>
+        </div>
+        <div class="page-break"></div>
+        {% endif %}
+
+
+    
 
             <!-- if it's an evaluation, show the following: 
                 

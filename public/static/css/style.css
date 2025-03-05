@@ -200,4 +200,8 @@ main#app {
       display: none;
     }
 
+    .margin-text-print {
+      margin-top: 20px;
+    }
+
 }
