@@ -104,6 +104,14 @@ main#app {
   display: none;
 }
 
+.print-all-view {
+  display: none;
+}
+
+.print-hidden {
+  display: block;
+}
+
 @media screen and (max-width: 1000px) {
     .col-3{
         width: 100%;
@@ -182,6 +190,14 @@ main#app {
     .page-break {
       display: block;
       page-break-before: always;
+    }
+
+    .print-all-view {
+      display: block;
+    }
+
+    .print-hidden {
+      display: none;
     }
 
 }
