@@ -37,16 +37,18 @@
                         <i class="bi-pencil"></i>
                         Edit</a>
 
+                        <button onclick="window.print()" class="btn btn-primary" style="margin-top:20px;"><i class="bi bi-printer"></i> Print All Reports</button>
+
                 </div>
             </div>
             {% endif %}
-            <button onclick="window.print()" class="btn btn-primary" style="margin-top:20px;">Print All Reports</button>
         </div>
     </div>
 
     <div class="col-md-9">
 
         {% for report in reports %}
+        <hr/>
         <div class="card print-all-view">
             <div class="card-body">
                 <h5 class="card-title">{{ field.name }}</h5>
