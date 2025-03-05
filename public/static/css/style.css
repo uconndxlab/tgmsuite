@@ -100,6 +100,10 @@ main#app {
     display: none;
 }
 
+.page-break {
+  display: none;
+}
+
 @media screen and (max-width: 1000px) {
     .col-3{
         width: 100%;
@@ -112,6 +116,7 @@ main#app {
     .show-full-table-mobile { 
         display: none;
     }
+
     
     .mobile-mode {
     display: block;
@@ -172,6 +177,11 @@ main#app {
   
     .print-mode {
       display: block !important;
+    }
+
+    .page-break {
+      display: block;
+      page-break-after: always;
     }
 
 }

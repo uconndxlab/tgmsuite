@@ -93,6 +93,7 @@
                 </tr>
             </tbody>
         </table>
+        <div class="page-break"></div>
         {% endif %}
 
         <!-- if it's an evaluation, show the following: 
@@ -172,6 +173,7 @@
             {% endif %}
         </div>
         <br/>
+        <div class="page-break"></div>
 
         {% endif %}
 
@@ -223,7 +225,7 @@
             <img style="max-width:200px;" src="/{{ content.photo_url }}"> <br/><br/>
 
         </div>
-
+        <div class="page-break"></div>
         {% endif %}
 
         <!-- if it's a topdressing show the following:     date TEXT, rate TEXT, material_composition TEXT -->
@@ -271,6 +273,7 @@
             {% endif %}
         </div>
         <br/>
+        <div class="page-break"></div>
         {% endif %}
 
         {% if report.type == 'fertilization' %}
@@ -325,6 +328,7 @@
             {% endif %}
         </div>
         <br/>
+        <div class="page-break"></div>
         {% endif %}
 
         {% if report.type == 'overseeding' %}
@@ -372,6 +376,7 @@
                     </tr>
                 </tbody>
             </table>
+        <div class="page-break"></div>
         {% endif %}
 
         <!-- if it's a pest management event, show the following:
@@ -561,7 +566,7 @@
                 </tr>
 
             </tbody>
-
+        
         </table>
 
         <div class="print-mode mobile-mode">
@@ -724,6 +729,7 @@
 
         </div>
         <br/>
+        <div class="page-break"></div>
         {% endif %}
 
         {% if report.type == 'thatch_accumulation' %}
@@ -768,6 +774,7 @@
             {% endif %}
             <br/><br/>
         </div>
+        <div class="page-break"></div>
         {% endif %}
 
 
@@ -845,6 +852,7 @@
             {% endif %}
         </div>
         <br/>
+        <div class="page-break"></div>
         {% endif %}
 
         {% if report.type == 'soil_test' %}
@@ -891,6 +899,7 @@
             {% endif %}
             <br/><br/>
         </div>
+        <div class="page-break"></div>
         {% endif %}
 
         <button onclick="window.print()" class="btn btn-secondary">Print</button>
