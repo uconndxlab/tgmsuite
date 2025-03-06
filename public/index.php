@@ -1537,6 +1537,117 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
     return $view->render($response, 'report.html', $params);
 });
 
+$app->get('/fields/{id}/view-all-reports', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
+
+    $user_id = $auth_info['user_id'];
+    // Query the "fields" table to get all the rows and make sure the user has access to this field
+    $query_string = "SELECT f.*, uf.permission_level 
+                 FROM fields AS f 
+                 JOIN field_users AS uf ON f.id = uf.field_id 
+                 WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+
+    $results = $db->query($query_string);
+
+    $view = Twig::fromRequest($request);
+
+    // Fetch the field details
+    $field = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $field[] = $row;
+    }
+    // no report found, then render the error screen
+    if (count($field) == 0) {
+        return $view->render($response, '404.html');
+    }
+
+    // Get reports for this field with optional filters
+    $date = $_GET['date'] ?? null;
+    $type = $_GET['type'] ?? null;
+    $query = "SELECT r.*, u.email 
+            FROM reports AS r 
+            JOIN users AS u ON r.evaluator_id = u.id 
+            WHERE r.field_id = " . $args['id'];
+
+    if ($date) {
+        $query .= ' AND r.evaluation_date = "' . $date . '"'; // get dates
+    }
+    if ($type) {
+        $query .= ' AND r.type = "' . $type . '"';
+    }
+    $query .= ' ORDER BY r.evaluation_date DESC';
+    $results = $db->query($query);
+
+    $reports = [];
+
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $report_id = $row['id'];
+        $report_type = $row['type'];
+
+        // get the specific report details
+        $report_details = [];
+        switch ($report_type) {
+            case 'evaluation':
+                $report_details = $db->query("SELECT * FROM evaluations WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'color':
+                $report_details = $db->query("SELECT * FROM color_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                if ($report_details) {
+                    // map color
+                    $color_mapping = [
+                        'TD' => 'Turf Dormant',
+                        '1' => '1 - Yellow Green',
+                        '2' => '2 - Light Green',
+                        '3' => '3 - Med/Light Green',
+                        '4' => '4 - Medium Green',
+                        '5' => '5 - Dark Green'
+                    ];
+                    $report_details['color'] = $color_mapping[$report_details['color_option']] ?? 'Unknown';
+                }
+                break;
+            case 'photo':
+                $report_details = $db->query("SELECT * FROM photos WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'fertilization':
+                $report_details = $db->query("SELECT * FROM fertilization_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'topdressing':
+                $report_details = $db->query("SELECT * FROM topdressing_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'overseeding':
+                $report_details = $db->query("SELECT * FROM overseed_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'cultivation':
+                $report_details = $db->query("SELECT * FROM cultivation_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'pest':
+                $report_details = $db->query("SELECT * FROM pest_management_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'thatch_accumulation':
+                $report_details = $db->query("SELECT * FROM thatch_accumulation_reports WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+            case 'soil_test':
+                $report_details = $db->query("SELECT * FROM soil_test WHERE report_id = $report_id")->fetchArray(SQLITE3_ASSOC);
+                break;
+        }
+
+        // Add report details to the main report array
+        $row['details'] = $report_details;
+        $reports[] = $row;
+    }
+
+    // set paremeters
+    $params = [
+        'field' => $field[0],
+        'reports' => $reports,
+        'auth_info' => $auth_info
+    ];
+
+    // render the page and send the parameters
+    return $view->render($response, 'view-all-reports.html', $params);
+
+
+});
+
 // route for /field/create
 $app->get('/field/create', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
 
