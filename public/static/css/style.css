@@ -204,3 +204,10 @@ main#app {
       margin-top: 20px;
     }
 }
+
+@media screen and (max-width: 444px) {
+  .print-mobile-button-adjustment {
+    margin-left: 0px !important;
+    margin-top: 15px;
+  }
+}
