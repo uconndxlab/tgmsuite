@@ -211,6 +211,12 @@ main#app {
     }
 }
 
+@media screen and (max-width: 444px) {
+  .print-mobile-button-adjustment {
+    margin-left: 0px !important;
+    margin-top: 15px;
+  }
+
 .navbar{
   justify-content:flex-start;
   margin-top:20px;
