@@ -239,6 +239,7 @@ main#app {
   align-items:center;
   justify-content: center;
   padding:10px 0px;
+  display: none;
 }
 
 .i3-footer p{
