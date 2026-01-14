@@ -1,4 +1,17 @@
 <?php
+/**
+ * Database Seeding Script
+ * 
+ * WARNING: This script creates database tables and is meant to be run from CLI ONLY!
+ * Running this through a browser could cause issues.
+ */
+
+// Prevent execution from browser
+if (php_sapi_name() !== 'cli') {
+    http_response_code(403);
+    die('Error: This script can only be run from the command line for security reasons.<br><br>To run this script, use: <code>php seed.php</code>');
+}
+
 // Open a connection to the SQLite database
 $db = new SQLite3('turfgrass.db');
 

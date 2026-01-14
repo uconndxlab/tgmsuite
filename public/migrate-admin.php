@@ -2,7 +2,15 @@
 /**
  * Migration script to add is_admin column to users table
  * and create a superadmin user
+ * 
+ * WARNING: This script should only be run from CLI!
  */
+
+// Prevent execution from browser
+if (php_sapi_name() !== 'cli') {
+    http_response_code(403);
+    die('Error: This script can only be run from the command line for security reasons.<br><br>To run this script, use: <code>php migrate-admin.php</code>');
+}
 
 // Open a connection to the SQLite database
 $db = new SQLite3('turfgrass.db');
