@@ -54,6 +54,7 @@ class AuthMiddleware
         $user['id'] = $row['id'];
         $user['name'] = $row['name'];
         $user['email'] = $row['email'];
+        $user['is_admin'] = $row['is_admin'] ?? 0;
 
 
         return $user;
@@ -62,5 +63,19 @@ class AuthMiddleware
 
         
 
+    }
+    
+    public function isAdmin(): bool
+    {
+        if (!isset($_SESSION['user_id'])) {
+            return false;
+        }
+        
+        $user_id = $_SESSION['user_id'];
+        $sql = "SELECT is_admin FROM users WHERE id = '$user_id'";
+        $result = $this->db->query($sql);
+        $row = $result->fetchArray(SQLITE3_ASSOC);
+        
+        return $row && $row['is_admin'] == 1;
     }
 }

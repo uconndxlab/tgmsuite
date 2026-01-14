@@ -271,7 +271,8 @@ $db->exec('CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     email TEXT,
-    password TEXT
+    password TEXT,
+    is_admin INTEGER DEFAULT 0
 )');
 
 /** create the field/users access table */
@@ -298,6 +299,15 @@ $test_user_password = password_hash($password, PASSWORD_DEFAULT);
 
 $db->exec("INSERT INTO users (name, email, password) VALUES ('$test_user', '$test_user_email', '$test_user_password')");
 
+// Create superadmin user
+$admin_user = 'Super Admin';
+$admin_email = 'admin@tgmsuite.com';
+$admin_password = "admin123";
+$admin_password_hash = password_hash($admin_password, PASSWORD_DEFAULT);
+
+$db->exec("INSERT INTO users (name, email, password, is_admin) VALUES ('$admin_user', '$admin_email', '$admin_password_hash', 1)");
+
+echo "Superadmin created: email=admin@tgmsuite.com password=admin123\n";
 
 // Close the database connection
 $db->close();

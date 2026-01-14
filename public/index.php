@@ -43,10 +43,11 @@ if ($isAuthenticated) {
     $user['id'] = $row['id'];
     $user['name'] = $row['name'] . " yeep";
     $user['email'] = $row['email'];
+    $user['is_admin'] = $row['is_admin'] ?? 0;
 
-    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => $_SESSION['user_id'], 'user' => $user['email'], 'name' => $user['name']);
+    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => $_SESSION['user_id'], 'user' => $user['email'], 'name' => $user['name'], 'is_admin' => $user['is_admin']);
 } else {
-    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => 0);
+    $auth_info = array('is_authenticated' => $isAuthenticated, 'user_id' => 0, 'is_admin' => 0);
 }
 
 
@@ -73,17 +74,93 @@ $app->get('/home', function (Request $request, Response $response, $args) use ($
     }
 });
 
+$app->get('/admin/submissions', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info, $authMiddleware) {
+    
+    // Check if user is admin
+    if (!$auth_info['is_admin']) {
+        return $response->withHeader('Location', '/fields')->withStatus(302);
+    }
+    
+    // Get filter parameters
+    $type_filter = $_GET['type'] ?? null;
+    $date_filter = $_GET['date'] ?? null;
+    
+    // Build query with optional filters
+    $query = "SELECT 
+        r.id,
+        r.evaluation_date,
+        r.type,
+        f.name as field_name,
+        f.city,
+        f.state,
+        u.name as evaluator_name,
+        u.email as evaluator_email
+    FROM reports r
+    JOIN fields f ON r.field_id = f.id
+    JOIN users u ON r.evaluator_id = u.id";
+    
+    $where_clauses = [];
+    if ($type_filter) {
+        $where_clauses[] = "r.type = '" . SQLite3::escapeString($type_filter) . "'";
+    }
+    if ($date_filter) {
+        $where_clauses[] = "r.evaluation_date = '" . SQLite3::escapeString($date_filter) . "'";
+    }
+    
+    if (count($where_clauses) > 0) {
+        $query .= " WHERE " . implode(" AND ", $where_clauses);
+    }
+    
+    $query .= " ORDER BY r.evaluation_date DESC, r.id DESC";
+    
+    $results = $db->query($query);
+    
+    $submissions = [];
+    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
+        $submissions[] = $row;
+    }
+    
+    // Get unique report types for the filter dropdown
+    $types_query = "SELECT DISTINCT type FROM reports ORDER BY type";
+    $types_results = $db->query($types_query);
+    $report_types = [];
+    while ($row = $types_results->fetchArray(SQLITE3_ASSOC)) {
+        $report_types[] = $row['type'];
+    }
+    
+    $view = Twig::fromRequest($request);
+    $params = [
+        'submissions' => $submissions,
+        'auth_info' => $auth_info,
+        'report_types' => $report_types,
+        'selected_type' => $type_filter,
+        'selected_date' => $date_filter
+    ];
+    
+    return $view->render($response, 'admin-submissions.html', $params);
+})->add($authMiddleware);
+
 
 
 $app->get('/fields', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
-
-    // get the fields, but pivot on field_users to get the fields for the current user id
-
     $user_id = $_SESSION['user_id'];
+    $is_admin = $auth_info['is_admin'] ?? 0;
 
-    $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id";
-
+    // Admins can see all fields, regular users only see fields they have access to
+    if ($is_admin) {
+        $query_string = "SELECT f.*, 'admin' as permission_level, 
+                         (SELECT COUNT(*) FROM reports r WHERE r.field_id = f.id) as report_count 
+                         FROM fields AS f 
+                         ORDER BY f.name ASC";
+    } else {
+        $query_string = "SELECT f.*, uf.permission_level, 
+                         (SELECT COUNT(*) FROM reports r WHERE r.field_id = f.id) as report_count 
+                         FROM fields AS f 
+                         JOIN field_users AS uf ON f.id = uf.field_id 
+                         WHERE uf.user_id = $user_id 
+                         ORDER BY f.name ASC";
+    }
 
     // Query the "fields" table to get all the rows
     $results = $db->query($query_string);
@@ -108,8 +185,14 @@ $app->get('/fields', function (Request $request, Response $response, $args) use 
 $app->get('/fields/{id}', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
     $user_id = $auth_info['user_id'];
-    // Query the "fields" table to get all the rows and make sure the user has access to this field
-    $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+    $is_admin = $auth_info['is_admin'] ?? 0;
+    
+    // Admins can see all fields, regular users only see fields they have access to
+    if ($is_admin) {
+        $query_string = "SELECT f.*, 'admin' as permission_level FROM fields AS f WHERE f.id = " . $args['id'];
+    } else {
+        $query_string = "SELECT f.*, uf.permission_level FROM fields AS f JOIN field_users AS uf ON f.id = uf.field_id WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+    }
 
     $results = $db->query($query_string);
 
@@ -442,6 +525,103 @@ $app->post('/user/register', function (Request $request, Response $response, $ar
 $app->get("/logout", function (Request $request, Response $response, $args) use ($db, $twig) {
     session_destroy();
     return $response->withHeader('Location', '/home')->withStatus(302);
+})->add($authMiddleware);
+
+// route to view user profile
+$app->get('/profile', function (Request $request, Response $response, $args) use ($db, $twig, $auth_info) {
+    $user_id = $_SESSION['user_id'];
+    
+    $results = $db->query("SELECT id, name, email FROM users WHERE id = $user_id");
+    $user = $results->fetchArray(SQLITE3_ASSOC);
+    
+    if (!$user) {
+        return $response->withHeader('Location', '/logout')->withStatus(302);
+    }
+    
+    $view = Twig::fromRequest($request);
+    $params = [
+        'user' => $user,
+        'auth_info' => $auth_info,
+        'message' => $_GET['message'] ?? null,
+        'error' => $_GET['error'] ?? null
+    ];
+    
+    return $view->render($response, 'profile.html', $params);
+})->add($authMiddleware);
+
+// route to update user profile (name/email)
+$app->post('/profile/update', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $user_id = $_SESSION['user_id'];
+    $name = $data['name'] ?? '';
+    $email = $data['email'] ?? '';
+    
+    // Escape single quotes for SQL
+    $name = str_replace("'", "''", $name);
+    $email = str_replace("'", "''", $email);
+    
+    // Validate inputs
+    if (empty($name) || empty($email)) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('Name and email are required'))->withStatus(302);
+    }
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('Invalid email format'))->withStatus(302);
+    }
+    
+    // Check if email is already in use by another user
+    $results = $db->query("SELECT id FROM users WHERE email = '$email' AND id != $user_id");
+    if ($results->fetchArray(SQLITE3_ASSOC)) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('Email already in use by another account'))->withStatus(302);
+    }
+    
+    // Update user
+    $query = "UPDATE users SET name = '$name', email = '$email' WHERE id = $user_id";
+    $db->exec($query);
+    
+    return $response->withHeader('Location', '/profile?message=' . urlencode('Profile updated successfully'))->withStatus(302);
+})->add($authMiddleware);
+
+// route to change password
+$app->post('/profile/change-password', function (Request $request, Response $response, $args) use ($db, $twig) {
+    $data = $request->getParsedBody();
+    $user_id = $_SESSION['user_id'];
+    $current_password = $data['current_password'] ?? '';
+    $new_password = $data['new_password'] ?? '';
+    $confirm_password = $data['confirm_password'] ?? '';
+    
+    // Validate inputs
+    if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('All password fields are required'))->withStatus(302);
+    }
+    
+    if ($new_password !== $confirm_password) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('New passwords do not match'))->withStatus(302);
+    }
+    
+    if (strlen($new_password) < 6) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('Password must be at least 6 characters'))->withStatus(302);
+    }
+    
+    // Get current user
+    $results = $db->query("SELECT password FROM users WHERE id = $user_id");
+    $user = $results->fetchArray(SQLITE3_ASSOC);
+    
+    if (!$user) {
+        return $response->withHeader('Location', '/logout')->withStatus(302);
+    }
+    
+    // Verify current password
+    if (!password_verify($current_password, $user['password'])) {
+        return $response->withHeader('Location', '/profile?error=' . urlencode('Current password is incorrect'))->withStatus(302);
+    }
+    
+    // Update password
+    $hashedPassword = password_hash($new_password, PASSWORD_DEFAULT);
+    $query = "UPDATE users SET password = '$hashedPassword' WHERE id = $user_id";
+    $db->exec($query);
+    
+    return $response->withHeader('Location', '/profile?message=' . urlencode('Password changed successfully'))->withStatus(302);
 })->add($authMiddleware);
 
 // route to login a user via the form
@@ -1535,16 +1715,22 @@ $app->get('/report/{id}/view', function (Request $request, Response $response, $
     $view = Twig::fromRequest($request);
 
     return $view->render($response, 'report.html', $params);
-});
+})->add($authMiddleware);
 
 $app->get('/fields/{id}/view-all-reports', function (Request $request, Response $response, $args) use ($db, $twig, $isAuthenticated, $auth_info) {
 
     $user_id = $auth_info['user_id'];
-    // Query the "fields" table to get all the rows and make sure the user has access to this field
-    $query_string = "SELECT f.*, uf.permission_level 
-                 FROM fields AS f 
-                 JOIN field_users AS uf ON f.id = uf.field_id 
-                 WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+    $is_admin = $auth_info['is_admin'] ?? 0;
+    
+    // Admins can see all fields, regular users only see fields they have access to
+    if ($is_admin) {
+        $query_string = "SELECT f.*, 'admin' as permission_level FROM fields AS f WHERE f.id = " . $args['id'];
+    } else {
+        $query_string = "SELECT f.*, uf.permission_level 
+                     FROM fields AS f 
+                     JOIN field_users AS uf ON f.id = uf.field_id 
+                     WHERE uf.user_id = $user_id AND f.id = " . $args['id'];
+    }
 
     $results = $db->query($query_string);
 
