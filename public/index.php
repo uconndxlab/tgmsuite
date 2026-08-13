@@ -54,6 +54,9 @@ if ($isAuthenticated) {
 // Add Twig-View Middleware
 $app->add(TwigMiddleware::create($app, $twig));
 
+// Require auth on all routes except the public allowlist in AuthMiddleware
+$app->add($authMiddleware);
+
 $app->get('/', function (Request $request, Response $response, $args) {
 
 
@@ -467,59 +470,6 @@ $app->post("/fields/{id}", function (Request $request, Response $response, $args
 
         return $response->withHeader('Location', '/fields/' . $id)->withStatus(302);
     }
-});
-
-// route to register a new user via the form
-$app->post('/user/register', function (Request $request, Response $response, $args) use ($db, $twig) {
-    $data = $request->getParsedBody();
-    $email = $data['email'];
-    $name = $data['username'];
-    $password = $data['password'];
-    $password_confirm = $data['password_confirm'];
-
-    // check if the passwords match... and if they don't... redirect to the login page
-    if ($password != $password_confirm) {
-        $msg = "Passwords do not match";
-        $view = Twig::fromRequest($request);
-        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-        return $view->render($response, 'home.html', $params);
-    }
-
-    // check if the email is already in the database
-    $results = $db->query("SELECT * FROM users WHERE email = '$email'");
-    $rows = [];
-    while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
-        $rows[] = $row;
-    }
-
-    // if the email is already in the database, then redirect to the login page
-    if (count($rows) > 0) {
-        $msg = "Email already in use";
-        $view = Twig::fromRequest($request);
-        $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-        return $view->render($response, 'home.html', $params);
-    }
-
-    // if the email is not in the database, then insert the user into the database
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    $q = "INSERT INTO users (name,email, password) VALUES ('$name', '$email', '$hashedPassword')";
-
-    $stmnt = $db->exec($q);
-
-    // get last insert id
-    $id = $db->lastInsertRowID();
-
-    // start a session
-    $_SESSION['user_id'] = $id;
-
-
-    $msg = "User Registered: " . $email;
-    $view = Twig::fromRequest($request);
-    $params = ['field' => $data, 'edit' => false, 'message' => $msg];
-
-    // redirect to /fields if the user is logged in
-    return $response->withHeader('Location', '/fields')->withStatus(302);
 });
 
 $app->get("/logout", function (Request $request, Response $response, $args) use ($db, $twig) {

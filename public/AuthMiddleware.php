@@ -16,14 +16,21 @@ class AuthMiddleware
 
     }
     
+    private const PUBLIC_PATHS = [
+        '/',
+        '/home',
+        '/user/login',
+    ];
+
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        // Perform your authentication logic here.
-        // For example, check if the user is authenticated based on your session or token mechanism.
-        $isAuthenticated = $this->isAuthenticated(); // Replace this with your actual authentication logic.
+        $path = rtrim($request->getUri()->getPath(), '/') ?: '/';
 
-        if (!$isAuthenticated) {
-            // If the user is not authenticated, return a 401 Unauthorized response.
+        if (in_array($path, self::PUBLIC_PATHS, true)) {
+            return $handler->handle($request);
+        }
+
+        if (!$this->isAuthenticated()) {
             $response = new \Slim\Psr7\Response();
             return $response->withStatus(302)->withHeader('Location', '/home');
         }

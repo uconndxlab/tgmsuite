@@ -1,4 +1,11 @@
 <?php
+
+// Prevent execution from browser
+if (php_sapi_name() !== 'cli') {
+    http_response_code(403);
+    die('Error: This script can only be run from the command line for security reasons.<br><br>To run this script, use: <code>php empty.php</code>');
+}
+
 // Open a connection to the SQLite database
 $db = new SQLite3('turfgrass.db');
 
