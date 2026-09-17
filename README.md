@@ -6,15 +6,6 @@ Converted from legacy Slim 4 to **Laravel 11**.
 
 ---
 
-## Requirements
-
-- PHP 8.2 or later
-- Composer
-- SQLite3 (or MySQL/PostgreSQL)
-- Node.js & npm (for asset compilation)
-
----
-
 ## Installation & Setup
 
 1. **Clone the repository:**
@@ -44,28 +35,6 @@ Converted from legacy Slim 4 to **Laravel 11**.
    - Field manager demo account: `joel@uconn.edu` / `password`
    - Demo athletic field: `Memorial Stadium Turf`
 
-5. **Start Local Development Server:**
-   ```bash
-   php artisan serve
-   ```
-   Open [http://localhost:8000](http://localhost:8000) in your browser.
-
----
-
-## Testing
-
-Run the automated PHPUnit feature and unit test suites:
-
-```bash
-php artisan test
-```
-
-Includes 36 feature tests covering:
-- Authentication & Sessions (`AuthTest`)
-- Field Management & Authorization Policies (`FieldTest`)
-- Quality Checklists & 10 Report Types (`ReportTest`)
-- Admin Submissions Dashboard & Filtering (`AdminTest`)
-
 ---
 
 ## Default Credentials
@@ -74,11 +43,3 @@ Includes 36 feature tests covering:
 |---|---|---|
 | Superadmin | `admin@tgmsuite.com` | `admin123` |
 | Field Manager | `joel@uconn.edu` | `password` |
-
-*Please change default passwords in production.*
-
----
-
-## Legacy Archive
-
-The legacy Slim 4 application, old seed/migration scripts, and Twig templates are archived in the [`legacy/`](legacy/) directory for reference.
