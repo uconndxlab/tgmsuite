@@ -1,0 +1,122 @@
+{% include 'parts/header.html' %}
+<div class="row">
+    <div class="col-md-3">
+        <!-- material design edit icon -->
+        
+
+
+        <div class="field-lede">
+            <!-- Back to Fields -->
+            <a href="/fields/{{field.id}}" class="btn mb-2 btn-outline-secondary">&laquo; Back To Field</a>
+                        <!-- if the field id is set -->
+            {% if field.id is defined %}
+
+           <!-- card of field info -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.name }}</h5>
+                    {% if field.address %}
+                    <p class="card-text">{{ field.address }}, {{field.city}}, {{field.state}}</p>
+         
+                  {% else %}
+                    <p class="card-text">No address provided</p>
+                    {% endif %}
+
+                    
+                </div>
+                <div class="card-footer">
+                   
+                    <a href="/fields/{{ field.id }}" class="
+                    {% if edit == false %} active {% endif %}
+                    btn btn-sm btn-outline-secondary">
+                        <!-- bs info icoon-->
+                        <i class="bi-info-circle"></i>
+                        View Field Reports</a>
+
+
+                    <a href="/fields/{{ field.id }}/edit" class="
+                    btn btn-sm btn-outline-secondary {% if edit == true %} active {% endif %}">
+                    <i class="bi-pencil"></i>
+                    Edit</a>
+
+                </div>
+            </div>
+
+
+
+            {% endif %}
+        </div>
+
+       
+    </div>
+
+    <div class="col-md-9">
+        <form method="post" action="" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Submit Fertilization Report</h3>
+                </div>
+
+                <!-- topdressing form: date, rate, material composition  -->
+
+                <div class="col-12">
+
+                    <!-- date of application -->
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ "now"|date("Y-m-d") }}">
+                    </div>
+
+                    <!-- product -->
+                    <div class="mb-3">
+                        <label for="product" class="form-label">Product</label>
+                        <input type="text" class="form-control" id="product" name="product">
+                    </div>
+
+                    <!-- rate -->
+                    <div class="mb-3">
+                        <label for="rate" class="form-label">Rate</label>
+                        <input type="text" class="form-control" id="rate" name="rate">
+                    </div>
+
+                    <!-- NPK Analysis -->
+                    <div class="mb-3">
+                        <label for="npk" class="form-label">NPK Analysis</label>
+                        <input type="text" class="form-control" id="npk" name="npk">
+                    </div>
+
+                    <!-- compost analysis -->
+                    <div class="mb-3">
+                        <label for="compost" class="form-label">Compost Analysis</label>
+                        <input type="text" class="form-control" id="compost" name="compost">
+                    </div>
+
+                    <!-- biostimulant y/n? -->
+                    <div class="mb-3">
+                        <label for="biostimulant" class="form-label">Biostimulant?</label>
+                        <!-- biostimulant y/n as dropdown -->
+                        <select class="form-select" id="biostimulant" name="biostimulant">
+                            <option value="yes">Yes</option>
+                            <option selected value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fert_comments" class="form-label">Comments</label>
+                        <input type="text" class="form-control" id="fert_comments" name="fert_comments">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- submit button -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Include parts/footer.html -->
+{% include 'parts/footer.html' %}

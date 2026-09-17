@@ -1,0 +1,39 @@
+</div>
+</main>
+<!--start i3 footer-->
+<div class="i3-footer i3-footer--dark">
+    <img src="{{ asset('img/i3-symbol-light-blue.svg') }}" alt="i3 symbol"/>
+    <p>Powered by 
+    </p>
+    <a class="btn" target="_blank" href="https://innovation.provost.uconn.edu/"> i3 </a>
+</div>
+<!--end i3 footer-->
+
+<footer class="bg-dark text-light py-5">
+    <div class="container">
+        <div class="d-flex w-100 flex-column flex-md-row justify-content-center align-items-center">
+            <a class="text-light p-2 link-underline-opacity-0 link-underline-opacity-100-hover"
+                href="https://uconn.edu/">&copy; <span id="currentYear"></span> University of Connecticut</a>
+            <a class="text-light p-2 link-underline-opacity-0 link-underline-opacity-100-hover"
+                href="http://uconn.edu/disclaimers-privacy-copyright/">Disclaimers, Privacy &amp; Copyright</a>
+            <a class="text-light p-2 link-underline-opacity-0 link-underline-opacity-100-hover"
+                href="https://accessibility.uconn.edu/">Accessibility</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
+<script type='text/javascript' src='https://ucommobjectstorage.blob.core.windows.net/cookie-jar/cookie-notification.js'>
+</script>
+<noscript>
+    <p>Our websites may use cookies to personalize and enhance your experience. By continuing without changing your
+        cookie settings, you agree to this collection. For more information, please see our <a
+            href="https://privacy.uconn.edu/university-website-notice/" target="_blank">University Websites
+            Privacy Notice</a>.</p>
+</noscript>
+
+</body>
+</html>

@@ -1,42 +1,45 @@
-# Athletic Field Assessment Tool
+# Athletic Field Assessment Tool (TGM Suite)
 
-This product provides municipal groundskeepers with a bunch of tools they can use to assess, track, and report on the quality of their various turf fields.
+The **Athletic Field Assessment Tool** is a web platform built for municipal groundskeepers, athletic directors, and turf managers to assess, track, and report on the quality of natural and synthetic turf fields.
 
-## Requirements
+Converted from legacy Slim 4 to **Laravel 11**.
 
-- PHP 8 or later
-- Composer
+---
 
-## Dependencies
-This project relies on the following dependencies managed via Composer:
+## Installation & Setup
 
-- Slim - A microframework for PHP
-- Slim Twig View - Twig template renderer for Slim Framework
-- PSR-7 - HTTP message interfaces
+1. **Clone the repository:**
+   ```bash
+   git clone git@github.com:uconndxlab/tgmsuite.git
+   cd tgmsuite
+   ```
 
-## Installation
+2. **Install PHP Dependencies:**
+   ```bash
+   composer install
+   ```
 
-1. Clone this repository to your local machine:
+3. **Environment Setup:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-`git clone git@github.com:uconndxlab/tgmsuite.git`
+4. **Run Migrations & Seeders:**
+   ```bash
+   php artisan migrate --seed
+   ```
+   This creates:
+   - All relational tables for athletic fields and 10 assessment report types
+   - Superadmin user: `admin@tgmsuite.com` / `admin123`
+   - Field manager demo account: `joel@uconn.edu` / `password`
+   - Demo athletic field: `Memorial Stadium Turf`
 
-2. Navigate to the project directory:
+---
 
-`cd tgmsuite`
+## Default Credentials
 
-3. Install Dependencies Using Composer:
-
-`composer install`
-
-4. Seed the Database:
-   `cd public`
-
-   `php seed.php`
-
-5. Serve the app with PHP's built-in server
-   `cd public`
-
-   `php -S localhost:9090`
-
-6. Success? Now the app should be running at http://localhost:9090. You'll need to create a username and password to start.
-
+| Role | Email | Password |
+|---|---|---|
+| Superadmin | `admin@tgmsuite.com` | `admin123` |
+| Field Manager | `joel@uconn.edu` | `password` |
