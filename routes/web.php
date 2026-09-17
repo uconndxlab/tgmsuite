@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FieldReportController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,14 @@ Route::post('/user/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset Routes (Guest)
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+});
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
@@ -70,7 +80,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/report/{report}/delete', [FieldReportController::class, 'destroyReport'])->name('reports.delete');
 
     // Admin
-    Route::middleware('can:access-admin')->group(function () {
-        Route::get('/admin/submissions', [AdminController::class, 'submissions'])->name('admin.submissions');
+    Route::middleware('can:access-admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/submissions', [AdminController::class, 'submissions'])->name('submissions');
+
+        // User Management
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::post('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::post('/users/{user}/delete', [AdminUserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{user}/send-reset', [AdminUserController::class, 'sendReset'])->name('users.sendReset');
     });
 });

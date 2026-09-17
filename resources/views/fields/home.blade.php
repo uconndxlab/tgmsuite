@@ -39,8 +39,11 @@
               <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autofocus>
             </div>
             <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" name="password" required>
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="password" class="form-label mb-0">Password</label>
+                <a href="/forgot-password" class="small text-decoration-none">Forgot Password?</a>
+              </div>
+              <input type="password" class="form-control mt-1" id="password" name="password" required>
             </div>
             <div class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="remember" name="remember">
