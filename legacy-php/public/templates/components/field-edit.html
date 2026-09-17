@@ -1,0 +1,472 @@
+<h3>Edit Field</h3>
+<form method="POST" action="/fields/{{ row.id }}">
+
+  <div class="row">
+    <div class="col-12">
+      <!-- accordion #fieldInfo -->
+      <div class="accordion-borderless" id="fieldInfo">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fieldInfo-meta"
+              aria-expanded="true">
+              Field Info
+            </button>
+          </h2>
+          <div id="fieldInfo-meta" class="accordion-collapse collapse show" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row form-group">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Field Name (this is the only required field):</label>
+                  <input required  type="text" id="name" class="form-control" name="name" value="{{ row.name }}">
+                </div>
+
+                <div class="mb-3">
+                  <label for="address" class="form-label">Address:</label>
+                  <input  type="text" id="address" class="form-control" name="address"
+                    value="{{ row.address }}">
+                </div>
+
+                <div class="row">
+                  <div class="mb-3 col">
+                    <label for="city" class="form-label">City:</label>
+                    <input  type="text" id="city" class="form-control" name="city" value="{{ row.city }}">
+                  </div>
+
+                  <div class="mb-3 col">
+                    <label for="state" class="form-label">State:</label>
+                    <input  type="text" id="state" class="form-control" name="state" value="{{ row.state }}">
+                  </div>
+
+                  <div class="mb-3 col">
+                    <label for="zip" class="form-label">Zip:</label>
+                    <input  type="text" id="zip" class="form-control" name="zip" value="{{ row.zip }}">
+                  </div>
+                </div>
+                <!-- color rating -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- field usage information accordion item -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#fieldUsage-meta" aria-expanded="false">
+              Field Usage
+            </button>
+          </h2>
+          <div id="fieldUsage-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="mb-3">
+                  <label for="sports_played" class="form-label">Sports Played:</label>
+                  <div class="form-check">
+                    <input  id="baseball"  class="form-check-input" type="checkbox" name="sports_played[]" value="baseball" {% if 'baseball' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="baseball">Baseball</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="softball" class="form-check-input" type="checkbox" name="sports_played[]" value="softball" {% if 'softball' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="softball">Softball</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="soccer" class="form-check-input" type="checkbox" name="sports_played[]" value="soccer" {% if 'soccer' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="soccer">Soccer</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="football" class="form-check-input" type="checkbox" name="sports_played[]" value="football" {% if 'football' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="football">Football</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="lacrosse" class="form-check-input" type="checkbox" name="sports_played[]" value="lacrosse" {% if 'lacrosse' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="lacrosse">Lacrosse</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="rugby" class="form-check-input" type="checkbox" name="sports_played[]" value="rugby" {% if 'rugby' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="rugby">Rugby</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="field_hockey" class="form-check-input" type="checkbox" name="sports_played[]" value="field hockey" {% if 'field hockey' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="field_hockey">Field Hockey</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="pe_class" class="form-check-input" type="checkbox" name="sports_played[]" value="pe_class" {% if 'pe_class' in row.sports_played %}checked{% endif %}>
+                    <label class="form-check-label" for="pe_class">PE Class/Recreational use</label>
+                  </div>
+
+                </div>
+
+                <!-- traffic events per week -->
+                <div class="mb-3">
+                  <label for="traffic_events_per_week" class="form-label">Traffic Events Per Week:</label>
+                  <select id="traffic_events_per_week" name="traffic_events_per_week">
+                    <option>0-2 per week</option>
+                    <option>3-5 per week</option>
+                    <option>6+ per week</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- establishment information accordion item -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#establishment-meta" aria-expanded="false">
+              Establishment Info
+            </button>
+          </h2>
+          <div id="establishment-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <label for="turfgrass_species_present">Turfgrass Species Present:</label>
+                  <div class="form-check">
+                    <input id="tall_fescue" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="tall fescue" {% if 'tall fescue' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="tall_fescue">Tall Fescue</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="perennial_ryegrass" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="perennial ryegrass" {% if 'perennial ryegrass' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="perennial_ryegrass">Perennial Ryegrass</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="kentucky_bluegrass" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="kentucky bluegrass" {% if 'kentucky bluegrass' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="kentucky_bluegrass">Kentucky Bluegrass</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="fine_fescue" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="fine fescue" {% if 'fine fescue' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="fine_fescue">Fine Fescue</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="other" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="other" {% if 'other' in row.turfgrass_species_present %}checked{% endif %}>
+                    <label class="form-check-label" for="other">Other</label>
+                  </div>
+
+                  <div class="row mt-3">
+                    <div class="mb-3 col">
+                      <label for="establishment_method" class="form-label">Establishment Method:</label>
+                      <!-- <input required type="text" class="form-control" name="establishment_method"
+                        value="{{ row.establishment_method }}"> -->
+
+                        <!-- select box (seed or sod) -->
+                      <select class="form-select form-control" name="establishment_method">
+                        <option value="seed" {% if 'seed' in row.establishment_method %}selected{% endif %}>Seed</option>
+                        <option value="sod" {% if 'sod' in row.establishment_method %}selected{% endif %}>Sod</option>
+                      </select>
+
+                        
+                    </div>
+
+                    <div class="mb-3 col">
+                      <label for="establishment_date" class="form-label">Establishment Date:</label>
+                      <input type="date" id="establishment_date" class="form-control" name="establishment_date"
+                        value="{{ row.establishment_date }}">
+                    </div>
+
+                    <div class="mb-3 col">
+                      <label for="shade_or_sun" class="form-label">Shade or Sun:</label>
+                      <select id="shade_or_sun" class="form-select form-control" name="shade_or_sun">
+                        <option {% if row.shade_or_sun is null or 'sun' in row.shade_or_sun %}selected{% endif %} value="sun">Full Sun</option>
+                        <option {% if 'shade' in row.shade_or_sun %}selected{% endif %} value="shade">Partial Shade</option>
+                    </select>
+                    
+                    </div>
+
+                    <div class="mb-3 col invisible" id="percent_shade_wrap">
+                      <label for="percent_shade" class="form-label">Percent Shade:</label>
+                      <input id="percent_shade" type="text" class="form-control" name="percent_shade"
+                        value="{{ row.percent_shade or 0}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- renovation information:
+
+        percent_renovation TEXT,
+    renovation_date TEXT,
+    renovation_type TEXT,
+      -->
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#renovation-meta" aria-expanded="false">
+              Renovation Info
+            </button>
+          </h2>
+          <div id="renovation-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <div class="mb-3">
+                    <label for="percent_renovated" class="form-label">Percent Renovated:</label>
+                    <input  type="text" id="percent_renovated" class="form-control" name="percent_renovated"
+                      value="{{ row.percent_renovated }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_date" class="form-label ">Renovation Date:</label>
+                    <input  type="date" id="renovation_date" class="form-control" name="renovation_date"
+                      value="{{ row.renovation_date }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="renovation_type" class="form-label">Renovation Type:</label>
+                    <input  type="text" id="renovation_type" class="form-control" name="renovation_type"
+                      value="{{ row.renovation_type }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+
+        <!-- soil details -->
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#soil-meta" aria-expanded="false">
+              Soil Details
+            </button>
+          </h2>
+          <div id="soil-meta" class="accordion-collapse collapse" data-bs-parent="#fieldInfo">
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+                  <label for="soil_texture">Soil Texture:</label>
+                  <!-- Options for Soil Texture -->
+                  <div class="form-check">
+                    <input id="sand" class="form-check-input" type="checkbox" name="soil_texture[]" value="sand" {% if 'sand' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="tall_fescue">Sand</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="silt" class="form-check-input" type="checkbox" name="soil_texture[]" value="silt" {% if 'silt' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="silt">Silt</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="clay" class="form-check-input" type="checkbox" name="soil_texture[]" value="clay" {% if 'clay' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="clay">Clay</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="loam" class="form-check-input" type="checkbox" name="soil_texture[]" value="loam" {% if 'loam' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="loam">Loam</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="sandy_loam" class="form-check-input" type="checkbox" name="soil_texture[]" value="sandy loam" {% if 'sandy loam' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="sandy_loam">Sandy Loam</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="other" class="form-check-input" type="checkbox" name="turfgrass_species_present[]" value="other" {% if 'other' in row.soil_texture %}checked{% endif %}>
+                    <label class="form-check-label" for="other">Other</label>
+                  </div>
+
+                  <div class="row mt-3">
+                    <!-- Form for Soil Depth - Plain text -->
+                    <div class="mb-3 col">
+                      <label for="soil_depth" class="form-label">Soil Depth:</label>
+                      <input  type="text" id="soil_depth" class="form-control" name="soil_depth" value="{{ row.soil_depth }}">
+                    </div>
+
+                    <div class="mb-3 col">
+                      <!-- Form for Soil Condition - Plain text -->
+                      <label for="soil_condition" class="form-label">Soil Condition:</label>
+                      <input  type="text" id="soil_condition" class="form-control" name="soil_condition" value="{{ row.soil_condition }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <!--mowing practices -->
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mowing-meta" aria-expanded="false">
+              Mowing Practices
+            </button>
+          </h2>
+          <div id="mowing-meta" class="accordion-collapse collapse">
+
+            <div class="accordion-body">
+              <div class="row">
+                <div class="form-group mb-3">
+
+                  <div class="mb-3">
+                    <label for="pgrs_used" class="form-label">PGRs Used:</label>
+                    <select id="pgrs_used" class="form-select form-control" name="pgrs_used">
+                      <option value="no" {% if 'no' in row.pgrs_used %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.pgrs_used %}selected{% endif %}>Yes</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="mowing_method" class="form-label">Mowing Method:</label>
+                    <select class="form-select form-control" name="mowing_method">
+                      <option value="rotary" {% if 'rotary' in row.mowing_method %}selected{% endif %}>Rotary</option>
+                      <option value="reel" {% if 'reel' in row.mowing_method %}selected{% endif %}>Reel</option>
+                      <option value="autonomous" {% if 'autonomous' in row.mowing_method %}selected{% endif %}>Autonomous</option>
+                      <option value="other" {% if 'other' in row.mowing_method %}selected{% endif %}>Other</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="mowing_height" class="form-label">Mowing Height:</label>
+                    <select class="form-select form-control" name="mowing_height">
+                      <option value="1-1.75" {% if '1-1.75' in row.mowing_height %}selected{% endif %}>1-1.75"</option>
+                      <option value="2-2.25" {% if '2-2.25' in row.mowing_height %}selected{% endif %}>2-2.25"</option>
+                      <option value="2.5" {% if '2.5' in row.mowing_height %}selected{% endif %}>2.5"</option>
+                      <option value="2.75-3" {% if '2.75-3' in row.mowing_height %}selected{% endif %}>2.75-3"</option>
+                      <option value="3.5-4" {% if '3.5-4' in row.mowing_height %}selected{% endif %}>3.5-4"</option>
+                      <option value="4+" {% if '4+' in row.mowing_height %}selected{% endif %}>4+"</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="clippings_collected" class="form-label">Clippings Collected:</label>
+                    <select class="form-select form-control" name="clippings_collected">
+                      <option value="no" {% if 'no' in row.clippings_collected %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.clippings_collected %}selected{% endif %}>Yes</option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!--irrigation practices -->
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#irrigation-meta" aria-expanded="false">
+              Irrigation Practices
+            </button>
+          </h2>
+          <div id="irrigation-meta" class="accordion-collapse collapse">
+
+            <div class="accordion-body">
+              <div class="row">
+
+                <!--
+    Irrigation System Yes/No. 
+      If Yes: Water Source (Well, Town Water, Greywater System)
+      If Yes: Frequency of Use (5+x/week, 2-4x/week, 1x/week)
+      If No: irrigation system: Portable System Used Yes/No
+    Are wetting agents used? Yes/No
+-->
+
+                <div class="form-group mb-3">
+                  <div class="mb-3">
+                    <label for="irrigation_system" class="form-label">Irrigation:</label>
+                    <select  class="form-select form-control" name="irrigation_system">
+                      <option value="no" {% if 'no' in row.irrigation_system %}selected{% endif %}>No</option>
+
+                      <option value="yes" {% if 'yes' in row.irrigation_system %}selected{% endif %}>Yes</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="water_source" class="form-label">Water Source:</label>
+                    <div class="form-check">
+                      <input id="well" class="form-check-input" type="checkbox" name="water_source[]" value="well" {% if 'well' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="well">Well</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="pond" class="form-check-input" type="checkbox" name="water_source[]" value="pond" {% if 'pond' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="pond">Pond</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="town_water" class="form-check-input" type="checkbox" name="water_source[]" value="town water" {% if 'town water' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="town_water">Town Water</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="greywater_system" class="form-check-input" type="checkbox" name="water_source[]" value="greywater system" {% if 'greywater system' in row.water_source %}checked{% endif %}>
+                      <label class="form-check-label" for="greywater_system">Greywater System</label>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="irrigation_frequency" class="form-label">Irrigation Frequency:</label>
+                    <select  class="form-select form-control" name="irrigation_frequency">
+                      <option value="5+x/week" {% if '5+x/week' in row.irrigation_frequency %}selected{% endif %}>
+                        5+x/week</option>
+                      <option value="2-4x/week" {% if '2-4x/week' in row.irrigation_frequency %}selected{% endif %}>
+                        2-4x/week</option>
+                      <option value="1x/week" {% if '1x/week' in row.irrigation_frequency %}selected{% endif %}>1x/week
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="portable_system" class="form-label">System Used:</label>
+                    <select class="form-select form-control" name="portable_system">
+                      <option value="none" {% if 'none' in row.portable_system %}selected{% endif %}>None</option>
+                      <option value="in_ground" {% if 'in_ground' in row.portable_system %}selected{% endif %}>In ground</option>
+                      <option value="portable" {% if 'portable' in row.portable_system %}selected{% endif %}>Portable</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="wetting_agents" class="form-label">Wetting Agents Used:</label>
+                    <select  class="form-select form-control" name="wetting_agents">
+                      <option value="no" {% if 'no' in row.wetting_agents %}selected{% endif %}>No</option>
+                      <option value="yes" {% if 'yes' in row.wetting_agents %}selected{% endif %}>Yes</option>
+                    </select>
+                  </div>
+
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div> <!-- end accordion item -->
+      </div> <!-- end accordion -->
+    </div> <!-- end col-12 -->
+  </div> <!-- end row -->
+
+  <!--cultivation practices -->
+
+
+
+
+  <div class="row my-5">
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>
+
+
+<div class="form_response">
+
+</div>
+
+<script>
+ // if sun_or_shade changes to shade, show percent_shade, otherwise hide it
+document.getElementById('shade_or_sun').addEventListener('change', function() {
+  if (this.value === 'shade') {
+    document.getElementById('percent_shade_wrap').classList.remove('invisible');
+  } else {
+    document.getElementById('percent_shade_wrap').classList.add('invisible');
+  }
+});
+
+
+</script>
