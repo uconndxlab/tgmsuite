@@ -18,8 +18,6 @@ use App\Models\SoilTest;
 
 class Report extends Model
 {
-    public $timestamps = false;
-
     protected $fillable = ['field_id', 'evaluator_id', 'evaluation_date', 'type'];
 
     public function field()

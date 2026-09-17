@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('evaluator_id')->constrained('users')->cascadeOnDelete();
             $table->date('evaluation_date');
             $table->string('type');
+            $table->timestamps();
         });
     }
 

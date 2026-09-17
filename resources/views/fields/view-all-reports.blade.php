@@ -61,6 +61,7 @@
                 @endif
 
                 <form class="d-inline" action="/fields/{{ $field->id }}/delete" method="post">
+                    @csrf
                     <input type="hidden" name="id" value="{{ $field->id }}">
                     <button type="submit" class="btn btn-sm btn-link text-danger" style="padding-left: 0;">
                         <i class="bi-trash"></i>
